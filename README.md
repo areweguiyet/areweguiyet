@@ -4,7 +4,9 @@
 
 Right now this is a collection of our thoughts, notes, and ideas from the 
 unofficial Rust Discord on the various approaches to making interactive 
-graphical user interfaces in the Rust programming language.
+graphical user interfaces in the Rust programming language. Inspired by
+[arewegameyet](http://arewegameyet.com), 
+[arewewebyet](http://www.arewewebyet.org), and others.
 
 ## Existing Frameworks
 
