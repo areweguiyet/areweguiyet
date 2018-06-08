@@ -1,0 +1,17 @@
+[
+    {
+        "name": "Gtk-rs",
+        "description": "Rust bindings and wrappers for GLib, GDK 3, GTK+ 3 and Cairo.",
+        "tags": ["Bindings"]
+    },
+    {
+        "name": "Webrender",
+        "description": "GPU renderer for the Web content, used by Servo.",
+        "tags": ["webrender"]
+    },
+    {
+        "name": "Azul",
+        "description": "GUI crate based on webrender.",
+        "tags": ["webrender"]
+    }
+]

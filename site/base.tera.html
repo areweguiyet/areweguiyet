@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Are we GUI yet?</title>
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,400i" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="./main.css">
+    </head>
+    <body>
+        <div class="page-container">
+
+        <div class="page-header">
+            <div id="headerBackgroundContainer" class="header-background-container"></div>
+            <nav class="page-nav">
+                <div class="nav-centerer">
+                    <a href="#ecosystem">Ecosystem</a>
+                    <a href="#newsfeed">News Feed</a>
+                    <a href="#approaches">Approaches</a>
+                    <a href="#about">About</a>
+                </div>
+            </nav>
+            <header class="header-pair">
+                <h1>Are we GUI yet?</h1>
+                <p>The state of building interfaces in Rust.</p>
+            </header>
+        </div>
+
+        <div class="page-body hide-nav-background">
+            <div class="page-section">
+                <h2>Diving In</h2>
+                <div>
+                    <p>
+                        There are a number of Rust crates which are ports of or bindings to existing,
+                        traditional GUI frameworks, many of which are cross platform.
+                    </p>
+                    <p>
+                        If you want something a bit more Rusty, though, the
+                        <a href="#ecosystem">ecosystem</a> is young and promising!
+                    </p>
+                    <p>
+                        Rust of course also makes it easy to interface with the platform's native
+                        APIs, but well, you're on your own then... mostly! See the
+                        <a href="#approaches">approaches</a> section!
+                    </p>
+                </div>
+            </div>
+            <div class="page-section">
+                <h2>News Feed</h2>
+                <div>
+                    <p>
+                        We are also aggregating community news and related blog posts! If you'd like to
+                        see your stuff here, submit a PR (TODO: Instructions)!
+                    </p>
+                </div>
+            </div>
+            <div class="page-section">
+                <h2>Approaches</h2>
+                <div>
+                    <p>
+                        TODO: We'd like to put together a book (more like a wiki in something like
+                        mdbook) about the different challenges and trade offs of writing GUIs in
+                        Rust! More info to come.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="page-ecosystem-intro hide-nav-background">
+            <div class="page-section">
+                <h2>Ecosystem</h2>
+                <div>
+                    <p>Select a tag below to only show relevant crates. All crates will be shown when no tags are selected.</p>
+                    <ul class="ecosystem-tags">
+                        {% for tag, description in tags %}
+                            {% if description %}
+                                <li title="{{description | addslashes }}">{{tag}}</li>
+                            {% else %}
+                                <li>{{tag}}</li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="page-ecosystem hide-nav-background">
+            <div class="ecosystem-cards">
+                <!-- CRATES -->
+                {% for crate in crates | sort(attribute="name") %}
+                    <div class="ecosystem-card">
+                        <h3>{{crate.name}}</h3>
+                        <div class="content">
+                            <p>{{crate.description}}</p>
+                        </div>
+                        <ul class="ecosystem-tags">
+                            {% for tag in crate.tags %}
+                                <li>{{tag}}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="page-about page-section hide-nav-background">
+            <h2>About</h2>
+            <div>
+                <p>
+                    Inspired by <a href="http://arewegameyet.com">arewegameyet</a> and similar
+                    Rust community websites.
+                </p>
+            </div>
+        </div>
+
+        </div>
+        <script>
+            // renders boxes in the background to look cool...
+            function renderGrid(x, y, cellWidth, cellHeight, rows, cols) {
+                var div = document.createElement('div');
+                div.style.position = 'fixed';
+                div.style.top = '' + y + '%';
+                div.style.left = '' + x + '%';
+                div.className = 'header-background-grid';
+                var cellMargin = 5;
+                div.style.width = '' + ((cellWidth + 2 * cellMargin) * cols) + 'px';
+
+                var i, child;
+                for (i=0; i < rows * cols; i+=1) {
+                    child = document.createElement('div');
+                    child.style.width = '' + cellWidth + 'px';
+                    child.style.height = '' + cellHeight + 'px';
+                    child.style.margin = '' + cellMargin + 'px';
+                    div.appendChild(child);
+                }
+
+                var headerContainer = document.getElementById('headerBackgroundContainer');
+                headerContainer.appendChild(div);
+            }
+
+            renderGrid(10, 2, 30, 25, 5, 4);
+            renderGrid(80, 5, 90, 30, 1, 2);
+            renderGrid(40, 10, 50, 22, 2, 3);
+            renderGrid(65, 8, 60, 28, 4, 2);
+        </script>
+    </body>
+</html>
