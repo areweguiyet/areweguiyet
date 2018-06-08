@@ -75,7 +75,7 @@ fn main() {
     let index = tera.render("base.tera.html", &awgy)
         .expect("Failed to render templates");
 
-    let mut out = File::create("../doc/index.html")
+    let mut out = File::create("../docs/index.html")
         .expect("Failed to create output file");
     out.write_all(index.as_bytes())
         .expect("Failed to write everything to the output file");
