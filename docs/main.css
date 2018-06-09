@@ -160,9 +160,8 @@ p {
 
     border-radius: 2px;
     margin: 10px;
-    border: 1px solid #9f703d;
     background: #ffffff;
-    box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.5);
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
     overflow: hidden;
 }
 
