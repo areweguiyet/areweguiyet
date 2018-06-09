@@ -71,7 +71,7 @@ fn parse_json_file<T: DeserializeOwned, P: AsRef<Path>>(path: P) -> Result<T, Bo
 }
 
 fn write_cache<P: AsRef<Path>>(cache: &Cache, path: P) {
-    let mut out = match File::create(path) {
+    let out = match File::create(path) {
         Ok(f) => f,
         Err(e) => {
             eprintln!("Nonfatal: Failed to create cache file.\nError: {}", e);
@@ -79,7 +79,8 @@ fn write_cache<P: AsRef<Path>>(cache: &Cache, path: P) {
         }
     };
 
-    serde_json::to_writer_pretty(out, cache);
+    serde_json::to_writer_pretty(out, cache)
+        .expect("Failed to write the cache");
 }
 
 fn compile_templates_and_write<P: AsRef<Path>>(awgy: &AreWeGuiYet, out_path: P) {
