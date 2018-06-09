@@ -1,3 +1,4 @@
+{% import "macros.tera.html" as macros %}
 <!DOCTYPE html>
 <html>
     <head>
@@ -74,7 +75,33 @@
                 <!-- CRATES -->
                 {% for crate in crates | sort(attribute="name") %}
                     <div class="ecosystem-card">
-                        <h3>{{crate.name}}</h3>
+                        <header class="header">
+                            <h3>{{crate.name}}</h3>
+                            <span>
+                                [
+                                <!-- things on crates.io should be guaranteed to have docs -->
+                                {% if crate.crates_io and crate.repo %}
+                                    {{macros::link(label="crate", href=crate.crates_io)}}
+                                        ·
+                                    {{macros::link(label="repo", href=crate.repo)}}
+                                        ·
+                                    {{macros::link(label="docs", href=crate.docs)}}
+                                {% elif crate.crates_io %}
+                                    {{macros::link(label="crate", href=crate.crates_io)}}
+                                        ·
+                                    {{macros::link(label="repo", href=crate.repo)}}
+                                {% elif crate.repo and crate.docs %}
+                                    {{macros::link(label="repo", href=crate.repo)}}
+                                        ·
+                                    {{macros::link(label="docs", href=crate.docs)}}
+                                {% elif crate.repo %}
+                                    {{macros::link(label="repo", href=crate.repo)}}
+                                {% elif crate.docs %}
+                                    {{macros::link(label="docs", href=crate.docs)}}
+                                {% endif %}
+                                ]
+                            </span>
+                        </header>
                         <div class="content">
                             <p>{{crate.description}}</p>
                         </div>

@@ -185,10 +185,28 @@ p {
     text-align: center;
 }
 
-.ecosystem-card > h3 {
+.ecosystem-card > header {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+
     padding: 10px;
     background: #9f703d;
     color: #eee;
+}
+
+.ecosystem-card > header > h3 {
+    flex: 1 0 auto;
+}
+
+.ecosystem-card > header > span {
+    flex; 0 0 auto;
+    color: #555;
+}
+
+.ecosystem-card > header a {
+    color: #eee
 }
 
 .ecosystem-card > .content {

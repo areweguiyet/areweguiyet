@@ -1,16 +1,20 @@
 [
     {
         "name": "Gtk-rs",
+        "repo": "https://github.com/gtk-rs/gtk",
         "description": "Rust bindings and wrappers for GLib, GDK 3, GTK+ 3 and Cairo.",
         "tags": ["Bindings"]
     },
     {
         "name": "Webrender",
+        "repo": "https://github.com/servo/webrender",
+        "docs": "https://doc.servo.org/webrender/index.html",
         "description": "GPU renderer for the Web content, used by Servo.",
         "tags": ["webrender"]
     },
     {
         "name": "Azul",
+        "repo": "https://github.com/maps4print/azul",
         "description": "GUI crate based on webrender.",
         "tags": ["webrender"]
     }
