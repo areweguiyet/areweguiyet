@@ -2,72 +2,62 @@
 <html>
     <head>
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Are we GUI yet?</title>
         <link href="https://fonts.googleapis.com/css?family=Lato:400,400i" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="./main.css">
     </head>
-    <body>
-        <div class="page-container">
+    <body class="column">
 
-        <div class="page-header">
-            <div id="headerBackgroundContainer" class="header-background-container"></div>
-            <nav class="page-nav">
-                <div class="nav-centerer">
-                    <a href="#ecosystem">Ecosystem</a>
-                    <a href="#newsfeed">News Feed</a>
-                    <a href="#approaches">Approaches</a>
-                    <a href="#about">About</a>
-                </div>
+        <div class="header-background">
+            <nav class="nav">
+                <a href="#" class="active">Home</a>
+                <a href="#ecosystem">Ecosystem</a>
+                <a href="#newsfeed">News Feed</a>
+                <a href="#approaches">Approaches</a>
+                <a href="#about">About</a>
             </nav>
-            <header class="header-pair">
-                <h1>Are we GUI yet?</h1>
-                <p>The state of building interfaces in Rust.</p>
-            </header>
+
+            <div class="header-content">
+                <image width="128" height="128" src="./assets/rust-logo-128x128-blk-v2.png">
+                <header>
+                    <h1>Are we <span>GUI</span> Yet?</h1>
+                    <p>The state of building user interfaces in Rust.</p>
+                </header>
+            </div>
         </div>
 
-        <div class="page-body hide-nav-background">
-            <div class="page-section">
-                <h2>Diving In</h2>
-                <div>
-                    <p>
-                        There are a number of Rust crates which are ports of or bindings to existing,
-                        traditional GUI frameworks, many of which are cross platform.
-                    </p>
-                    <p>
-                        If you want something a bit more Rusty, though, the
-                        <a href="#ecosystem">ecosystem</a> is young and promising!
-                    </p>
-                    <p>
-                        Rust of course also makes it easy to interface with the platform's native
-                        APIs, but well, you're on your own then... mostly! See the
-                        <a href="#approaches">approaches</a> section!
-                    </p>
-                </div>
-            </div>
-            <div class="page-section">
-                <h2>News Feed</h2>
-                <div>
-                    <p>
-                        We are also aggregating community news and related blog posts! If you'd like to
-                        see your stuff here, submit a PR (TODO: Instructions)!
-                    </p>
-                </div>
-            </div>
-            <div class="page-section">
-                <h2>Approaches</h2>
-                <div>
-                    <p>
-                        TODO: We'd like to put together a book (more like a wiki in something like
-                        mdbook) about the different challenges and trade offs of writing GUIs in
-                        Rust! More info to come.
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="page-ecosystem-intro hide-nav-background">
-            <div class="page-section">
-                <h2>Ecosystem</h2>
-                <div>
+        <main class="footer-pusher">
+            <section class="centered-content">
+                <h2>The roots aren't deep but the seeds are planted.</h2>
+                <p>As a low level language, Rust is perfectly suitable for making user
+                    interfaces the old fashioned way, with native APIs. However, competing
+                    in today's world typically means supporting all the major platforms, and
+                    that makes using native APIs an unattractive option for many.</p>
+                <p>Rust's expressiveness and high level abstractions make it ideal for
+                    building intricate and complex user interfaces. Unfortunately, there
+                    is little consensus on what the best abstractions are.</p>
+                <p>There are a number of bindings available today to existing frameworks,
+                    but those looking for a mature, easy to use, completely Rust-based
+                    solution will most likely find themselves out of luck.</p>
+                <p>Current approaches to building GUIs in Rust include interfacing with
+                    Electron and building GUIs with HTML (or a framework on top of it), while
+                    others have taken to using graphics APIs and various wrappers to emulate
+                    classical widgets. The cross platform parallel rendering engine Webrender,
+                    built for Servo and used in Firefox, takes this latter approach and is
+                    multi-platform, but is more of a base for a GUI framework than one in
+                    itself.</p>
+            </section>
+            <section id="newsfeed" class="centered-content">
+                <h2><a href="#newsfeed">Stay in the loop.</a></h2>
+                <p>We plan to maintain a PR/Issue based newsfeed. If you're working on or
+                    writing about GUIs in Rust, please contribute! Each news entry can either
+                    be a post contributed to the Repo or a link back to your blog, Reddit
+                    thread, etc.</p>
+            </section>
+            <section id="ecosystem" class="ecosystem-navigator">
+                <div class="centered-content">
+                    <h2><a href="#ecosystem">Ecosystem</a></h2>
                     <p>Select a tag below to only show relevant crates. All crates will be shown when no tags are selected.</p>
                     <ul class="ecosystem-tags">
                         {% for tag, description in tags %}
@@ -79,11 +69,8 @@
                         {% endfor %}
                     </ul>
                 </div>
-            </div>
-        </div>
-
-        <div class="page-ecosystem hide-nav-background">
-            <div class="ecosystem-cards">
+            </section>
+            <section class="ecosystem-crates centered-content">
                 <!-- CRATES -->
                 {% for crate in crates | sort(attribute="name") %}
                     <div class="ecosystem-card">
@@ -98,47 +85,15 @@
                         </ul>
                     </div>
                 {% endfor %}
+            </section>
+        </main>
+
+        <footer id="about" class="about-container">
+            <div class="centered-content">
+                <h2><a href="#about">About</a></h2>
+                <p>Inspired by <a href="http://arewegameyet.com">arewegameyet</a> and similar
+                    Rust community websites.</p>
             </div>
-        </div>
-        <div class="page-about page-section hide-nav-background">
-            <h2>About</h2>
-            <div>
-                <p>
-                    Inspired by <a href="http://arewegameyet.com">arewegameyet</a> and similar
-                    Rust community websites.
-                </p>
-            </div>
-        </div>
-
-        </div>
-        <script>
-            // renders boxes in the background to look cool...
-            function renderGrid(x, y, cellWidth, cellHeight, rows, cols) {
-                var div = document.createElement('div');
-                div.style.position = 'fixed';
-                div.style.top = '' + y + '%';
-                div.style.left = '' + x + '%';
-                div.className = 'header-background-grid';
-                var cellMargin = 5;
-                div.style.width = '' + ((cellWidth + 2 * cellMargin) * cols) + 'px';
-
-                var i, child;
-                for (i=0; i < rows * cols; i+=1) {
-                    child = document.createElement('div');
-                    child.style.width = '' + cellWidth + 'px';
-                    child.style.height = '' + cellHeight + 'px';
-                    child.style.margin = '' + cellMargin + 'px';
-                    div.appendChild(child);
-                }
-
-                var headerContainer = document.getElementById('headerBackgroundContainer');
-                headerContainer.appendChild(div);
-            }
-
-            renderGrid(10, 2, 30, 25, 5, 4);
-            renderGrid(80, 5, 90, 30, 1, 2);
-            renderGrid(40, 10, 50, 22, 2, 3);
-            renderGrid(65, 8, 60, 28, 4, 2);
-        </script>
+        </footer>
     </body>
 </html>
