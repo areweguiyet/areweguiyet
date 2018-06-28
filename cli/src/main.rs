@@ -4,15 +4,10 @@ extern crate serde_derive;
 extern crate serde;
 extern crate serde_json;
 
-extern crate hyper;
-extern crate hyper_tls;
+extern crate reqwest;
 
 #[macro_use]
 extern crate tera;
-
-use hyper::Client;
-use hyper::rt::{self, Future, Stream};
-use hyper_tls::HttpsConnector;
 
 use serde::de::DeserializeOwned;
 
@@ -20,7 +15,6 @@ use std::path::Path;
 use std::io::Write;
 use std::fs::File;
 use std::collections::{HashMap, HashSet};
-use std::sync::mpsc::channel;
 use std::error::Error;
 
 #[derive(Serialize, Deserialize)]
@@ -42,9 +36,28 @@ struct Crate {
     tags: Vec<String>,
 }
 
+/// Stores parsed raw requests data from any services we query (like crates.io or GitHub).
 #[derive(Serialize, Deserialize)]
 struct Cache {
-    crates_io: HashMap<String, CrateResponse>
+    crates_io: HashMap<String, Option<CrateResponse>>
+}
+
+impl Cache {
+    fn get_crates_io(&mut self, name: &str) -> Result<&Option<CrateResponse>, Box<Error>> {
+        // We can perhaps make this better with NLL?
+        let url = crates_io_url(name);
+        if !self.crates_io.contains_key(name) {
+            println!("Cache miss. Requesting data for {}", name);
+            let mut res = reqwest::get(&url)?;
+            let parsed: Option<CratesResponse> = match res.status() {
+                reqwest::StatusCode::Ok => res.json()?,
+                reqwest::StatusCode::NotFound => None,
+                _ => return Err("Unknown request error".into()),
+            };
+            self.crates_io.insert(name.to_string(), parsed.map(|x| x.krate));
+        }
+        Ok(&self.crates_io[name])
+    }
 }
 
 impl Default for Cache {
@@ -55,8 +68,11 @@ impl Default for Cache {
     }
 }
 
-// TODO: This should only have a "crate" key but that's a keyword in rust...
-type CratesResponse = HashMap<String, serde_json::Value>;
+#[derive(Clone, Debug, Default, Serialize, Deserialize)]
+struct CratesResponse {
+    #[serde(rename = "crate")]
+    krate: CrateResponse,
+}
 
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 struct CrateResponse {
@@ -83,6 +99,7 @@ fn write_cache<P: AsRef<Path>>(cache: &Cache, path: P) {
         .expect("Failed to write the cache");
 }
 
+/// Compiles the tera templates from a hard coded path (the site directory).
 fn compile_templates_and_write<P: AsRef<Path>>(awgy: &AreWeGuiYet, out_path: P) {
     let tera = compile_templates!("../site/**/*.tera.html");
     let index = tera.render("base.tera.html", awgy)
@@ -94,72 +111,35 @@ fn compile_templates_and_write<P: AsRef<Path>>(awgy: &AreWeGuiYet, out_path: P) 
         .expect("Failed to write everything to the output file");
 }
 
-/// Makes an API request to crates.io if there is no custom repo specified for the crate
+/// Uses data from crates.io if there is no custom repo specified for the crate.
+///
+/// No fields will be overwritten if they are already specified.
 fn get_crate_info(cache: &mut Cache, krate: &mut Crate) {
     if krate.repo.is_some() {
         return;
     }
 
-    let raw_url = format!("https://crates.io/api/v1/crates/{}", krate.name);
-    let url = raw_url.parse::<hyper::Uri>()
-        .unwrap();
+    let res = cache.get_crates_io(&krate.name)
+        .expect("Failed to fetch from Crates.io");
 
-    let res = cache.crates_io.entry(krate.name.clone())
-        .or_insert_with(|| {
-            println!("Cache miss. Requesting data for {}", &krate.name);
-            // TODO: Clean this up, simplify it, and make it as rusty as possible
-            // It's quite wasteful I think as it is right now, but I don't know hyper/tokio very well!
-            let (sender, receiver) = channel();
+    if let Some(res) = res {
+        let CrateResponse {
+            description,
+            repository,
+            documentation,
+        } = res.clone();
 
-            rt::run(rt::lazy(move || {
-                let https = HttpsConnector::new(4)
-                    .expect("TLS initialization failed");
-                let client = Client::builder()
-                    .build::<_, hyper::Body>(https);
+        let url = crates_io_url(&krate.name);
+        krate.crates_io = Some(url);
+        krate.repo = krate.repo.clone().or(repository);
+        krate.docs = krate.docs.clone().or(documentation);
+        krate.description = krate.description.clone().or(description);
+    }
 
-                client
-                    // Fetch the url...
-                    .get(url)
-                    .map(|res| -> CratesResponse {
-                        let res = res.into_body()
-                            .concat2()
-                            .wait()
-                            .unwrap()
-                            .into_bytes()
-                            .to_vec();
-                        //println!("Got response {}", String::from_utf8_lossy(res.as_slice()));
-                        serde_json::from_reader(res.as_slice())
-                            .expect("Crates IO did not return valid JSON")
-                    })
-                    .map_err(|err| eprintln!("Failed to make request with error {}", err))
-                    .map(|mut crate_json|
-                        // TODO: Error message when crate is missing
-                        match crate_json.remove("crate") {
-                            Some(crate_json) => serde_json::from_value(crate_json)
-                                .expect("Failed to parse relevant data from the crate"),
-                            None => Default::default()
-                        }
-                    )
-                    .map(move |crate_data: CrateResponse|
-                        sender.send(crate_data)
-                            .unwrap()
-                    )
-            }));
+}
 
-            receiver.recv()
-                .unwrap()
-        });
-
-    let CrateResponse {
-        description,
-        repository,
-        documentation,
-    } = res.clone();
-
-    krate.crates_io = Some(raw_url);
-    krate.repo = krate.repo.clone().or(repository);
-    krate.docs = krate.docs.clone().or(documentation);
-    krate.description = krate.description.clone().or(description);
+fn crates_io_url(crate_name: &str) -> String {
+    format!("https://crates.io/api/v1/crates/{}", crate_name)
 }
 
 fn main() {

@@ -4,9 +4,8 @@ version = "0.1.0"
 authors = ["shivshank"]
 
 [dependencies]
-tera = "*"
+tera = "0.11.8"
 serde = "1.0.66"
 serde_derive = "1.0.66"
 serde_json = "1.0.20"
-hyper = "0.12"
-hyper-tls = "0.2.0"
+reqwest = "0.8.6"
