@@ -45,9 +45,9 @@ struct Cache {
 impl Cache {
     fn get_crates_io(&mut self, name: &str) -> Result<&Option<CrateResponse>, Box<Error>> {
         // We can perhaps make this better with NLL?
-        let url = crates_io_url(name);
         if !self.crates_io.contains_key(name) {
             println!("Cache miss. Requesting data for {}", name);
+            let url = crates_io_url(name);
             let mut res = reqwest::get(&url)?;
             let parsed: Option<CratesResponse> = match res.status() {
                 reqwest::StatusCode::Ok => res.json()?,
@@ -97,6 +97,8 @@ fn write_cache<P: AsRef<Path>>(cache: &Cache, path: P) {
 
     serde_json::to_writer_pretty(out, cache)
         .expect("Failed to write the cache");
+
+    println!("Cache updated.");
 }
 
 /// Compiles the tera templates from a hard coded path (the site directory).
@@ -109,6 +111,8 @@ fn compile_templates_and_write<P: AsRef<Path>>(awgy: &AreWeGuiYet, out_path: P) 
         .expect("Failed to create output file");
     out.write_all(index.as_bytes())
         .expect("Failed to write everything to the output file");
+
+    println!("Site generated.");
 }
 
 /// Uses data from crates.io if there is no custom repo specified for the crate.
@@ -156,6 +160,9 @@ fn main() {
     {
         // figure out which tags we used and generate missing crate information
         let mut used_tags = HashSet::new();
+
+        println!("Found {} crates.", crates.len());
+
         for krate in &mut crates {
             get_crate_info(&mut cache, krate);
             used_tags.extend(krate.tags.iter())
