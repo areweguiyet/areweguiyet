@@ -119,6 +119,18 @@ p {
     color: #9f703d;
 }
 
+.newsfeed-posts {
+    padding: 0px 20px;
+}
+
+.newsfeed-posts > div {
+    margin-bottom: 20px
+}
+
+.newsfeed-posts > div > h3 {
+    margin-bottom: 10px;
+}
+
 .ecosystem-navigator, .about-container {
     background: #222;
     color: #eee;
