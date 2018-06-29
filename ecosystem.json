@@ -17,5 +17,9 @@
         "repo": "https://github.com/maps4print/azul",
         "description": "GUI crate based on webrender.",
         "tags": ["webrender"]
+    },
+    {
+        "name": "Conrod",
+        "tags": ["Immediate mode API"]
     }
 ]
