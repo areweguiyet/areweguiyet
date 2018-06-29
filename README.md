@@ -29,13 +29,13 @@ Current format for `ecosystem.json` is
 ```
 
 Once you add a crate to the JSON file, you can simply do `cargo run` from the `cli` directory
-and the CLI will generate the `base.tera.html`.
+and the CLI will generate the website (which is outputted into the `docs` directory).
 
 `ecosystem_tags.json` lists descriptions for tags. There should not be any unused tags listed
 in there and not all tags need to have a description, so not all tags need to be in that file.
 
-n.b., Because the CLI uses hyper which brings in tokio and futures, it takes awhile to compile
-and requires about half a gigabyte of disk space.
+n.b., Because the CLI uses reqwest, which brings in hyper and tokio, it may take awhile to
+compile and requires about half a gigabyte of disk space.
 
 ## TODO
 
