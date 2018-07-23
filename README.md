@@ -12,9 +12,10 @@ Companion website to
 The "CLI" is not really a CLI yet but it *will* fetch missing for crates that don't specify
 their repo in `ecosystem.json`.
 
-If you know of a GUI crate, you can either submit an issue or make a PR!
+If you know of a GUI crate or want to update the news feed, you can either submit an issue or
+make a PR!
 
-Current format for `ecosystem.json` is
+To add a **crate**, add it to `ecosystem.json`, Current format for `ecosystem.json` is
 
 ```js
 {
@@ -31,6 +32,22 @@ Current format for `ecosystem.json` is
 Once you add a crate to the JSON file, you can simply do `cargo run` from the `cli` directory
 and the CLI will generate the website (which is outputted into the `docs` directory).
 
+The process is the same for adding to the **newsfeed**, except you edit `newsfeed.json`. The
+format for each entry is
+
+```rust
+{
+    kind: "Link",
+    title: String,
+    author: String,
+    link: String,
+}
+```
+
+**Please add to the top of the file.** Only links are supported at the moment, but if you have
+a suggestion for another format, or would like to write a blog post exclusively for this site,
+open an issue!
+
 `ecosystem_tags.json` lists descriptions for tags. There should not be any unused tags listed
 in there and not all tags need to have a description, so not all tags need to be in that file.
 
@@ -42,7 +59,7 @@ compile and requires about half a gigabyte of disk space.
 Major undertakings remaining:
  - Crate search based on the tags and an optional query
  - Decide how we want to record approaches
- - Build the page for the newsfeed and start gathering posts
+ - Refactor to support the dedicated newsfeed page (for when we have more than 3 posts)
  - A reviewer or reviewers for blog posts and approaches written exclusively for our repo
  - Add commands to the CLI so people never have to touch the JSON files
  - Pull missing data from github and possibly other sites (bitbucket/gitlab?) if they have

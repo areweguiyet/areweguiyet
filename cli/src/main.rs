@@ -9,6 +9,10 @@ extern crate reqwest;
 #[macro_use]
 extern crate tera;
 
+mod newsfeed;
+
+use newsfeed::NewsfeedEntry;
+
 use serde::de::DeserializeOwned;
 
 use std::path::Path;
@@ -24,6 +28,7 @@ struct AreWeGuiYet {
     ///
     /// Some tags may have descriptions.
     tags: HashMap<String, Option<String>>,
+    newsfeed: Vec<NewsfeedEntry>,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -152,6 +157,8 @@ fn main() {
         .expect("Failed to parse ecosystem.json");
     let mut tags: HashMap<String, Option<String>> = parse_json_file("../ecosystem_tags.json")
         .expect("Failed to parse ecosystem_tags.json");
+    let newsfeed: Vec<NewsfeedEntry> = parse_json_file("../newsfeed.json")
+        .expect("Failed to parse newsfeed.json");
     let mut cache: Cache = parse_json_file("../cache.json")
         .unwrap_or_else(|_| Default::default());
 
@@ -184,6 +191,7 @@ fn main() {
     let awgy = AreWeGuiYet {
         crates,
         tags,
+        newsfeed,
     };
 
     // update the cache
