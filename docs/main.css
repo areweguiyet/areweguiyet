@@ -99,6 +99,7 @@ p {
         ),
         url(./assets/guiemptycanvas.jpg) #222;
     background-position: center center;
+    background-size: cover;
 }
 
 .header-content {
