@@ -54,6 +54,22 @@ in there and not all tags need to have a description, so not all tags need to be
 n.b., Because the CLI uses reqwest, which brings in hyper and tokio, it may take awhile to
 compile and requires about half a gigabyte of disk space.
 
+## Organization
+
+The `docs` directory is the build directory for the HTML content. `docs` is committed to master and
+is used as the web root for GitHub pages. Non-HTML files in the `docs` directory are anything that 
+the HTML pages depend on, including `ecosystem.json` and support CSS and JS files.
+
+The `site` directory contains the Tera template files, which are used by the CLI to generate the 
+HTML in the `docs` directory.
+
+The JS code uses let statements and the fetch API, but otherwise is very vanilla and old school.
+To keep things simple (the JS on the page should be minimal anyways), there are no dependencies.
+If there are compatibility issues with your browser please open an issue!
+
+The `cli` directory contains a CLI tool which is used to create new entries on the website and
+generate the HTML.
+
 ## TODO
 
 Major undertakings remaining:
