@@ -23,17 +23,16 @@ Cache.prototype.set_crates = function(crates) {
 
     // remove all the old crates from the page
     let crate_html = document.getElementById('ecosystem-crates')
-    while (crate_html.lastChild) {
-        crate_html.removeChild(crate_html.lastChild)
-    }
+    crate_html.innerHTML = ''
     
     // add the container to the crates object and make each crate visible on the page
+    let that = this
     Object.keys(this.crates).forEach(function(crate_name) {
         let container = _new_card_container()
-        _set_card_container(container, crate_name, this.crates[crate_name])
-        this.crates[crate_name].container = container
+        _set_card_container(container, crate_name, that.crates[crate_name])
+        that.crates[crate_name].container = container
 
-        crate_html.appendChild(container)
+        crate_html.appendChild(container.html)
     })
 }
 
@@ -97,19 +96,19 @@ function _set_card_container(card, crate_name, crate_info) {
     
     // add the meta links, surrounded by [ ], and separated each by a point
     let i
-    card.meta_links_node.appendChild(document.createTextNode('['))
+    card.meta_links_node.appendChild(document.createTextNode('[ '))
     for (i=0; i < meta_links.length; i+=1) {
         if (i !== 0) {
-            card.meta_links_node.appendChild(document.createTextNode('·'))
+            card.meta_links_node.appendChild(document.createTextNode(' · '))
         }
         card.meta_links_node.appendChild(meta_links[i])
     }
-    card.meta_links_node.appendChild(document.createTextNode(']'))
+    card.meta_links_node.appendChild(document.createTextNode(' ]'))
 
     // create the tag list
     for (i=0; i < crate_info.tags.length; i+=1) {
         let element = document.createElement('li')
-        card.tag_list_node.appendChild()
+        card.tag_list_node.appendChild(element)
         element.appendChild(document.createTextNode(crate_info.tags[i]))
     }
 }
@@ -122,7 +121,7 @@ function new_meta_link(text, link) {
 }
 
 function load_ecosystem() {
-    return fetch('/ecosystem.json')
+    return fetch('compiled_ecosystem.json')
         .then(function(response) {
             return response.json()
         })
@@ -146,3 +145,5 @@ function init_crate_list_ui() {
         cache.toggle_tag_filter(e.target.getAttribute('data-crate-tag'))
     })
 }
+
+init_crate_list_ui()
