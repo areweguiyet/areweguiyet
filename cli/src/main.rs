@@ -9,7 +9,10 @@ extern crate reqwest;
 #[macro_use]
 extern crate tera;
 
+extern crate clap;
+
 mod newsfeed;
+mod cli;
 
 use newsfeed::NewsfeedEntry;
 
@@ -152,6 +155,8 @@ fn crates_io_url(crate_name: &str) -> String {
 }
 
 fn main() {
+    cli::execute_cli();
+    return;
     // TODO: Error handling! ;^)
     let mut crates: Vec<Crate> = parse_json_file("../ecosystem.json")
         .expect("Failed to parse ecosystem.json");
