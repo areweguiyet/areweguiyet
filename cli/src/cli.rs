@@ -18,6 +18,10 @@ const ECOSYSTEM: &str = "../ecosystem.json";
 const COMPILED_ECOSYSTEM: &str = "../docs/compiled_ecosystem.json";
 const ECOSYSTEM_TAGS: &str = "../ecosystem_tags.json";
 
+const TEMPLATE_SOURCE_GLOB: &str = "../site/**/*.tera.html";
+const INDEX_HTML_OUTPUT_PATH: &str = "../docs/index.html";
+const INDEX_HTML_TEMPLATE_NAME: &str = "base.tera.html";
+
 const CACHE_FILE: &str = "../cache.json";
 const CACHE_FILE_DELETION_FAILED: &str = "Failed to remove the cache file. Try deleting it \
     manually and running without the clean option.";
@@ -260,7 +264,13 @@ fn publish(cache: &mut Cache) {
         Err(_) => println!("Nonfatal: Failed to write the cache"),
     }
 
-    compile_templates_and_write(&awgy, "../docs/index.html");
+    compile_templates_and_write(
+        &awgy,
+        TEMPLATE_SOURCE_GLOB,
+        INDEX_HTML_TEMPLATE_NAME,
+        INDEX_HTML_OUTPUT_PATH,
+    );
+    println!("Site generated.");
 }
 
 fn parse_json_file<T: DeserializeOwned, P: AsRef<Path>>(path: P) -> Result<T, Box<Error>> {
@@ -273,15 +283,22 @@ fn crates_io_url(crate_name: &str) -> String {
 }
 
 /// Compiles the tera templates from a hard coded path (the site directory).
-fn compile_templates_and_write<P: AsRef<Path>>(awgy: &AreWeGuiYetTemplateArgs, out_path: P) {
-    let tera = compile_templates!("../site/**/*.tera.html");
-    let index = tera.render("base.tera.html", awgy)
-        .expect("Failed to render templates");
+fn compile_templates_and_write<P: AsRef<Path>>(
+    awgy: &AreWeGuiYetTemplateArgs,
+    template_source_glob: &str,
+    index_html_template_name: &str,
+    index_html_output_path: P,
+) {
+    let tera = compile_templates!(template_source_glob);
+    // Render the template and remove newlines so people don't accidentally edit the compiled HTML
+    // (we could actually minify it too)
+    let index = tera.render(index_html_template_name, awgy)
+        .expect("Failed to render templates")
+        .replace("\r\n", " ")
+        .replace("\n", " ");
 
-    let mut out = File::create(out_path)
+    let mut out = File::create(index_html_output_path)
         .expect("Failed to create output file");
     out.write_all(index.as_bytes())
         .expect("Failed to write everything to the output file");
-
-    println!("Site generated.");
 }
