@@ -115,65 +115,6 @@ impl Cache {
                     Err(err)
                 })
     }
-
-    /// Merge saved data with data from crates io (if the crate is on crates io).
-    ///
-    /// No fields will be overwritten if they are already specified.
-    ///
-    /// Issues errors if the data from crates io is the same as the local data.
-    fn get_crate_info(&mut self, krate: &Crate, errors: &mut Vec<String>) -> CompiledCrate {
-        let crates_io;
-
-        if !krate.skip_crates_io {
-            let res = self.get_crates_io(&krate.name)
-                .expect("Failed to fetch from Crates.io");
-
-            if let Some(res) = res {
-                let url = crates_io_url(&krate.name);
-                crates_io = Some(url);
-                // there's more cloning than necessary here but this is much cleaner than zero-copying!
-
-                let CratesIoCrateResponse {
-                    description,
-                    repository,
-                    documentation,
-                } = res.clone();
-
-                if krate.repo.is_some() && krate.repo == repository {
-                    errors.push(format!("Please remove {}'s repo in ecosystem.json since \
-                        it duplicates the value on crates.io", &krate.name));
-                }
-
-                if krate.description.is_some() && krate.description == description {
-                    errors.push(format!("Please remove {}'s description in ecosystem.json since \
-                        it duplicates the value on crates.io", &krate.name));
-                }
-
-                if krate.docs.is_some() && krate.docs == documentation {
-                    errors.push(format!("Please remove {}'s docs in ecosystem.json since \
-                        it duplicates the value on crates.io", &krate.name));
-                }
-
-                return CompiledCrate {
-                    crates_io,
-                    repo: krate.repo.clone().or(repository),
-                    description: krate.description.clone().or(description),
-                    docs: krate.docs.clone().or(documentation),
-                    tags: krate.tags.clone(),
-                }
-            }
-            // the crate was not found on crates io
-        }
-        // we don't care if it's on crates io
-
-        CompiledCrate {
-            crates_io: None,
-            repo: krate.repo.clone(),
-            description: krate.description.clone(),
-            docs: krate.docs.clone(),
-            tags: krate.tags.clone(),
-        }
-    }
 }
 
 impl Default for Cache {
@@ -269,7 +210,7 @@ fn publish(clean: bool, verify_only: bool) {
 
     println!("Found {} crates.", crates.len());
 
-    let mut warnings = Vec::new();
+    let mut errors = Vec::new();
 
     // TODO: Verify that tag names and descriptions don't contain unwanted characters.
     // TODO: Lack of non-lexical lifetimes means we need a special scope for used_tags
@@ -285,7 +226,7 @@ fn publish(clean: bool, verify_only: bool) {
         // issue a warning if there are unsused tags in ecosystem_tags.json
         for (k, _) in &tags {
             if !used_tags.contains(k) {
-                warnings.push(format!("Tag \"{}\" is not used to describe any crate", k));
+                errors.push(format!("Tag \"{}\" is not used to describe any crate", k));
             }
         }
 
@@ -299,7 +240,7 @@ fn publish(clean: bool, verify_only: bool) {
     // merge missing crate information from crates io
     let mut compiled_ecosystem = HashMap::new();
     for krate in &mut crates {
-        let compiled_crate = cache.get_crate_info(krate, &mut warnings);
+        let compiled_crate = get_crate_info(krate, &mut cache, &mut errors);
         compiled_ecosystem.insert(krate.name.clone(), compiled_crate);
     }
 
@@ -326,9 +267,9 @@ fn publish(clean: bool, verify_only: bool) {
 
     println!("Successfully rendered templates.");
 
-    if warnings.len() > 0 {
+    if errors.len() > 0 {
         eprintln!("The following issues are preventing HTML generation:");
-        for i in &warnings {
+        for i in &errors {
             println!("\t{}", i);
         }
         panic!("Failed to generate site.");
@@ -348,6 +289,65 @@ fn publish(clean: bool, verify_only: bool) {
         println!("Site written to disk.");
     } else {
         println!("Skipping writing the site.");
+    }
+}
+
+/// Merge saved data with data from crates io (if the crate is on crates io).
+    ///
+    /// No fields will be overwritten if they are already specified.
+    ///
+    /// Issues errors if the data from crates io is the same as the local data.
+fn get_crate_info(krate: &Crate, cache: &mut Cache, errors: &mut Vec<String>) -> CompiledCrate {
+    let crates_io;
+
+    if !krate.skip_crates_io {
+        let res = cache.get_crates_io(&krate.name)
+            .expect("Failed to fetch from Crates.io");
+
+        if let Some(res) = res {
+            let url = crates_io_url(&krate.name);
+            crates_io = Some(url);
+            // there's more cloning than necessary here but this is much cleaner than zero-copying!
+
+            let CratesIoCrateResponse {
+                description,
+                repository,
+                documentation,
+            } = res.clone();
+
+            if krate.repo.is_some() && krate.repo == repository {
+                errors.push(format!("Please remove {}'s repo in ecosystem.json since \
+                        it duplicates the value on crates.io", &krate.name));
+            }
+
+            if krate.description.is_some() && krate.description == description {
+                errors.push(format!("Please remove {}'s description in ecosystem.json since \
+                        it duplicates the value on crates.io", &krate.name));
+            }
+
+            if krate.docs.is_some() && krate.docs == documentation {
+                errors.push(format!("Please remove {}'s docs in ecosystem.json since \
+                        it duplicates the value on crates.io", &krate.name));
+            }
+
+            return CompiledCrate {
+                crates_io,
+                repo: krate.repo.clone().or(repository),
+                description: krate.description.clone().or(description),
+                docs: krate.docs.clone().or(documentation),
+                tags: krate.tags.clone(),
+            }
+        }
+        // the crate was not found on crates io
+    }
+    // we don't care if it's on crates io
+
+    CompiledCrate {
+        crates_io: None,
+        repo: krate.repo.clone(),
+        description: krate.description.clone(),
+        docs: krate.docs.clone(),
+        tags: krate.tags.clone(),
     }
 }
 
