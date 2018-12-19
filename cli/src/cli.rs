@@ -26,6 +26,7 @@ const CACHE_FILE: &str = "../cache.json";
 const CACHE_FILE_DELETION_FAILED: &str = "Failed to remove the cache file. Try deleting it \
     manually and running without the clean option.";
 
+/// The arguments needed for Tera to render the template.
 #[derive(Serialize, Deserialize)]
 struct AreWeGuiYetTemplateArgs {
     crates: Vec<Crate>,
@@ -36,9 +37,23 @@ struct AreWeGuiYetTemplateArgs {
     newsfeed: Vec<NewsfeedEntry>,
 }
 
+/// Crate info in ecosystem.json
 #[derive(Serialize, Deserialize)]
 struct Crate {
     name: String,
+    /// Should be either missing or true; implied to be false
+    #[serde(default)]
+    skip_crates_io: bool,
+    repo: Option<String>,
+    description: Option<String>,
+    docs: Option<String>,
+    tags: Vec<String>,
+}
+
+/// Crate info that gets put into the compiled ecosystem file
+#[derive(Serialize, Deserialize)]
+struct CompiledCrate {
+    // name: String, // Compiled Crates are stored in a HashMap, no longer need this
     crates_io: Option<String>,
     repo: Option<String>,
     description: Option<String>,
@@ -49,7 +64,7 @@ struct Crate {
 /// Stores parsed raw requests data from any services we query (like crates.io or GitHub).
 #[derive(Serialize, Deserialize)]
 struct Cache {
-    crates_io: HashMap<String, Option<CrateResponse>>
+    crates_io: HashMap<String, Option<CratesIoCrateResponse>>
 }
 
 impl Cache {
@@ -60,13 +75,13 @@ impl Cache {
     }
 
     /// Get crate meta data from crates io API, and cache the result
-    fn get_crates_io(&mut self, name: &str) -> Result<&Option<CrateResponse>, Box<Error>> {
+    fn get_crates_io(&mut self, name: &str) -> Result<&Option<CratesIoCrateResponse>, Box<Error>> {
         // We can perhaps make this better with NLL?
         if !self.crates_io.contains_key(name) {
             println!("Cache miss. Requesting data for {}", name);
             let url = crates_io_url(name);
             let mut res = reqwest::get(&url)?;
-            let parsed: Option<CratesResponse> = match res.status() {
+            let parsed: Option<CratesIoEnvelopeResponse> = match res.status() {
                 reqwest::StatusCode::Ok => res.json()?,
                 reqwest::StatusCode::NotFound => None,
                 _ => return Err("Unknown request error".into()),
@@ -101,29 +116,62 @@ impl Cache {
                 })
     }
 
-    /// Uses data from crates.io if there is no custom repo specified for the crate.
+    /// Merge saved data with data from crates io (if the crate is on crates io).
     ///
     /// No fields will be overwritten if they are already specified.
-    fn get_crate_info(&mut self, krate: &mut Crate) {
-        if krate.repo.is_some() {
-            return;
+    ///
+    /// Issues errors if the data from crates io is the same as the local data.
+    fn get_crate_info(&mut self, krate: &Crate, errors: &mut Vec<String>) -> CompiledCrate {
+        let crates_io;
+
+        if !krate.skip_crates_io {
+            let res = self.get_crates_io(&krate.name)
+                .expect("Failed to fetch from Crates.io");
+
+            if let Some(res) = res {
+                let url = crates_io_url(&krate.name);
+                crates_io = Some(url);
+                // there's more cloning than necessary here but this is much cleaner than zero-copying!
+
+                let CratesIoCrateResponse {
+                    description,
+                    repository,
+                    documentation,
+                } = res.clone();
+
+                if krate.repo.is_some() && krate.repo == repository {
+                    errors.push(format!("Please remove {}'s repo in ecosystem.json since \
+                        it duplicates the value on crates.io", &krate.name));
+                }
+
+                if krate.description.is_some() && krate.description == description {
+                    errors.push(format!("Please remove {}'s description in ecosystem.json since \
+                        it duplicates the value on crates.io", &krate.name));
+                }
+
+                if krate.docs.is_some() && krate.docs == documentation {
+                    errors.push(format!("Please remove {}'s docs in ecosystem.json since \
+                        it duplicates the value on crates.io", &krate.name));
+                }
+
+                return CompiledCrate {
+                    crates_io,
+                    repo: krate.repo.clone().or(repository),
+                    description: krate.description.clone().or(description),
+                    docs: krate.docs.clone().or(documentation),
+                    tags: krate.tags.clone(),
+                }
+            }
+            // the crate was not found on crates io
         }
+        // we don't care if it's on crates io
 
-        let res = self.get_crates_io(&krate.name)
-            .expect("Failed to fetch from Crates.io");
-
-        if let Some(res) = res {
-            let CrateResponse {
-                description,
-                repository,
-                documentation,
-            } = res.clone();
-
-            let url = crates_io_url(&krate.name);
-            krate.crates_io = Some(url);
-            krate.repo = krate.repo.clone().or(repository);
-            krate.docs = krate.docs.clone().or(documentation);
-            krate.description = krate.description.clone().or(description);
+        CompiledCrate {
+            crates_io: None,
+            repo: krate.repo.clone(),
+            description: krate.description.clone(),
+            docs: krate.docs.clone(),
+            tags: krate.tags.clone(),
         }
     }
 }
@@ -137,13 +185,13 @@ impl Default for Cache {
 }
 
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
-struct CratesResponse {
+struct CratesIoEnvelopeResponse {
     #[serde(rename = "crate")]
-    krate: CrateResponse,
+    krate: CratesIoCrateResponse,
 }
 
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
-struct CrateResponse {
+struct CratesIoCrateResponse {
     description: Option<String>,
     repository: Option<String>,
     documentation: Option<String>,
@@ -248,11 +296,11 @@ fn publish(clean: bool, verify_only: bool) {
         }
     }
 
-    // TODO: fill in auto-populated crate data from crates.io
-    // TODO: Produce a warning if overriding data is the same as crates io data
-    // generate missing crate information
+    // merge missing crate information from crates io
+    let mut compiled_ecosystem = HashMap::new();
     for krate in &mut crates {
-        cache.get_crate_info(krate);
+        let compiled_crate = cache.get_crate_info(krate, &mut warnings);
+        compiled_ecosystem.insert(krate.name.clone(), compiled_crate);
     }
 
     // compile the template
@@ -287,10 +335,15 @@ fn publish(clean: bool, verify_only: bool) {
     }
 
     if !verify_only {
-        let mut out = File::create(INDEX_HTML_OUTPUT_PATH)
-            .expect("Failed to create output file");
-        out.write_all(index.as_bytes())
-            .expect("Failed to write everything to the output file");
+        let mut out_compiled_ecosystem = File::create(COMPILED_ECOSYSTEM)
+            .expect("Failed to create compiled ecosystem file");
+        serde_json::to_writer(&mut out_compiled_ecosystem, &compiled_ecosystem)
+            .expect("Failed to write the compiled ecosystem to the output file");
+
+        let mut out_index = File::create(INDEX_HTML_OUTPUT_PATH)
+            .expect("Failed to create index output file");
+        out_index.write_all(index.as_bytes())
+            .expect("Failed to write the index to the output file");
 
         println!("Site written to disk.");
     } else {
