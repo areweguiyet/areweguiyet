@@ -79,7 +79,7 @@ impl Cache {
         // We can perhaps make this better with NLL?
         if !self.crates_io.contains_key(name) {
             println!("Cache miss. Requesting data for {}", name);
-            let url = crates_io_url(name);
+            let url = crates_io_api_url(name);
             let mut res = reqwest::get(&url)?;
             let parsed: Option<CratesIoEnvelopeResponse> = match res.status() {
                 reqwest::StatusCode::Ok => res.json()?,
@@ -356,6 +356,10 @@ fn parse_json_file<T: DeserializeOwned, P: AsRef<Path>>(path: P) -> Result<T, Bo
     Ok(serde_json::from_reader(f)?)
 }
 
-fn crates_io_url(crate_name: &str) -> String {
+fn crates_io_api_url(crate_name: &str) -> String {
     format!("https://crates.io/api/v1/crates/{}", crate_name)
+}
+
+fn crates_io_url(crate_name: &str) -> String {
+    format!("https://crates.io/crates/{}", crate_name)
 }
