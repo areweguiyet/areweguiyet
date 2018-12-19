@@ -189,23 +189,7 @@ pub fn execute_cli() {
                 None => (false, false),
             };
 
-            let mut cache = Cache::new(CACHE_FILE);
-
-            if clean {
-                cache.remove_cache(CACHE_FILE)
-                    .expect(CACHE_FILE_DELETION_FAILED);
-                println!("Cache file removed.");
-            }
-
-            // TODO: verify that every tag in the tags file is actually used
-            // TODO: Verify that tag names and descriptions don't contain unwanted characters.
-            // TODO: fill in auto-populated crate data from crates.io
-            // right now it just calls old publish method, which has issues
-            publish(&mut cache);
-
-            if !verify_only {
-                // TODO: emit HTML
-            }
+            publish(clean, verify_only);
         },
         ("framework", _) => {
             unimplemented!();
@@ -218,7 +202,16 @@ pub fn execute_cli() {
 }
 
 /// Compile ecosystem info, cache result, and generate warnings
-fn publish(cache: &mut Cache) {
+fn publish(clean: bool, verify_only: bool) {
+    let mut cache = Cache::new(CACHE_FILE);
+
+    if clean {
+        cache.remove_cache(CACHE_FILE)
+            .expect(CACHE_FILE_DELETION_FAILED);
+        println!("Cache file removed.");
+    }
+
+    // Load all the information we need
     let mut crates: Vec<Crate> = parse_json_file(ECOSYSTEM)
         .expect("Failed to parse ecosystem.json");
     let mut tags: HashMap<String, Option<String>> = parse_json_file(ECOSYSTEM_TAGS)
@@ -226,32 +219,43 @@ fn publish(cache: &mut Cache) {
     let newsfeed: Vec<NewsfeedEntry> = parse_json_file(NEWSFEED)
         .expect("Failed to parse newsfeed.json");
 
+    println!("Found {} crates.", crates.len());
+
+    let mut warnings = Vec::new();
+
+    // TODO: Verify that tag names and descriptions don't contain unwanted characters.
     // TODO: Lack of non-lexical lifetimes means we need a special scope for used_tags
-    // (used_tags borrows crates)
+    // (used_tags borrows crates, but crates needs to be movable outside this block)
     {
-        // figure out which tags we used and generate missing crate information
+        // verify that every tag in the tags file is actually used
         let mut used_tags = HashSet::new();
 
-        println!("Found {} crates.", crates.len());
-
         for krate in &mut crates {
-            cache.get_crate_info(krate);
             used_tags.extend(krate.tags.iter())
         }
 
         // issue a warning if there are unsused tags in ecosystem_tags.json
         for (k, _) in &tags {
             if !used_tags.contains(k) {
-                println!("Tag \"{}\" is not used to describe any crate", k);
+                warnings.push(format!("Tag \"{}\" is not used to describe any crate", k));
             }
         }
 
         // merge description-less used tags into ecosystem_tags
         for k in used_tags {
-            tags.insert(k.to_string(), None);
+            tags.entry(k.to_string())
+                .or_insert(None);
         }
     }
 
+    // TODO: fill in auto-populated crate data from crates.io
+    // TODO: Produce a warning if overriding data is the same as crates io data
+    // generate missing crate information
+    for krate in &mut crates {
+        cache.get_crate_info(krate);
+    }
+
+    // compile the template
     let awgy = AreWeGuiYetTemplateArgs {
         crates,
         tags,
@@ -264,13 +268,34 @@ fn publish(cache: &mut Cache) {
         Err(_) => println!("Nonfatal: Failed to write the cache"),
     }
 
-    compile_templates_and_write(
-        &awgy,
-        TEMPLATE_SOURCE_GLOB,
-        INDEX_HTML_TEMPLATE_NAME,
-        INDEX_HTML_OUTPUT_PATH,
-    );
-    println!("Site generated.");
+    let tera = compile_templates!(TEMPLATE_SOURCE_GLOB);
+    // Render the template and remove newlines so people don't accidentally edit the compiled HTML
+    // (we could actually minify it too)
+    let index = tera.render(INDEX_HTML_TEMPLATE_NAME, &awgy)
+        .expect("Failed to render templates")
+        .replace("\r\n", " ")
+        .replace("\n", " ");
+
+    println!("Successfully rendered templates.");
+
+    if warnings.len() > 0 {
+        eprintln!("The following issues are preventing HTML generation:");
+        for i in &warnings {
+            println!("\t{}", i);
+        }
+        panic!("Failed to generate site.");
+    }
+
+    if !verify_only {
+        let mut out = File::create(INDEX_HTML_OUTPUT_PATH)
+            .expect("Failed to create output file");
+        out.write_all(index.as_bytes())
+            .expect("Failed to write everything to the output file");
+
+        println!("Site written to disk.");
+    } else {
+        println!("Skipping writing the site.");
+    }
 }
 
 fn parse_json_file<T: DeserializeOwned, P: AsRef<Path>>(path: P) -> Result<T, Box<Error>> {
@@ -280,25 +305,4 @@ fn parse_json_file<T: DeserializeOwned, P: AsRef<Path>>(path: P) -> Result<T, Bo
 
 fn crates_io_url(crate_name: &str) -> String {
     format!("https://crates.io/api/v1/crates/{}", crate_name)
-}
-
-/// Compiles the tera templates from a hard coded path (the site directory).
-fn compile_templates_and_write<P: AsRef<Path>>(
-    awgy: &AreWeGuiYetTemplateArgs,
-    template_source_glob: &str,
-    index_html_template_name: &str,
-    index_html_output_path: P,
-) {
-    let tera = compile_templates!(template_source_glob);
-    // Render the template and remove newlines so people don't accidentally edit the compiled HTML
-    // (we could actually minify it too)
-    let index = tera.render(index_html_template_name, awgy)
-        .expect("Failed to render templates")
-        .replace("\r\n", " ")
-        .replace("\n", " ");
-
-    let mut out = File::create(index_html_output_path)
-        .expect("Failed to create output file");
-    out.write_all(index.as_bytes())
-        .expect("Failed to write everything to the output file");
 }
