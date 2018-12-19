@@ -23,7 +23,7 @@ const CACHE_FILE_DELETION_FAILED: &str = "Failed to remove the cache file. Try d
     manually and running without the clean option.";
 
 #[derive(Serialize, Deserialize)]
-struct AreWeGuiYet {
+struct AreWeGuiYetTemplateArgs {
     crates: Vec<Crate>,
     /// Collection of tags.
     ///
@@ -248,7 +248,7 @@ fn publish(cache: &mut Cache) {
         }
     }
 
-    let awgy = AreWeGuiYet {
+    let awgy = AreWeGuiYetTemplateArgs {
         crates,
         tags,
         newsfeed,
@@ -273,7 +273,7 @@ fn crates_io_url(crate_name: &str) -> String {
 }
 
 /// Compiles the tera templates from a hard coded path (the site directory).
-fn compile_templates_and_write<P: AsRef<Path>>(awgy: &AreWeGuiYet, out_path: P) {
+fn compile_templates_and_write<P: AsRef<Path>>(awgy: &AreWeGuiYetTemplateArgs, out_path: P) {
     let tera = compile_templates!("../site/**/*.tera.html");
     let index = tera.render("base.tera.html", awgy)
         .expect("Failed to render templates");
