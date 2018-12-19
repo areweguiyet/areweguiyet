@@ -85,46 +85,8 @@
                 </div>
             </section>
             <section class="ecosystem-crates centered-content" id="ecosystem-crates">
-                <!-- CRATES -->
-                {% for crate in crates | sort(attribute="name") %}
-                    <div class="ecosystem-card">
-                        <header class="header">
-                            <h3>{{crate.name}}</h3>
-                            <span>
-                                [
-                                <!-- things on crates.io should be guaranteed to have docs -->
-                                {% if crate.crates_io and crate.repo %}
-                                    {{macros::link(label="crate", href=crate.crates_io)}}
-                                        ·
-                                    {{macros::link(label="repo", href=crate.repo)}}
-                                        ·
-                                    {{macros::link(label="docs", href=crate.docs)}}
-                                {% elif crate.crates_io %}
-                                    {{macros::link(label="crate", href=crate.crates_io)}}
-                                        ·
-                                    {{macros::link(label="repo", href=crate.repo)}}
-                                {% elif crate.repo and crate.docs %}
-                                    {{macros::link(label="repo", href=crate.repo)}}
-                                        ·
-                                    {{macros::link(label="docs", href=crate.docs)}}
-                                {% elif crate.repo %}
-                                    {{macros::link(label="repo", href=crate.repo)}}
-                                {% elif crate.docs %}
-                                    {{macros::link(label="docs", href=crate.docs)}}
-                                {% endif %}
-                                ]
-                            </span>
-                        </header>
-                        <div class="content">
-                            <p>{{crate.description}}</p>
-                        </div>
-                        <ul class="ecosystem-tags">
-                            {% for tag in crate.tags %}
-                                <li>{{tag}}</li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                {% endfor %}
+                <!-- CRATES (they are added at runtime) -->
+                <p>Loading...</p>
             </section>
         </main>
 
