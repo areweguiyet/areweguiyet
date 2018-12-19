@@ -83,6 +83,45 @@ impl Cache {
 
         Ok(())
     }
+
+    /// Removes the cache file and clears the cache data
+    fn remove_cache(&mut self, path: &str) -> Result<(), io::Error> {
+        self.crates_io.clear();
+        // remove the cache (NotFound errors are fine)
+        fs::remove_file(path)
+            .or_else(|err|
+                if err.kind() != io::ErrorKind::NotFound {
+                    Ok(())
+                } else {
+                    Err(err)
+                })
+    }
+
+    /// Uses data from crates.io if there is no custom repo specified for the crate.
+    ///
+    /// No fields will be overwritten if they are already specified.
+    fn get_crate_info(&mut self, krate: &mut Crate) {
+        if krate.repo.is_some() {
+            return;
+        }
+
+        let res = self.get_crates_io(&krate.name)
+            .expect("Failed to fetch from Crates.io");
+
+        if let Some(res) = res {
+            let CrateResponse {
+                description,
+                repository,
+                documentation,
+            } = res.clone();
+
+            let url = crates_io_url(&krate.name);
+            krate.crates_io = Some(url);
+            krate.repo = krate.repo.clone().or(repository);
+            krate.docs = krate.docs.clone().or(documentation);
+            krate.description = krate.description.clone().or(description);
+        }
+    }
 }
 
 impl Default for Cache {
@@ -146,21 +185,19 @@ pub fn execute_cli() {
                 None => (false, false),
             };
 
+            let mut cache = Cache::new(CACHE_FILE);
+
             if clean {
-                // remove the cache (NotFound errors are fine)
-                // TODO: Refactor this into Cache
-                if let Err(err) = fs::remove_file(CACHE_FILE) {
-                    if err.kind() != io::ErrorKind::NotFound {
-                        panic!(CACHE_FILE_DELETION_FAILED);
-                    }
-                }
+                cache.remove_cache(CACHE_FILE)
+                    .expect(CACHE_FILE_DELETION_FAILED);
+                println!("Cache file removed.");
             }
 
             // TODO: verify that every tag in the tags file is actually used
             // TODO: Verify that tag names and descriptions don't contain unwanted characters.
             // TODO: fill in auto-populated crate data from crates.io
             // right now it just calls old publish method, which has issues
-            publish();
+            publish(&mut cache);
 
             if !verify_only {
                 // TODO: emit HTML
@@ -177,15 +214,13 @@ pub fn execute_cli() {
 }
 
 /// Compile ecosystem info, cache result, and generate warnings
-fn publish() {
+fn publish(cache: &mut Cache) {
     let mut crates: Vec<Crate> = parse_json_file(ECOSYSTEM)
         .expect("Failed to parse ecosystem.json");
     let mut tags: HashMap<String, Option<String>> = parse_json_file(ECOSYSTEM_TAGS)
         .expect("Failed to parse ecosystem_tags.json");
     let newsfeed: Vec<NewsfeedEntry> = parse_json_file(NEWSFEED)
         .expect("Failed to parse newsfeed.json");
-
-    let mut cache = Cache::new(CACHE_FILE);
 
     // TODO: Lack of non-lexical lifetimes means we need a special scope for used_tags
     // (used_tags borrows crates)
@@ -196,7 +231,7 @@ fn publish() {
         println!("Found {} crates.", crates.len());
 
         for krate in &mut crates {
-            get_crate_info(&mut cache, krate);
+            cache.get_crate_info(krate);
             used_tags.extend(krate.tags.iter())
         }
 
@@ -231,33 +266,6 @@ fn publish() {
 fn parse_json_file<T: DeserializeOwned, P: AsRef<Path>>(path: P) -> Result<T, Box<Error>> {
     let f = File::open(path)?;
     Ok(serde_json::from_reader(f)?)
-}
-
-/// Uses data from crates.io if there is no custom repo specified for the crate.
-///
-/// No fields will be overwritten if they are already specified.
-fn get_crate_info(cache: &mut Cache, krate: &mut Crate) {
-    if krate.repo.is_some() {
-        return;
-    }
-
-    let res = cache.get_crates_io(&krate.name)
-        .expect("Failed to fetch from Crates.io");
-
-    if let Some(res) = res {
-        let CrateResponse {
-            description,
-            repository,
-            documentation,
-        } = res.clone();
-
-        let url = crates_io_url(&krate.name);
-        krate.crates_io = Some(url);
-        krate.repo = krate.repo.clone().or(repository);
-        krate.docs = krate.docs.clone().or(documentation);
-        krate.description = krate.description.clone().or(description);
-    }
-
 }
 
 fn crates_io_url(crate_name: &str) -> String {
