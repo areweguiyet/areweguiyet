@@ -158,12 +158,12 @@ pub fn execute_cli() {
     let matches = App::new("Areweguiyet CLI")
         .setting(AppSettings::SubcommandRequiredElseHelp)
         .about("CLI for extending areweguiyet website")
+        .arg(Arg::with_name("clean")
+            .long("clean")
+            .help("Force refreshes the cache, making new network requests"))
         .subcommand(SubCommand::with_name("publish")
             .about("Publishes generated HTML to docs directory. Fork the repo, push the resulting \
                   changes, and then open a PR on Github to share your changes!")
-            .arg(Arg::with_name("clean")
-                .long("clean")
-                .help("Force refreshes the cache, making new network requests"))
             .arg(Arg::with_name("verify-only")
                 .long("verify-only")
                 .help("Run all normal checks before publishing without generating HTML.")))
@@ -186,38 +186,39 @@ pub fn execute_cli() {
 
     let mut cache = Cache::new(CACHE_FILE);
 
-    // TODO: Lift cache control arguments to the CLI level
+    if matches.is_present("clean") {
+        cache.remove_cache(CACHE_FILE)
+            .expect(CACHE_FILE_DELETION_FAILED);
+        println!("Cache file removed.");
+    }
+
     match matches.subcommand() {
         ("publish", args) => {
-            let (clean, verify_only) = match args {
-                Some(args) => (
-                    args.is_present("clean"),
-                    args.is_present("verify-only")
-                ),
-                None => (false, false),
+            let verify_only = match args {
+                Some(args) => args.is_present("verify-only"),
+                None => false,
             };
 
-            publish(&mut cache, clean, verify_only);
+            publish(&mut cache, verify_only);
         },
         ("framework", _) => {
             framework(&mut cache);
-            //cache.write_cache(CACHE_FILE);
         },
         ("news", _) => {
             unimplemented!();
         },
         _ => unreachable!(),
     }
+
+    // update the cache
+    match cache.write_cache(CACHE_FILE) {
+        Ok(_) => println!("Cache updated."),
+        Err(_) => println!("Nonfatal: Failed to write the cache"),
+    }
 }
 
 /// Compile ecosystem info, cache result, and generate warnings
-fn publish(cache: &mut Cache, clean: bool, verify_only: bool) {
-    if clean {
-        cache.remove_cache(CACHE_FILE)
-            .expect(CACHE_FILE_DELETION_FAILED);
-        println!("Cache file removed.");
-    }
-
+fn publish(cache: &mut Cache, verify_only: bool) {
     // Load all the information we need
     let mut crates: Vec<Crate> = parse_json_file(ECOSYSTEM)
         .expect("Failed to parse ecosystem.json");
@@ -268,12 +269,6 @@ fn publish(cache: &mut Cache, clean: bool, verify_only: bool) {
         tags,
         newsfeed,
     };
-
-    // update the cache
-    match cache.write_cache("../cache.json") {
-        Ok(_) => println!("Cache updated."),
-        Err(_) => println!("Nonfatal: Failed to write the cache"),
-    }
 
     let tera = compile_templates!(TEMPLATE_SOURCE_GLOB);
     // Render the template and remove newlines so people don't accidentally edit the compiled HTML
