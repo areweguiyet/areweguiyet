@@ -1,23 +1,37 @@
 [
-    {
-        "name": "Gtk",
-        "description": "Rust bindings and wrappers for GLib, GDK 3, GTK+ 3 and Cairo.",
-        "tags": ["Bindings"]
-    },
-    {
-        "name": "Webrender",
-        "skip_crates_io": true,
-        "repo": "https://github.com/servo/webrender",
-        "docs": "https://doc.servo.org/webrender/index.html",
-        "description": "GPU renderer for web content, used by Servo.",
-        "tags": ["webrender"]
-    },
-    {
-        "name": "Azul",
-        "tags": ["webrender"]
-    },
-    {
-        "name": "Conrod",
-        "tags": ["Immediate mode API"]
-    }
+  {
+    "name": "Gfx",
+    "tags": [
+      "graphics"
+    ]
+  },
+  {
+    "name": "Gtk",
+    "description": "Rust bindings and wrappers for GLib, GDK 3, GTK+ 3 and Cairo.",
+    "tags": [
+      "Bindings"
+    ]
+  },
+  {
+    "name": "Webrender",
+    "skip_crates_io": true,
+    "repo": "https://github.com/servo/webrender",
+    "description": "GPU renderer for web content, used by Servo.",
+    "docs": "https://doc.servo.org/webrender/index.html",
+    "tags": [
+      "webrender"
+    ]
+  },
+  {
+    "name": "Azul",
+    "tags": [
+      "webrender"
+    ]
+  },
+  {
+    "name": "Conrod",
+    "tags": [
+      "Immediate mode API"
+    ]
+  }
 ]

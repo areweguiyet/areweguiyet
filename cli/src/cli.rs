@@ -59,11 +59,19 @@ struct Crate {
     name: String,
     /// Should be either missing or true; implied to be false
     #[serde(default)]
+    #[serde(skip_serializing_if = "is_false")]
     skip_crates_io: bool,
+    #[serde(skip_serializing_if = "Option::is_none")]
     repo: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     description: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     docs: Option<String>,
     tags: Vec<String>,
+}
+
+fn is_false(b: &bool) -> bool {
+    !*b
 }
 
 /// Crate info that gets put into the compiled ecosystem file
@@ -306,6 +314,9 @@ fn publish(cache: &mut Cache, verify_only: bool) {
 }
 
 fn framework(cache: &mut Cache) {
+    let mut crates: Vec<Crate> = parse_json_file(ECOSYSTEM)
+        .expect("Failed to parse ecosystem.json. This must be fixed before we can add more.");
+
     let mut buffer = String::new();
     let stdin = io::stdin();
     let mut handle = stdin.lock();
@@ -326,6 +337,22 @@ fn framework(cache: &mut Cache) {
         get_input_non_empty(&mut handle, &mut buffer);
         krate.name.clear();
         krate.name.push_str(&buffer);
+
+        // make sure this crate isn't already present
+        let mut already_done = false;
+        for c in &crates {
+            let this_name = krate.name.to_lowercase();
+            let other_name = c.name.to_lowercase();
+            if this_name == other_name {
+                println!("The crate {} is already on the website!", krate.name);
+                already_done = true;
+                break;
+            }
+        }
+        if already_done {
+            continue;
+        }
+
         // make a request to crates io about this crate
         match cache.get_crates_io(&krate.name) {
             Ok(None) => {
@@ -333,7 +360,7 @@ fn framework(cache: &mut Cache) {
 
                 println!("This crate does not appear on crates.io. Do you want to continue \
                     without linking to a crate on crates.io? (y/n)\
-                    \n\n(Please check your spelling and rerun the command if there is a typo; \
+                    \n\n(Please check your spelling and enter no if there is a typo; \
                     crate names must match exactly.)");
                 if get_input_yes(&mut handle, &mut buffer) {
                     break;
@@ -391,7 +418,7 @@ fn framework(cache: &mut Cache) {
                 if get_input_yes(&mut handle, &mut buffer) {
                     break;
                 } else {
-                    return;
+                    continue;
                 }
             }
         };
@@ -436,6 +463,19 @@ fn framework(cache: &mut Cache) {
         }
         krate.tags.push(buffer.to_string());
     }
+
+    // add this crate to the front of the list
+    // JSON doesn't like trailing commas so adding to the front of the list makes diffs nicer
+    // (only the lines actually added appear changed)
+    crates.insert(0, krate);
+
+    let out = File::create(ECOSYSTEM)
+        .expect("Failed to create/open ecosystem.json.");
+    serde_json::to_writer_pretty(out, &crates)
+        .expect("Failed to write the updated ecosystem.json.");
+
+    println!("Updated ../ecosystem.json. Review your changes and make any edits there.\n");
+    println!("When you are done, please run `cargo run -- publish` to generate HTML.");
 }
 
 /// Clear buffer and fill it with the next line of (trimmed) input
