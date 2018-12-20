@@ -28,6 +28,8 @@ const CACHE_FILE_DELETION_FAILED: &str = "Failed to remove the cache file. Try d
 
 const READ_LINE_PANIC_MESSAGE: &str = "Failed to read line";
 
+// TODO: There's plenty more messages encoded as string literals; easy PR! ;^)
+
 /// Prints a message, and fills in a single placeholder with a default value
 ///
 /// The placeholder is filled with nothing if default is None, otherwise it is filled
