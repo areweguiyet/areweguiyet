@@ -293,10 +293,10 @@ fn publish(clean: bool, verify_only: bool) {
 }
 
 /// Merge saved data with data from crates io (if the crate is on crates io).
-    ///
-    /// No fields will be overwritten if they are already specified.
-    ///
-    /// Issues errors if the data from crates io is the same as the local data.
+///
+/// No fields will be overwritten if they are already specified.
+///
+/// Issues errors if the data from crates io is the same as the local data.
 fn get_crate_info(krate: &Crate, cache: &mut Cache, errors: &mut Vec<String>) -> CompiledCrate {
     let crates_io;
 
