@@ -9,9 +9,9 @@ use std::io::Write;
 use std::fs::File;
 use std::collections::{HashMap, HashSet};
 use std::error::Error;
-
 use std::fs;
 use std::io;
+use std::io::BufRead;
 
 const NEWSFEED: &str = "../newsfeed.json";
 const ECOSYSTEM: &str = "../ecosystem.json";
@@ -25,6 +25,22 @@ const INDEX_HTML_TEMPLATE_NAME: &str = "base.tera.html";
 const CACHE_FILE: &str = "../cache.json";
 const CACHE_FILE_DELETION_FAILED: &str = "Failed to remove the cache file. Try deleting it \
     manually and running without the clean option.";
+
+const READ_LINE_PANIC_MESSAGE: &str = "Failed to read line";
+
+/// Prints a message, and fills in a single placeholder with a default value
+///
+/// The placeholder is filled with nothing if default is None, otherwise it is filled
+/// with " (default.unwrap())".
+macro_rules! println_default {
+    ($msg:expr, $default:expr) => {
+        if let Some(default) = $default {
+            println!($msg, format!(" ({})", default));
+        } else {
+            println!($msg, "");
+        }
+    }
+}
 
 /// The arguments needed for Tera to render the template.
 #[derive(Serialize, Deserialize)]
@@ -168,6 +184,9 @@ pub fn execute_cli() {
                 .required(true)))
         .get_matches();
 
+    let mut cache = Cache::new(CACHE_FILE);
+
+    // TODO: Lift cache control arguments to the CLI level
     match matches.subcommand() {
         ("publish", args) => {
             let (clean, verify_only) = match args {
@@ -178,10 +197,11 @@ pub fn execute_cli() {
                 None => (false, false),
             };
 
-            publish(clean, verify_only);
+            publish(&mut cache, clean, verify_only);
         },
         ("framework", _) => {
-            unimplemented!();
+            framework(&mut cache);
+            //cache.write_cache(CACHE_FILE);
         },
         ("news", _) => {
             unimplemented!();
@@ -191,9 +211,7 @@ pub fn execute_cli() {
 }
 
 /// Compile ecosystem info, cache result, and generate warnings
-fn publish(clean: bool, verify_only: bool) {
-    let mut cache = Cache::new(CACHE_FILE);
-
+fn publish(cache: &mut Cache, clean: bool, verify_only: bool) {
     if clean {
         cache.remove_cache(CACHE_FILE)
             .expect(CACHE_FILE_DELETION_FAILED);
@@ -240,7 +258,7 @@ fn publish(clean: bool, verify_only: bool) {
     // merge missing crate information from crates io
     let mut compiled_ecosystem = HashMap::new();
     for krate in &mut crates {
-        let compiled_crate = get_crate_info(krate, &mut cache, &mut errors);
+        let compiled_crate = get_crate_info(krate, cache, &mut errors);
         compiled_ecosystem.insert(krate.name.clone(), compiled_crate);
     }
 
@@ -290,6 +308,175 @@ fn publish(clean: bool, verify_only: bool) {
     } else {
         println!("Skipping writing the site.");
     }
+}
+
+fn framework(cache: &mut Cache) {
+    let mut buffer = String::new();
+    let stdin = io::stdin();
+    let mut handle = stdin.lock();
+
+    let mut krate = Crate {
+        name: String::new(),
+        skip_crates_io: false,
+        docs: None,
+        repo: None,
+        description: None,
+        tags: Vec::new(),
+    };
+
+    println!("\tADDING GUI FRAMEWORK");
+
+    loop {
+        println!("What is the name of the GUI framework?");
+        get_input_non_empty(&mut handle, &mut buffer);
+        krate.name.clear();
+        krate.name.push_str(&buffer);
+        // make a request to crates io about this crate
+        match cache.get_crates_io(&krate.name) {
+            Ok(None) => {
+                // this crate is not on crates io
+
+                println!("This crate does not appear on crates.io. Do you want to continue \
+                    without linking to a crate on crates.io? (y/n)\
+                    \n\n(Please check your spelling and rerun the command if there is a typo; \
+                    crate names must match exactly.)");
+                if get_input_yes(&mut handle, &mut buffer) {
+                    break;
+                } else {
+                    continue;
+                }
+            }
+            Ok(Some(res)) => {
+                // this crate is on crates io
+
+                println!("There is a crate on crates.io with this name! Woo!\n");
+                println!("  Crate: {}", &krate.name);
+                println!("  Link: {}", crates_io_url(&krate.name));
+                println!("  Repo: {:?}", &res.repository);
+                if let Some(desc) = &res.description {
+                    let desc = desc.trim();
+                    if desc.len() > 70 {
+                        println!("  Description: {}...", &desc[..70]);
+                    } else {
+                        println!("  Description: {}", desc);
+                    }
+                }
+                println!("\nIs this the correct crate? (y/n)");
+                if get_input_yes(&mut handle, &mut buffer) {
+                    // this is the correct crate, set some defaults pulled from crates.io
+                    krate.skip_crates_io = false;
+                    // the description is the most important one to trim but we might as well
+                    // trim all
+                    krate.description = res.description.as_ref()
+                        .map(|s| s.trim().to_owned());
+                    krate.repo = res.repository.as_ref()
+                        .map(|s| s.trim().to_owned());
+                    krate.docs = res.documentation.as_ref()
+                        .map(|s| s.trim().to_owned());
+                    break;
+                } else {
+                    // not the correct crate
+                    println!("Please check if you made any spelling mistakes in the crate \
+                        name.\n");
+                    println!("Do you want to continue without linking to a crate on \
+                        crates.io? (if no, you will have to enter a different crate name) \
+                        (y/n)");
+                    if get_input_yes(&mut handle, &mut buffer) {
+                        krate.skip_crates_io = true;
+                        break;
+                    } else {
+                        continue;
+                    }
+                }
+            }
+            Err(e) => {
+                // there was a problem fetching
+                eprintln!("Error fetching from crates.io: {}", e);
+                println!("Failed to fetch from crates.io. Try again? (y/n)");
+                if get_input_yes(&mut handle, &mut buffer) {
+                    break;
+                } else {
+                    return;
+                }
+            }
+        };
+    }
+
+    println!("Press enter to accept the defaults provided in `()`, if any.\n");
+
+    // this gets a little sloppy, and could probably be done better
+
+    // we abuse the Crate instance here; if it already has stuff in it, assume it is a default
+    // if we want to use the defaults (which are pulled from crates io)
+    //   - the user enters nothing or whitespace
+    //   - we erase the default (that we had just stored in the Crate instance) with None
+
+    println_default!("Description{}:", krate.description.as_ref());
+    if get_input_allow_empty(&mut handle, &mut buffer) == None {
+        krate.description = None
+    } else {
+        krate.description = Some(buffer.clone());
+    }
+
+    println_default!("Docs{}:", krate.docs.as_ref());
+    if get_input_allow_empty(&mut handle, &mut buffer) == None {
+        krate.docs = None
+    } else {
+        krate.docs = Some(buffer.clone());
+    }
+
+    println_default!("Repo{}:", krate.repo.as_ref());
+    if get_input_allow_empty(&mut handle, &mut buffer) == None {
+        krate.repo = None
+    } else {
+        krate.repo = Some(buffer.clone());
+    }
+
+    // tags
+    loop {
+        println!("Enter the name of a tag (enter nothing to finish):");
+        get_input_allow_empty(&mut handle, &mut buffer);
+        if buffer.len() == 0 {
+            break;
+        }
+        krate.tags.push(buffer.to_string());
+    }
+}
+
+/// Clear buffer and fill it with the next line of (trimmed) input
+fn get_input_non_empty(handle: &mut io::StdinLock, buffer: &mut String) {
+    loop {
+        buffer.clear();
+        handle.read_line(buffer)
+            .expect(READ_LINE_PANIC_MESSAGE);
+        // TODO: Do without allocating?
+        *buffer = buffer.trim().to_string();
+        if buffer.len() != 0 {
+            return;
+        }
+        println!(" (you must enter a value)");
+    }
+}
+
+/// Clear buffer and fill it with the next line of (trimmed) input
+///
+/// Returns None when the input is empty
+fn get_input_allow_empty(handle: &mut io::StdinLock, buffer: &mut String) -> Option<()> {
+    buffer.clear();
+    handle.read_line(buffer)
+        .expect(READ_LINE_PANIC_MESSAGE);
+    // TODO: Do without allocating?
+    *buffer = buffer.trim().to_string();
+    if buffer.len() == 0 {
+        None
+    } else {
+        Some(())
+    }
+}
+
+fn get_input_yes(handle: &mut io::StdinLock, buffer: &mut String) -> bool {
+    get_input_non_empty(handle, buffer);
+    buffer.starts_with("y") || buffer.starts_with("Y")
 }
 
 /// Merge saved data with data from crates io (if the crate is on crates io).
