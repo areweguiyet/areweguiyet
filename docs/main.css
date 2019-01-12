@@ -20,6 +20,11 @@ html {
     font-family: 'Lato', 'Arial', sans-serif;
 }
 
+/* to push the footer down */
+html, body {
+    height: 100%;
+}
+
 h1 {
     font-size: 40px;
     margin-bottom: 20px;
