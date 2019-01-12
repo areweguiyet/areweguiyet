@@ -4,6 +4,7 @@ version = "0.1.0"
 authors = ["shivshank"]
 
 [dependencies]
+clap = "2.32.0"
 tera = "0.11.8"
 serde = "1.0.66"
 serde_derive = "1.0.66"
