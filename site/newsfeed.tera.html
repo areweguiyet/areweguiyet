@@ -1,0 +1,20 @@
+{% extends "base.tera.html" %}
+{% import "macros.tera.html" as macros %}
+{% block content %}
+<section class="centered-content">
+    <h2>Stay in the loop.</h2>
+    <p>If you're working on or writing about GUIs in Rust, please contribute! 
+        Each news entry can either be a post contributed to the Repo or a link back 
+        to your blog, Reddit thread, etc. See
+        <a href="https://github.com/areweguiyet/areweguiyet/blob/master/README.md">
+        README</a> for details.</p>
+    <div class="newsfeed-posts">
+        {% for post in newsfeed %}
+            <div>
+                <h3>{{post.title}} by {{post.author}}</h3>
+                {{macros::link(label=post.link, href=post.link)}}
+            </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock content %}

@@ -13,19 +13,27 @@ use std::fs;
 use std::io;
 use std::io::BufRead;
 
+// source files
 const NEWSFEED: &str = "../newsfeed.json";
 const ECOSYSTEM: &str = "../ecosystem.json";
 const COMPILED_ECOSYSTEM: &str = "../docs/compiled_ecosystem.json";
 const ECOSYSTEM_TAGS: &str = "../ecosystem_tags.json";
 
+// templates
 const TEMPLATE_SOURCE_GLOB: &str = "../site/**/*.tera.html";
-const INDEX_HTML_OUTPUT_PATH: &str = "../docs/index.html";
-const INDEX_HTML_TEMPLATE_NAME: &str = "index.tera.html";
 
+const INDEX_HTML_TEMPLATE_NAME: &str = "index.tera.html";
+const INDEX_HTML_OUTPUT_PATH: &str = "../docs/index.html";
+
+const NEWSFEED_HTML_TEMPLATE_NAME: &str = "newsfeed.tera.html";
+const NEWSFEED_HTML_OUTPUT_PATH: &str = "../docs/newsfeed/index.html";
+
+// cache
 const CACHE_FILE: &str = "../cache.json";
 const CACHE_FILE_DELETION_FAILED: &str = "Failed to remove the cache file. Try deleting it \
     manually and running without the clean option.";
 
+// error messages
 const READ_LINE_PANIC_MESSAGE: &str = "Failed to read line";
 
 // TODO: There's plenty more messages encoded as string literals; easy PR! ;^)
@@ -274,19 +282,27 @@ fn publish(cache: &mut Cache, verify_only: bool) {
         compiled_ecosystem.insert(krate.name.clone(), compiled_crate);
     }
 
-    // compile the template
-    let awgy = AreWeGuiYetTemplateArgs {
+    let mut awgy = AreWeGuiYetTemplateArgs {
         crates,
         tags,
         newsfeed,
         page_title: None,
     };
 
+    // compile the template
     let tera = compile_templates!(TEMPLATE_SOURCE_GLOB);
-    // Render the template and remove newlines so people don't accidentally edit the compiled HTML
+
+    // Render the templates and remove newlines so people don't accidentally edit the compiled HTML
     // (we could actually minify it too)
+    awgy.page_title = None;
     let index = tera.render(INDEX_HTML_TEMPLATE_NAME, &awgy)
-        .expect("Failed to render templates")
+        .expect("Failed to render template")
+        .replace("\r\n", " ")
+        .replace("\n", " ");
+
+    awgy.page_title = Some("News Feed".to_string());
+    let newsfeed = tera.render(NEWSFEED_HTML_TEMPLATE_NAME, &awgy)
+        .expect("Failed to render template")
         .replace("\r\n", " ")
         .replace("\n", " ");
 
@@ -306,15 +322,21 @@ fn publish(cache: &mut Cache, verify_only: bool) {
         serde_json::to_writer(&mut out_compiled_ecosystem, &compiled_ecosystem)
             .expect("Failed to write the compiled ecosystem to the output file");
 
-        let mut out_index = File::create(INDEX_HTML_OUTPUT_PATH)
-            .expect("Failed to create index output file");
-        out_index.write_all(index.as_bytes())
-            .expect("Failed to write the index to the output file");
+        output_html(INDEX_HTML_OUTPUT_PATH, &index)
+            .expect("Failed to create index page");
+        output_html(NEWSFEED_HTML_OUTPUT_PATH, &newsfeed)
+            .expect("Failed to create index page");
 
         println!("Site written to disk.");
     } else {
         println!("Skipping writing the site.");
     }
+}
+
+// this is a little sloppy but hey! it works...
+fn output_html(path: &str, page: &str) -> io::Result<()> {
+    let mut out_index = File::create(path)?;
+    out_index.write_all(page.as_bytes())
 }
 
 fn framework(cache: &mut Cache) {
