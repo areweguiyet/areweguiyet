@@ -1,0 +1,65 @@
+{% extends "base.tera.html" %}
+{% import "macros.tera.html" as macros %}
+{% block content %}
+<section class="centered-content">
+    <h2>The roots aren't deep but the seeds are planted.</h2>
+    <p>As a low level language, Rust is perfectly suitable for making user
+        interfaces the old fashioned way, with native APIs. However, competing
+        in today's world typically means supporting many platforms, and
+        that makes using native APIs an unattractive option for many.</p>
+    <p>Rust's expressiveness and high level abstractions make it ideal for
+        building intricate and complex user interfaces. Unfortunately, there
+        is little consensus on what the best abstractions are.</p>
+    <p>There are a number of bindings available today to existing frameworks,
+        but those looking for a mature, easy to use, and completely Rust-based
+        solution will most likely find themselves out of luck.</p>
+    <p>Current approaches to building GUIs in Rust include interfacing with
+        Electron and building GUIs with HTML (or a framework on top of it), while
+        others have taken to using graphics APIs and various wrappers to emulate
+        classical widgets. The cross platform parallel rendering engine Webrender,
+        built for Servo and usable in Firefox Nightly, takes this latter approach
+        and is multi-platform, but is more of a base for a GUI framework than one
+        in itself.</p>
+</section>
+<section id="newsfeed" class="centered-content">
+    <h2><a href="#newsfeed">Stay in the loop.</a></h2>
+    <p>If you're working on or writing about GUIs in Rust, please contribute! Each
+        news entry can either be a post contributed to the Repo or a link back to
+        your blog, Reddit thread, etc. See
+        <a href="https://github.com/areweguiyet/areweguiyet/blob/master/README.md">
+        README</a> for details.</p>
+    <div class="newsfeed-posts">
+        {% for post in newsfeed | slice(start=0, end=3) %}
+            <div>
+                <h3>{{post.title}} by {{post.author}}</h3>
+                {{macros::link(label=post.link, href=post.link)}}
+            </div>
+        {% endfor %}
+    </div>
+    {% if newsfeed | length > 3 %}
+        <a href="./newsfeed">See more posts</a>
+    {% endif %}
+</section>
+<section id="ecosystem" class="ecosystem-navigator">
+    <div class="centered-content">
+        <h2><a href="#ecosystem">Ecosystem</a></h2>
+        <p>Select a tag below to only show relevant crates. All crates will be shown when no tags are selected.</p>
+        <ul class="ecosystem-tags" id="ecosystem-tags">
+            {% for tag, description in tags %}
+                {% if description %}
+                    <li title="{{description | addslashes }}" data-crate-tag="{{tag}}">{{tag}}</li>
+                {% else %}
+                    <li>{{tag}}</li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+</section>
+<section class="ecosystem-crates centered-content" id="ecosystem-crates">
+    <!-- CRATES (they are added at runtime) -->
+    <p>Loading...</p>
+</section>
+{% endblock content %}
+{% block scripts %}
+<script src="main.js"></script>
+{% endblock scripts %}

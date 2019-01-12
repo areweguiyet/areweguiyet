@@ -20,7 +20,7 @@ const ECOSYSTEM_TAGS: &str = "../ecosystem_tags.json";
 
 const TEMPLATE_SOURCE_GLOB: &str = "../site/**/*.tera.html";
 const INDEX_HTML_OUTPUT_PATH: &str = "../docs/index.html";
-const INDEX_HTML_TEMPLATE_NAME: &str = "base.tera.html";
+const INDEX_HTML_TEMPLATE_NAME: &str = "index.tera.html";
 
 const CACHE_FILE: &str = "../cache.json";
 const CACHE_FILE_DELETION_FAILED: &str = "Failed to remove the cache file. Try deleting it \
@@ -53,6 +53,7 @@ struct AreWeGuiYetTemplateArgs {
     /// Some tags may have descriptions.
     tags: HashMap<String, Option<String>>,
     newsfeed: Vec<NewsfeedEntry>,
+    page_title: Option<String>,
 }
 
 /// Crate info in ecosystem.json
@@ -278,6 +279,7 @@ fn publish(cache: &mut Cache, verify_only: bool) {
         crates,
         tags,
         newsfeed,
+        page_title: None,
     };
 
     let tera = compile_templates!(TEMPLATE_SOURCE_GLOB);
