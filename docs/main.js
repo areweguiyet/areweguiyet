@@ -1,124 +1,73 @@
 'use strict'
 
-// I started writing this file assuming not all crates would be loaded at once...
-//
-// To simplify things, we will (for now) just load everything. If this becomes a performance issue 
-// we can fix it then! We look forward to that day as it means there's a great ecosystem!
-
-function Cache() {
-    this.tag_pool = []
-    this.meta_link_pool = []
-    // crates card containers not in use
-    this.crate_pool = {}
-    // crate card containers references keyed by crate name
-    this.crates = {}
-}
-
-Cache.prototype.toggle_tag_filter = function(tag_name) {
-    console.log('You filtered by a tag!')
-}
-
-Cache.prototype.set_crates = function(crates) {
-    this.crates = crates
-
-    // remove all the old crates from the page
-    let crate_html = document.getElementById('ecosystem-crates')
-    crate_html.innerHTML = ''
-    
-    // add the container to the crates object and make each crate visible on the page
-    let that = this
-    Object.keys(this.crates).forEach(function(crate_name) {
-        let container = _new_card_container()
-        _set_card_container(container, crate_name, that.crates[crate_name])
-        that.crates[crate_name].container = container
-
-        crate_html.appendChild(container.html)
-    })
-}
-
-function _new_card_container() {
-    let html = document.createElement('div')
-
-    // create the header block
-    html.className = 'ecosystem-card '
-    let header = document.createElement('header')
-    html.appendChild(header)
-    header.className = 'header '
-
-    // create an h3 and text node for the crate name
-    header.appendChild(document.createElement('h3'))
-    let crate_name_node = document.createTextNode('')
-
-    // create a span for crate meta links (caller is responsible for attribute elements)
-    header.lastChild.appendChild(crate_name_node)
-    let meta_links_node = document.createElement('span')
-    header.appendChild(meta_links_node)
-
-    // create the content block
-    let content_block = document.createElement('div')
-    html.appendChild(content_block)
-    content_block.className = 'content '
-    content_block.appendChild(document.createElement('p'))
-
-    let crate_description_node = document.createTextNode('')
-    content_block.lastChild.appendChild(crate_description_node)
-    
-    // create the tags block (caller is responsible for tag elements)
-    let tag_list_node = document.createElement('ul')
-    html.appendChild(tag_list_node)
-    tag_list_node.className = 'ecosystem-tags '
-
-    return {
-        crate_name_node,
-        meta_links_node,
-        crate_description_node,
-        tag_list_node,
-        html
-    }
-}
-
-// n.b., this creates attribute and list elements each call
-function _set_card_container(card, crate_name, crate_info) {
-    card.crate_name_node.nodeValue = crate_name
-    card.crate_description_node.nodeValue = crate_info.description
-    
-    // create the meta links
-    let meta_links = []
-    if (crate_info.crates_io) {
-        meta_links.push(new_meta_link('crate', crate_info.crates_io))
-    }
-    if (crate_info.repo) {
-        meta_links.push(new_meta_link('repo', crate_info.repo))
-    }
-    if (crate_info.docs) {
-        meta_links.push(new_meta_link('docs', crate_info.docs))
-    }
-    
-    // add the meta links, surrounded by [ ], and separated each by a point
-    let i
-    card.meta_links_node.appendChild(document.createTextNode('[ '))
-    for (i=0; i < meta_links.length; i+=1) {
-        if (i !== 0) {
-            card.meta_links_node.appendChild(document.createTextNode(' · '))
+Vue.component('crate-card', {
+    props: ['crate'],
+    template: `
+        <div class="ecosystem-card">
+            <header class="header">
+                <h3>{{ crate.name }}</h3>
+                <span v-if="meta_links">[ 
+                    <template v-for="(link, index) in meta_links">
+                        <a v-bind:href="link[1]">{{link[0]}}</a>
+                        <template v-if="index < meta_links.length - 1">
+                            ·
+                        </template>
+                    </template>
+                 ]</span>
+                </template>
+            </header>
+            <div class="content">
+                <p>{{ crate.description }}</p>
+            </div>
+            <ul v-if="crate.tags" class="ecosystem-tags">
+                <li v-for="tag in crate.tags">{{ tag }}</li>
+            </ul>
+        </div>
+    `,
+    data: function () {
+        let meta_links = []
+        if (this.crate.crates_io) {
+            meta_links.push(['crate', this.crate.crates_io])
         }
-        card.meta_links_node.appendChild(meta_links[i])
+        if (this.crate.repo) {
+            meta_links.push(['repo', this.crate.repo])
+        }
+        if (this.crate.docs) {
+            meta_links.push(['docs', this.crate.docs])
+        }
+        return {
+            crate: this.crate,
+            meta_links, 
+        }
     }
-    card.meta_links_node.appendChild(document.createTextNode(' ]'))
+})
 
-    // create the tag list
-    for (i=0; i < crate_info.tags.length; i+=1) {
-        let element = document.createElement('li')
-        card.tag_list_node.appendChild(element)
-        element.appendChild(document.createTextNode(crate_info.tags[i]))
+Vue.component('crates-list', {
+    props: ['crates_map'],
+    template: `
+        <div class="ecosystem-crates">
+            <crate-card
+                v-for="crate in crates"
+                v-bind:crate="crate"
+                v-bind:key="crate.name">
+        </div>
+    `,
+    data: function () {
+        let crates = Object.keys(this.crates_map)
+        crates = crates.map(function (key) {
+                return {
+                    name: key,
+                    ...this.crates_map[key]
+                }
+            }.bind(this))
+        crates = crates.sort(function (a, b) {
+            return a.name.localeCompare(b.name)
+        })
+        return {
+            crates
+        }
     }
-}
-
-function new_meta_link(text, link) {
-    let a = document.createElement('a')
-    a.setAttribute('href', link)
-    a.appendChild(document.createTextNode(text))
-    return a
-}
+})
 
 function load_ecosystem() {
     return fetch('compiled_ecosystem.json')
@@ -128,11 +77,15 @@ function load_ecosystem() {
 }
 
 function init_crate_list_ui() {
-    let cache = new Cache()
-
+    // I think there's a better way to do this with Vue.JS, but I'm not that familiar with it
     load_ecosystem()
         .then(function(crates) {
-            cache.set_crates(crates)
+            new Vue({
+                el: '#app-crates',
+                data: {
+                    crates,
+                }
+            })
         })
 
     // attach event handlers
@@ -142,7 +95,7 @@ function init_crate_list_ui() {
         if (e.target.tagName !== 'LI') {
             return
         }
-        cache.toggle_tag_filter(e.target.getAttribute('data-crate-tag'))
+        // cache.toggle_tag_filter(e.target.getAttribute('data-crate-tag'))
     })
 }
 

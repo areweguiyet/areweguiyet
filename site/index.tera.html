@@ -1,5 +1,8 @@
 {% extends "base.tera.html" %}
 {% import "macros.tera.html" as macros %}
+{% block head %}
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+{% endblock head%}
 {% block content %}
 <section class="centered-content">
     <h2>The roots aren't deep but the seeds are planted.</h2>
@@ -71,9 +74,10 @@
         </ul>
     </div>
 </section>
-<section class="ecosystem-crates centered-content" id="ecosystem-crates">
+<section class="ecosystem-crates centered-content" id="app-crates">
     <!-- CRATES (they are added at runtime) -->
-    <p>Loading...</p>
+    <p v-if="false">Loading...</p>
+    <crates-list v-bind:crates_map="crates"/>
 </section>
 {% endblock content %}
 {% block scripts %}
