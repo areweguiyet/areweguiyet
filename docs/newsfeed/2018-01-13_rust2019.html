@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Are we GUI yet? - #Rust2019 Are We GUI Yet?</title>
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,400i" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="/main.css">
+    </head>
+    <body class="column">
+        <a href="https://github.com/areweguiyet/areweguiyet" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#9f703d; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+        <div class="header-background">
+            <nav class="nav">
+                <a href="/" >Home</a>
+                <a href="/#ecosystem" >Ecosystem</a>
+                <a href="/newsfeed" >News Feed</a>
+                <a href="/approaches" >Approaches</a>
+                <a href="/#about">About</a>
+            </nav>
+
+            <div class="header-content">
+                <image width="128" height="128" src="/assets/rust-logo-128x128-blk-v2.png">
+                <header>
+                    <h1>Are we <span>GUI</span> Yet?</h1>
+                    <p>The state of building user interfaces in Rust.</p>
+                </header>
+            </div>
+        </div>
+
+        <main class="footer-pusher">
+            
+<section class="centered-content"><h1>#Rust2019 Are We GUI Yet?</h1>
+<p>The <code>Rust 2018</code> journey has been great so far. 2018 was a year filled with great feature additions to the core language along with improvements to the ecosystem. The year 2018 also saw the release of the first fully fleshed out Rust edition 🎉. And as 2018 has come to its end, we are once more <a href="https://blog.rust-lang.org/2018/12/06/call-for-rust-2019-roadmap-blogposts.html">encouraged to Blog about the things we'd like to see in 2019</a>.</p>
+<p>I have many things I'd like to see in the new year and to bring it home its mostly the same thing I've read in other posts on Reddit and/or blog posts:</p>
+<blockquote>
+<p>I will finish what you started</p>
+</blockquote>
+<p>-- <em>Ben Solo aka Kylo Ren</em></p>
+<p>But you might have guessed this is not really what this post is about! I want to tackle one specific topic in contrast to other posts that are mostly from a different perspective, and I want to paint the &quot;Big Picture&quot; and overall direction. This post is about the narrow topic of GUI and I want to make a case to convince, at least a fraction of the community that is interested in this field, that it might be a good idea to invest in this direction.</p>
+<h2>Where are we now?</h2>
+<p>It is not the case that its impossible to write a GUI for your Rust application. But you really have to think about in what direction you want to go and through what hurdles you want to jump. The field is also sprinkled with many attempts that just turned out to be a dead end. Its hard for a newcomer to really get a clear vision of what is available and possible. It is also very hard for people wanting to contribute to find the projects they like to help. What I found in the last two years following the topic was that many people wanted to change the lack of a Rust GUI and started on their own without even knowing other projects existed. Some projects survived and many just died off. From the things that I have observed I would say many have simply given up because of the great amount of work involved and you can only do so much as a single person. For example some projects wanted to build bindings for Qt and others wanted to build something on top of WebRender. So I think the main goal for areweguiyet currently is to:</p>
+<ul>
+<li>show users what is available and what to expect</li>
+<li>have a starting point for developers to contribute</li>
+<li>not end up with the 12th dead approach based on WebRender</li>
+<li>a central point for projects to exchange ideas</li>
+</ul>
+<p>How can these points be achieved? I have no idea and this is up for discussion. However, 2019 is the year we can start to make a more coordinated approach towards a shared goal. We want areweguiyet to be platform for this.</p>
+<p>To have a quick overview, I gathered together a rough list of the various approaches that are possible without being exhaustive.</p>
+<h3>Native approach</h3>
+<ul>
+<li>Windows
+<ul>
+<li>Rust as background process/library IPC to C/C++ frontend (xi-editor)</li>
+<li>win api + ffi</li>
+<li>example: <a href="https://github.com/gabdube/native-windows-gui">native windows gui</a></li>
+</ul>
+</li>
+<li>MacOS
+<ul>
+<li>Rust as background process/library IPC to ObjC/Swift frontend (xi-editor)</li>
+<li>example: <a href="https://github.com/servo/core-foundation-rs/tree/master/cocoa">cocoa-rs</a></li>
+</ul>
+</li>
+<li>Linux
+<ul>
+<li>Rust as background process/library IPC to C/C++/Python frontend in Qt/Gtk</li>
+</ul>
+</li>
+</ul>
+<p>Currently the approach that yields the best results if you want to have the &quot;most&quot; native look and behaviour on each platform, is having Rust as either a library with FFI, or running as a separate Process in the Background doing IPC, while your frontend is programmed in one of the &quot;main&quot; languages of the respective toolkit. I think we can't really do much here except for having better language interoperability and crates that make use of it.</p>
+<h3>Cross Platform Toolkits</h3>
+<p>As we've seen the native approach can be quite involved, especially if you want to target multiple platforms. It is nonetheless the best way if you want to achieve the best experience on a particular platform. If your constraints are not that high and you want to save some development time, you may want to look at various cross platform toolkits:</p>
+<ul>
+<li>Qt
+<ul>
+<li>like native with ICP/FFI and a C/C++/Python frontend</li>
+<li>examples:
+<ul>
+<li><a href="https://www.vandenoever.info/blog/2018/09/16/browsing_your_mail_with_rust_and_qt.html">qt rust binding generator</a></li>
+<li><a href="https://github.com/woboq/qmetaobject-rs">qmetaobject-rs</a> ( Do not miss the Fosdem-Session <a href="https://fosdem.org/2019/schedule/event/rust_cpp/">Call C++ from Rust</a> )</li>
+<li>(dead?) <a href="https://github.com/cyndis/qmlrs">qml-rs</a>, <a href="https://github.com/White-Oak/qml-rust">qml-rust</a> ...</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Gtk
+<ul>
+<li>like native with IPC/FFI and C/Vala frontend</li>
+<li>examples:
+<ul>
+<li><a href="http://gtk-rs.org/">Gtk-rs</a> ( Do not miss the Fosdem-Sessions <a href="https://fosdem.org/2019/schedule/event/rust_gnome/">Rust and GNOME</a> | <a href="https://fosdem.org/2019/schedule/event/rust_gtk_rs/">Gtk-rs</a> | <a href="https://fosdem.org/2019/schedule/event/rust_gstreamer/">GTK+ &amp; GStreamer</a> )</li>
+<li><a href="https://github.com/antoyo/relm">relm</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>wx, libui/iui ...</li>
+</ul>
+<p>These are currently the next best options. <code>Qt Rust Binding Generator</code> and <code>QMetaObject-rs</code> are currently the most advanced projects for Qt and the way to go if you really want to stay with Rust in the frontend and use the maturity and power of the Qt framework. Mind you, both projects are still in its early stages and I don't think mass adoption has started so I expect many problems to arise that are not obvious if you're playing with both. One Problem I had with Qt/QML bindings in the past was that for some things – like configuration of webviews <code>QtWebView::initialize();</code> – you need to have some C++. Both <code>Qt Rust Binding Generator</code> and <code>QMetaObject-rs</code> handle this problem in a different way. In the first you practically just start on the C++ side and immediately jump to the Rust, so you could prepare things on the C++ side first and the second allows you to call inline C++ closures with the <a href="https://crates.io/crates/cpp">cpp crate</a> <a href="https://github.com/woboq/qmetaobject-rs/blob/master/examples/graph/src/nodes.rs">here is an example</a></p>
+<p>Both approaches require you to handle at least some C++ code if your projects start to get a little more complex or you want to use more advanced features of Qt.</p>
+<p>I think from all the things we have seen so far the most &quot;advanced&quot; Project in terms of usability is <code>Gtk-rs</code>. This is highly subjective but from the things I have tried so far it looks and feels more robust. It has currently the best documentation, more projects that actually use it, some useful examples and a big/healthy community around it. If I need to make something today, I would probably give this a try. The last time I tried it, it was probably a little bit weird API-wise but that is mostly due to the way Gtk works anyways, and nothing that would really hold you back. If you want to have something nicer try out <code>Relm</code> if it fits you better. My main problem with Gtk is the way it looks on Windows and MacOS by default. I am a Linux user and use Gnome most of the time so it perfectly fits my needs on Linux, but I have heard it looks very unnatural on other platforms (if you don't go with your own customized style).</p>
+<p>Personally my main problem with these are that they &quot;feel&quot; really &quot;unrusty&quot; to begin with. If you have previously worked with projects from the e.g. &quot;web department&quot; of Rust it really feels unidiomatic at first. That's mostly due to the nature of binding frameworks that are supposed to be used with C/C++. The second problem is deployment. As a Rust user I am used to <code>cargo build --release</code> and be done. The problem with both approaches is to also ship the dependencies for Gtk/Qt. There is nothing particularly special about it and it's also fairly common if you're used to working with e.g. Qt and C++. But its quite different than your normal workflow in Rust, having most things statically linked.</p>
+<h3>Rust Centric Approaches</h3>
+<p>To overcome the problems we have with the other two approaches, many people started libraries with the goal to be more idiomatic and easier to use for Rust developers. Starting an API from scratch without sticking to an existing API from a binding can yield better results for Rust library users. It is also often the case that the build and deployment process is more in a way a Rust developer is used to. Add a dependency to <code>Cargo.toml</code> and you're good. No installation or deployments of Qt or other libraries which could get tricky if you are new to the field. It is far more accessible and a thing i really love about Rust. Unfortunately many projects have died along the way but they have paved the way by exploring the field.</p>
+<ul>
+<li>many dead
+<ul>
+<li>indigo</li>
+<li>limn</li>
+<li>rsx</li>
+<li>many more ...</li>
+</ul>
+</li>
+<li><a href="https://github.com/PistonDevelopers/conrod">conrod</a></li>
+<li><a href="https://azul.rs/">Azul</a></li>
+<li><a href="https://gitlab.redox-os.org/redox-os/orbtk">OrbTk</a></li>
+<li><a href="https://github.com/xi-editor/druid">druid</a></li>
+</ul>
+<p>This list is by no means exhaustive but contains some of the crates I could vividly remember. <a href="https://github.com/PistonDevelopers/conrod">Conrod</a> is some of the oldest in this field and has a long history in the Piston project. I feel like it is more geared towards game GUIs than your typical desktop application. Some people find it weird and others really like it for their special use case.</p>
+<p>A crate to definitely look out for is <a href="https://azul.rs/">Azul</a>. Instead of drawing the GUI all by itself, Azul seeks to use WebRender as its drawing backend. Many people have suggested that this approach is the right way towards a <code>Rust Centric Approach</code>. I am really eager to see where this project is going in the year to come. It is not quite there yet and you should not try to build your GUI for the program you want to release in the next few months. But i think its a good idea to keep an eye on it, play around and give some feedback.</p>
+<p>Another interesting approach just recently came up within the <a href="https://redox-os.org/">Redox-OS</a> ecosystem. Redox has its own GUI library – <a href="https://gitlab.redox-os.org/redox-os/orbtk">OrbTk</a> – and has undergone a huge restructuring and is now in the phase of rewriting. It is not as usable as Azul right now but is going at a huge pace you can follow at its <a href="https://gitlab.redox-os.org/redox-os/orbtk/milestones/1">issue tracker</a>. The approach OrbTk chose is to have an abstraction for multiple rendering backends. OrbTk is primarily to render GUI on Redox with <a href="https://gitlab.redox-os.org/redox-os/orbclient">OrbClient</a>. For other platforms the goal is to have exchangeable rendering backends like WebRender for Windows, Linux and macOS or stdweb for the browser and there are experiments with others like cairo. <a href="https://gitlab.redox-os.org/FloVanGH/orbrender">OrbRender</a> is the project that should achieve this. OrbTk is heavily inspired by <a href="https://flutter.io/">Flutter</a>.</p>
+<p>I mentioned the xi-editor earlier and its approach to stick to a &quot;native&quot; way of rendering for the different platforms. Raph Levien, the main author of the xi-editor, recently started an approach with <a href="https://github.com/xi-editor/druid">druid</a> as a way to have a cross-platform frontend for the editor. The approach we see here is with <a href="https://github.com/linebender/piet">piet</a> to build and idiomatic graphics library that is heavily inspired by the <a href="https://skia.org">Skia Graphics Library</a> that is used by e.g. Google Chrome and Flutter. Raph recently wrote a <a href="https://raphlinus.github.io/curves/graphics/2019/01/04/followups.html">Blogpost</a> about it.</p>
+<p>And to have some good news in this field, <a href="https://mozillagfx.wordpress.com/2019/01/10/webrender-newsletter-35/">WebRender</a> was recently released to crates.io 🎉</p>
+<h2>Who needs GUI in the Rust-World?</h2>
+<p>I want to show you some evidence that there is a need for GUI development in Rust. In the last few years, the topic has come up occasionally from time to time. But the last year has struck me the most. Much more requests and questions about GUI programming on reddit. The emergence in the annual survey and in many <code>#Rust2019</code> blog posts.</p>
+<p>This years <a href="https://blog.rust-lang.org/2018/11/27/Rust-survey-2018.html">survey</a> told us that there is a demand for GUI.</p>
+<h3>Nr.8 in the Survey</h3>
+<p>https://blog.rust-lang.org/2018/11/27/Rust-survey-2018.html#challenges</p>
+<blockquote>
+<p>New this year is the rising need to support GUI development, showing that Rust continues to grow not only on the server, but that people are feeling the need to stretch into application development.</p>
+</blockquote>
+<p>We also have some #Rust2019 blog post explicitly talking about GUI</p>
+<h3>Blog posts that mention GUI</h3>
+<p>Andre “llogiq” Bogus https://llogiq.github.io/2018/12/08/rust.html</p>
+<blockquote>
+<p>a workable cross-platform GUI library that abstracts over the smallest, most thrifty platform libraries (sort of like a reduced FLTK, but with the components written in and for Rust and backends for Windows, MacOS, X11, Wayland, Android, iOS, perhaps WASM?)</p>
+</blockquote>
+<p>Jonathan Turner https://www.jonathanturner.org/2018/12/the-fallow-year.html</p>
+<blockquote>
+<p>Areas like GUI development need some clear direction and focus.</p>
+</blockquote>
+<p>Amethyst https://www.amethyst.rs/blog/release-0-10/</p>
+<blockquote>
+<p>The editor team is building editor prototypes to evaluate different application frameworks. There is currently an Electron prototype; Azul and orbtk are being looked at as potential alternatives.</p>
+</blockquote>
+<p>Raph Levien https://raphlinus.github.io/rust/2018/12/16/rust-2019.html</p>
+<blockquote>
+<p>Graphical user interfaces are a particular weak point for Rust right now, and I see the topic pop up quite a bit in Rust 2019 posts.</p>
+</blockquote>
+<p>https://haurchefant.fr/posts/2018/12/my-wishlist-for-rust-2019/</p>
+<blockquote>
+<p>There are lots of other cool GUI projects out there too. I personally feel Azul is one of the most promising, as I think WebRender is a good basis for building GUI. But there are things to be learned from Conrod, ggez, as well as wrappers for toolkits in other languages.
+It’s not surprising that much of the activity on GUI in Rust has a focus on games, and I think that’s a good thing.</p>
+</blockquote>
+<p>Pascal Hertleif https://deterministic.space/rust-2019.html</p>
+<blockquote>
+<p>What I want to set as goal is: At the end of the 2019, we should be at a point where we have a list of new things we want to be working on. “New stuff” is stuff we may have only considered in passing so far, but where no implementation exists today. But also, things we do not even consider “something that is great in Rust” today.</p>
+</blockquote>
+<blockquote>
+<p>This is super abstract! In fact, can you quickly say what concrete things you thought of when you read “new things” above?</p>
+</blockquote>
+<blockquote>
+<p>Did you think about the emergence of an idiomatic GUI library? Did you think about new working groups? Did you think about having const generics? Did you think about RFC process version 2? Did you think about having a having super fast debug builds? Those are all valid!</p>
+</blockquote>
+<p>As a regular <a href="https://www.reddit.com/r/rust/">r/rust</a> visitor i have seen a surprising amount of posts asking about the status of gui development. I wanted to keep track of it but at some point i just lost track but here is a small excerpt – i think you get the idea.</p>
+<h2>Reddit Posts</h2>
+<p>https://www.reddit.com/r/rust/comments/6qr11b/are_we_crossplatform_native_gui_yet/</p>
+<blockquote>
+<p>Are we cross-platform native GUI yet?
+What is the current state of writing a native GUI app in Rust that could run on (at least) Windows and Linux, unmodified if possible? (I'd like to avoid electron and the like).</p>
+</blockquote>
+<p>https://www.reddit.com/r/rust/comments/a0hijk/does_rust_have_a_working_gui_library_group/</p>
+<blockquote>
+<p>I wonder if rust needs a group where some GUI experts and a few PL researchers can come together and decide how to make a Libra which is idiomatic rust and yet does only the bare minimum in the cross platform sense. Taking inspiration from how xamarin, silver (elements), sublime, gtk, qt etc do it.</p>
+</blockquote>
+<p><a href="https://github.com/pythoneer/areweguiyet/blob/master/reddit_posts.md">more Posts</a></p>
+<p>This is just to show you what its feels like on the rust subreddit, if you're not a regular visitor. But of course this is just one side and you could argue that those are just &quot;random&quot; questions from people who want to &quot;play&quot; around with the topic but this is not really i sign for real world demand. To try to give some examples for more &quot;real world&quot; need i have chosen to give some examples from projects i loosely follow:</p>
+<ul>
+<li>
+<p><a href="https://system76.com/">system76</a> uses some Rust for their tooling and from some developers i heard that there is a demand in GUI applications. One of their tools is <a href="https://github.com/pop-os/popsicle">popsicle</a> a tool to flash multiple USB devices in parallel.</p>
+</li>
+<li>
+<p>The <a href="https://redox-os.org/">Redox-OS</a> Project tries to – very successfully – build an entire Operating System in Rust from scratch. This also includes the GUI part. The current manifestation of this is the discussed <a href="https://gitlab.redox-os.org/redox-os/orbtk">OrbTk</a>. I think you can imagine that a desktop operating system has a hight demand in GUI related applications.</p>
+</li>
+<li>
+<p>The <a href="https://www.amethyst.rs/">Amethyst</a> Project tries to build a game engine written in Rust. They recently started an effort to <a href="https://community.amethyst-engine.org/t/exploring-possible-ui-toolkits-for-the-editor">explore</a> the possibilities to build an Editor.</p>
+</li>
+</ul>
+<h2>previous attempts</h2>
+<p>We saw previous attempts to gather together people on multiple occasion but all of them slowly faded after the initial start.</p>
+<ul>
+<li><a href="https://internals.rust-lang.org/t/thoughts-on-rust-guis/">internals thread</a></li>
+<li><a href="https://users.rust-lang.org/t/current-state-of-gui-development-in-rust">users thread</a></li>
+<li><a href="https://gitter.im/rust-gui-wg/Lobby">gui wg gitter</a></li>
+</ul>
+<p>I can't say why but it could have something to do with the accessability of those places. Threads in the forum simply disappear under the pressure of other topics. And basically no one knows about the gitter channel after a short amount of time. I hope <code>areweguiyet</code> can be that place that is easy to find for both users, creators and possible contributors and guide them in the right direction.</p>
+<h2>we don't want</h2>
+<p>We don't want the core Team to build or settle on a GUI framework. This is without question absolutely out of scope. GUI is hard and we have seen many attempts in different directions. It is very unclear what &quot;The Rust GUI&quot; should even look like. And i think it is very clear that we don't want the &quot;only true&quot; Rust GUI Framework. I also think that we don't want something like a official Workgroup. At least for now. The main reason for this is that currently we have many &quot;one person&quot; attempts to find a way through the jungle of possible technologies and thus it does not make sense to have some direct governance.</p>
+<h2>we do want</h2>
+<p>I think what we do want is a central place for people to engage in discussions about various topics and don't want to clutter Reddit or the userforum where things just get lost amongst all the other interesting topics. I think want we do want is help. Things are pretty time consuming especially on the coordination side. I think in the end this could lead to something like a working group. But realistically, currently the field is much too small now. I have something in mind like the way the <code>Rust Game Dev</code> is working out: Slowly but steadily increase visibility throughout the Rust ecosystem. For now, we just need a plan to come together and bikeshed some ideas by helping the projects currently existing, so those ideas do not die so fast as we've seen in the past. Maybe there are plans from the Rust (Community) Team to help to initiate such places that are not official Rust Working Groups. I haven't seen these plans yet. Maybe they do exist but if they don't this could be a wonderful way to sprout Rust in new directions.</p>
+<p><strong>To conclude this excessively long post</strong>: I hope you agree that there is demand for Rust GUI development. We cannot deliver the same experience we have in other programming languages right now <strong>but the seeds are planted</strong>! We want a place for people interested in this topic to come together and help guiding them in the right direction. Either as a library user or developers who want to contribute and find a crate to participate. I think a huge problem in the past was developers not knowing what others where doing and rather join forces than starting their own libraries which was doomed to fail as the workload is pretty high.</p>
+<p>Lets come together and make 2019 the year we remember as leap towards great GUI crates!</p>
+</section>
+
+        </main>
+
+        <footer id="about" class="about-container">
+            <div class="centered-content">
+                <h2><a href="#about">About</a></h2>
+                <p>Inspired by <a href="http://arewegameyet.com">arewegameyet</a> and similar
+                    Rust community websites.</p>
+            </div>
+        </footer>
+
+        
+    </body>
+</html>

@@ -1,4 +1,4 @@
-use newsfeed::NewsfeedEntry;
+use newsfeed::*;
 
 use serde::de::DeserializeOwned;
 
@@ -20,13 +20,18 @@ const COMPILED_ECOSYSTEM: &str = "../docs/compiled_ecosystem.json";
 const ECOSYSTEM_TAGS: &str = "../ecosystem_tags.json";
 
 // templates
-const TEMPLATE_SOURCE_GLOB: &str = "../site/**/*.tera.html";
+const TEMPLATE_SOURCE_GLOB: &str = "../site/**/*.tera*.html";
 
 const INDEX_HTML_TEMPLATE_NAME: &str = "index.tera.html";
 const INDEX_HTML_OUTPUT_PATH: &str = "../docs/index.html";
 
 const NEWSFEED_HTML_TEMPLATE_NAME: &str = "newsfeed.tera.html";
 const NEWSFEED_HTML_OUTPUT_PATH: &str = "../docs/newsfeed/index.html";
+
+const NEWSFEED_POST_HTML_OUTPUT_ROOT: &str = "../docs/newsfeed/";
+const NEWSFEED_POST_HTML_LINK_ROOT: &str = "/newsfeed/";
+const NEWSFEED_POST_MARKDOWN_ROOT: &str = "../localposts/";
+const NEWSFEED_POST_HTML_TEMPLATE_NAME: &str = "newsfeed_post.tera.raw.html";
 
 // cache
 const CACHE_FILE: &str = "../cache.json";
@@ -60,7 +65,8 @@ struct AreWeGuiYetTemplateArgs {
     ///
     /// Some tags may have descriptions.
     tags: HashMap<String, Option<String>>,
-    newsfeed: Vec<NewsfeedEntry>,
+    news_posts: Vec<NewsfeedTemplateArgs>,
+    news_links: Vec<NewsfeedTemplateArgs>,
     page_title: Option<String>,
 }
 
@@ -79,6 +85,33 @@ struct Crate {
     #[serde(skip_serializing_if = "Option::is_none")]
     docs: Option<String>,
     tags: Vec<String>,
+}
+
+/// The template args mas all variants to NewsFeedLinks for template simplicity
+#[derive(Serialize, Deserialize)]
+struct NewsfeedTemplateArgs {
+    title: String,
+    author: String,
+    link: String,
+    order: u32,
+}
+
+impl NewsfeedTemplateArgs {
+    fn new(n: &NewsfeedEntry, link: &String) -> NewsfeedTemplateArgs {
+        // I should get a prize for being this efficient!
+        NewsfeedTemplateArgs {
+            title: n.title.clone(),
+            author: n.author.clone(),
+            order: n.order.clone(),
+            link: link.clone(),
+        }
+    }
+}
+
+#[derive(Serialize, Deserialize)]
+struct PostTemplateArgs {
+    page_title: String,
+    post_content: String,
 }
 
 fn is_false(b: &bool) -> bool {
@@ -282,15 +315,58 @@ fn publish(cache: &mut Cache, verify_only: bool) {
         compiled_ecosystem.insert(krate.name.clone(), compiled_crate);
     }
 
+    // compile the templates
+    let mut tera = compile_templates!(TEMPLATE_SOURCE_GLOB);
+    tera.autoescape_on(vec![".tera.html"]);
+
+    // compile news posts and gather links
+    let mut news_post_rendered_html = HashMap::new();
+    let mut news_posts = Vec::new();
+    let mut news_links = Vec::new();
+
+    for entry in &newsfeed {
+        match &entry.source {
+            NewsfeedSource::Link { link } => {
+                news_links.push(NewsfeedTemplateArgs::new(&entry, link));
+            },
+            NewsfeedSource::Post { file_name } => {
+                // open the file containing the markdown
+                let mut markdown_path = NEWSFEED_POST_MARKDOWN_ROOT.to_string();
+                markdown_path.push_str(file_name);
+                let markdown = fs::read_to_string(&markdown_path)
+                    .expect("Failed to read markdown post");
+                // parse and render the markdown for this post
+                let parser = pulldown_cmark::Parser::new(&markdown);
+                let mut rendered_content = String::new();
+                pulldown_cmark::html::push_html(&mut rendered_content, parser);
+                // render to a template
+                let post_content = PostTemplateArgs {
+                    page_title: entry.title.clone(),
+                    post_content: rendered_content,
+                };
+                let rendered_page = tera.render(NEWSFEED_POST_HTML_TEMPLATE_NAME, &post_content)
+                    .expect("Failed to render hosted news post");
+                // save the rendered template so we can output it later
+                let mut link = file_name.replace(".md", ".html");
+                news_post_rendered_html.insert(link.clone(), rendered_page);
+                // record the news post so it can be rendered into other pages on the site
+                // TODO: this is very fragile... (and arguably dangerous)
+                link.insert_str(0, NEWSFEED_POST_HTML_LINK_ROOT);
+                news_posts.push(NewsfeedTemplateArgs::new(&entry, &link));
+            }
+        }
+    }
+
+    println!("Found {} community news links.", news_links.len());
+    println!("Found {} hosted news posts.", news_posts.len());
+
     let mut awgy = AreWeGuiYetTemplateArgs {
         crates,
         tags,
-        newsfeed,
+        news_posts,
+        news_links,
         page_title: None,
     };
-
-    // compile the template
-    let tera = compile_templates!(TEMPLATE_SOURCE_GLOB);
 
     // Render the templates and remove newlines so people don't accidentally edit the compiled HTML
     // (we could actually minify it too)
@@ -325,7 +401,14 @@ fn publish(cache: &mut Cache, verify_only: bool) {
         output_html(INDEX_HTML_OUTPUT_PATH, &index)
             .expect("Failed to create index page");
         output_html(NEWSFEED_HTML_OUTPUT_PATH, &newsfeed)
-            .expect("Failed to create index page");
+            .expect("Failed to create newsfeed page");
+        
+        // output the rendered markdown posts
+        for (mut file_name, rendered_html) in news_post_rendered_html.into_iter() {
+            file_name.insert_str(0, NEWSFEED_POST_HTML_OUTPUT_ROOT);
+            output_html(&file_name, &rendered_html)
+                .expect("Failed to create hosted post page");
+        }
 
         println!("Site written to disk.");
     } else {

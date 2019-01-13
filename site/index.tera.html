@@ -29,14 +29,14 @@
         <a href="https://github.com/areweguiyet/areweguiyet/blob/master/README.md">
         README</a> for details.</p>
     <div class="newsfeed-posts">
-        {% for post in newsfeed | slice(start=0, end=3) %}
+        {% for post in news_links | slice(start=0, end=3) %}
             <div>
                 <h3>{{post.title}} by {{post.author}}</h3>
                 {{macros::link(label=post.link, href=post.link)}}
             </div>
         {% endfor %}
     </div>
-    {% if newsfeed | length > 3 %}
+    {% if news_links | length > 3 %}
         <a href="./newsfeed">See more posts</a>
     {% endif %}
 </section>
