@@ -2,18 +2,14 @@
     margin: 0px;
 }
 
-a {
-    color: #f1dd6f;
+a, a:visited {
+    color: #9f703d;
     text-decoration: none;
 }
 
 a:hover {
     text-decoration: underline;
     text-decoration-style: dashed;
-}
-
-a:visited {
-    color: #9f703d;
 }
 
 html {
@@ -193,11 +189,10 @@ p {
 }
 
 .ecosystem-tags > li {
-    flex: 0 0 100px;
-    border-radius: 6px;
+    flex: 1 0 50px;
     padding: 5px;
-    margin: 10px;
-    background: #9f703d;
+    margin: 1px;
+    background: #a28a6f;
     color: #eee;
     cursor: pointer;
     text-align: center;
@@ -205,22 +200,25 @@ p {
 
 .ecosystem-card > header {
     display: flex;
-    flex-flow: row nowrap;
+    flex-flow: row wrap;
     justify-content: space-between;
     align-items: center;
 
-    padding: 10px;
+    /* put the margins on the children so it looks nice even when they wrap */
+    padding: 0px;
     background: #9f703d;
     color: #eee;
 }
 
 .ecosystem-card > header > h3 {
     flex: 1 0 auto;
+    margin: 10px;
 }
 
 .ecosystem-card > header > span {
-    flex; 0 0 auto;
+    flex: 0 0 auto;
     color: #555;
+    margin: 10px;
 }
 
 .ecosystem-card > header a {
@@ -234,10 +232,6 @@ p {
 
 .ecosystem-card p {
     font-size: 16px;
-}
-
-.ecosystem-card > .ecosystem-tags {
-    border-top: 1px solid #9f703d;
 }
 
 @media only screen and (min-device-width: 1000px) {
