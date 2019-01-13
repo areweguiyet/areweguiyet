@@ -8,26 +8,28 @@
   {
     "name": "Azul",
     "tags": [
-      "webrender"
+      "WebRender"
     ]
   },
   {
     "name": "WebRender",
     "docs": "https://doc.servo.org/webrender/index.html",
     "tags": [
-      "webrender"
+      "WebRender"
     ]
   },
   {
     "name": "druid",
     "description": "Druid is a new Rust-native UI toolkit, still in early stages. Its main goal is performance, also aiming for small binary size and compile time, fast startup, and very easy build configuration (just cargo run). It is currently Windows-only, but with hope for porting.",
-    "tags": []
+    "tags": [
+      "piet"
+    ]
   },
   {
     "name": "OrbTk",
     "description": "The Orbital Widget Toolkit is a multi platform (G)UI toolkit for building scalable user interfaces with the programming language Rust. It's based on the Entity Component System Pattern and provides a functional-reactive API.",
     "tags": [
-      "webrender"
+      "WebRender"
     ]
   },
   {
