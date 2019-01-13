@@ -345,7 +345,9 @@ fn publish(cache: &mut Cache, verify_only: bool) {
                     post_content: rendered_content,
                 };
                 let rendered_page = tera.render(NEWSFEED_POST_HTML_TEMPLATE_NAME, &post_content)
-                    .expect("Failed to render hosted news post");
+                    .expect("Failed to render hosted news post")
+                    .replace("\r\n", " ")
+                    .replace("\n", " ");
                 // save the rendered template so we can output it later
                 let mut link = file_name.replace(".md", ".html");
                 news_post_rendered_html.insert(link.clone(), rendered_page);
