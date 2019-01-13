@@ -62,13 +62,13 @@
 <section id="ecosystem" class="ecosystem-navigator">
     <div class="centered-content">
         <h2><a href="#ecosystem">Ecosystem</a></h2>
-        <p>Select a tag below to only show relevant crates. All crates will be shown when no tags are selected.</p>
+        <p>Select a tag (or tags) below to only show relevant crates. All crates will be shown when no tags are selected.</p>
         <ul class="ecosystem-tags" id="ecosystem-tags">
             {% for tag, description in tags %}
                 {% if description %}
                     <li title="{{description | addslashes }}" data-crate-tag="{{tag}}">{{tag}}</li>
                 {% else %}
-                    <li>{{tag}}</li>
+                    <li data-crate-tag="{{tag}}">{{tag}}</li>
                 {% endif %}
             {% endfor %}
         </ul>
@@ -77,7 +77,7 @@
 <section class="ecosystem-crates centered-content" id="app-crates">
     <!-- CRATES (they are added at runtime) -->
     <p v-if="false">Loading...</p>
-    <crates-list v-bind:crates_map="crates"/>
+    <crates-list v-bind:crates_map="crates" v-bind:tag_filter="tag_filter"/>
 </section>
 {% endblock content %}
 {% block scripts %}

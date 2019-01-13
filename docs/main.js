@@ -1,5 +1,7 @@
 'use strict'
 
+// This file was kind of a rush job ;^)
+
 Vue.component('crate-card', {
     props: ['crate'],
     template: `
@@ -43,10 +45,11 @@ Vue.component('crate-card', {
 })
 
 Vue.component('crates-list', {
-    props: ['crates_map'],
+    props: ['crates_map', 'tag_filter'],
     template: `
         <div class="ecosystem-crates">
             <crate-card
+                v-show="is_not_filtered_by_tags(crate.tags, tag_filter)"
                 v-for="crate in crates"
                 v-bind:crate="crate"
                 v-bind:key="crate.name">
@@ -64,10 +67,24 @@ Vue.component('crates-list', {
             return a.name.localeCompare(b.name)
         })
         return {
-            crates
+            crates,
         }
     }
 })
+
+// False if crate_tags does not contain anything matching tag filter
+function is_not_filtered_by_tags(crate_tags, tag_filter) {
+    if (tag_filter.length === 0) {
+        // Don't filter if there is no tag filter
+        return true;
+    }
+    for (let crate_tag of crate_tags) {
+        if (tag_filter.includes(crate_tag)) {
+            return true;
+        }
+    }
+    return false;
+}
 
 function load_ecosystem() {
     return fetch('compiled_ecosystem.json')
@@ -77,6 +94,8 @@ function load_ecosystem() {
 }
 
 function init_crate_list_ui() {
+    const tag_filter = []
+
     // I think there's a better way to do this with Vue.JS, but I'm not that familiar with it
     load_ecosystem()
         .then(function(crates) {
@@ -84,6 +103,7 @@ function init_crate_list_ui() {
                 el: '#app-crates',
                 data: {
                     crates,
+                    tag_filter
                 }
             })
         })
@@ -95,7 +115,15 @@ function init_crate_list_ui() {
         if (e.target.tagName !== 'LI') {
             return
         }
-        // cache.toggle_tag_filter(e.target.getAttribute('data-crate-tag'))
+        const tag_name = e.target.getAttribute('data-crate-tag')
+        const index = tag_filter.indexOf(tag_name)
+        if (index === -1) {
+            tag_filter.push(tag_name)
+            e.target.className = e.target.className += ' active'
+        } else {
+            tag_filter.splice(index, 1)
+            e.target.className = e.target.className.replace(' active')
+        }
     })
 }
 

@@ -204,11 +204,23 @@ p {
 .ecosystem-tags > li {
     flex: 1 0 50px;
     padding: 5px;
+    padding-bottom: 2px;
+    border-bottom: 3px solid #a28a6f;
     margin: 1px;
     background: #a28a6f;
     color: #eee;
     cursor: pointer;
     text-align: center;
+
+    transition: border-color 0.4s ease-in;
+}
+
+.ecosystem-tags > li.active {
+    border-color: #eee
+}
+
+.ecosystem-tags > li:hover {
+    border-color: #ccc;
 }
 
 .ecosystem-card > header {
