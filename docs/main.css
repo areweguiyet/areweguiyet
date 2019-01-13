@@ -133,6 +133,19 @@ p {
     margin-bottom: 10px;
 }
 
+.featured::before {
+    content: "FEATURED";
+    background: #f1dd6f;
+    color: #555;
+    font-style: italic;
+    font-family: 'Consolas', monospace;
+    padding: 5px;
+    font-size: 14px;
+    border-radius: 6px;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
 .ecosystem-navigator, .about-container {
     background: #222;
     color: #eee;
