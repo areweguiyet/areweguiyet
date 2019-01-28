@@ -179,6 +179,7 @@ p {
 
 .ecosystem-card {
     flex: auto;
+    min-height: 230px;
 
     display: flex;
     flex-flow: column nowrap;
