@@ -169,7 +169,7 @@ p {
 .ecosystem-crates {
     display: flex;
     flex-flow: column nowrap;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: stretch;
 }
 
@@ -260,7 +260,7 @@ p {
     font-size: 16px;
 }
 
-@media only screen and (min-device-width: 1000px) {
+@media only screen and (min-device-width: 1200px) {
     h2 {
         width: 900px;
         margin-left: auto;
@@ -285,7 +285,9 @@ p {
         margin: 0px auto;
         padding: 20px;
     }
+}
 
+@media only screen and (min-device-width: 700px) {
     .ecosystem-crates {
         flex-flow: row wrap;
         align-items: stretch;
