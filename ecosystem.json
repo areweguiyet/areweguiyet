@@ -1,5 +1,12 @@
 [
   {
+    "name": "sciter-rs",
+    "tags": [
+      "HTML",
+      "CSS"
+    ]
+  },
+  {
     "name": "Conrod",
     "tags": [
       "Immediate mode API"
