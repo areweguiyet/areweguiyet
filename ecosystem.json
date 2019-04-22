@@ -36,7 +36,6 @@
     "name": "OrbTk",
     "description": "The Orbital Widget Toolkit is a multi platform (G)UI toolkit for building scalable user interfaces with the programming language Rust. It's based on the Entity Component System Pattern and provides a functional-reactive API.",
     "tags": [
-      "WebRender"
     ]
   },
   {
