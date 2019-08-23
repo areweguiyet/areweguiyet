@@ -1,4 +1,4 @@
-use newsfeed::*;
+use crate::newsfeed::*;
 
 use serde::de::DeserializeOwned;
 
