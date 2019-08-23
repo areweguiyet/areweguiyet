@@ -284,28 +284,22 @@ fn publish(cache: &mut Cache, verify_only: bool) {
     let mut errors = Vec::new();
 
     // TODO: Verify that tag names and descriptions don't contain unwanted characters.
-    // TODO: Lack of non-lexical lifetimes means we need a special scope for used_tags
-    // (used_tags borrows crates, but crates needs to be movable outside this block)
-    {
-        // verify that every tag in the tags file is actually used
-        let mut used_tags = HashSet::new();
 
-        for krate in &mut crates {
-            used_tags.extend(krate.tags.iter())
+    // verify that every tag in the tags file is actually used
+    let mut used_tags = HashSet::new();
+    for krate in &mut crates {
+        used_tags.extend(krate.tags.iter())
+    }
+    // issue a warning if there are unsused tags in ecosystem_tags.json
+    for (k, _) in &tags {
+        if !used_tags.contains(k) {
+            errors.push(format!("Tag \"{}\" is not used to describe any crate", k));
         }
-
-        // issue a warning if there are unsused tags in ecosystem_tags.json
-        for (k, _) in &tags {
-            if !used_tags.contains(k) {
-                errors.push(format!("Tag \"{}\" is not used to describe any crate", k));
-            }
-        }
-
-        // merge description-less used tags into ecosystem_tags
-        for k in used_tags {
-            tags.entry(k.to_string())
-                .or_insert(None);
-        }
+    }
+    // merge description-less used tags into ecosystem_tags
+    for k in used_tags {
+        tags.entry(k.to_string())
+            .or_insert(None);
     }
 
     // merge missing crate information from crates io
@@ -404,7 +398,7 @@ fn publish(cache: &mut Cache, verify_only: bool) {
             .expect("Failed to create index page");
         output_html(NEWSFEED_HTML_OUTPUT_PATH, &newsfeed)
             .expect("Failed to create newsfeed page");
-        
+
         // output the rendered markdown posts
         for (mut file_name, rendered_html) in news_post_rendered_html.into_iter() {
             file_name.insert_str(0, NEWSFEED_POST_HTML_OUTPUT_ROOT);
