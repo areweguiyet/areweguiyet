@@ -12,6 +12,8 @@ use std::error::Error;
 use std::fs;
 use std::io;
 use std::io::BufRead;
+use std::hash::BuildHasher;
+use std::collections::hash_map::DefaultHasher;
 
 // source files
 const NEWSFEED: &str = "../newsfeed.json";
@@ -206,6 +208,35 @@ struct CratesIoCrateResponse {
     documentation: Option<String>,
 }
 
+/// A hasher that should be deterministic accross all runs.
+///
+/// AWGY is hosted on Github pages, so our rendered/generated content is part of the repo's history.
+///
+/// The CLI caches some information on publish to the `compiled_ecosystem.json`, and this JSON
+/// involes a map object. The resulting order of the JSON is dependent on the iteration order of the
+/// hashmap used to generate the JSON.
+///
+/// Together, this means every time the CLI is run, the compiled JSON is changed if the iteration
+/// order of the hashmap used to generate it changes. By default, `HashMap`s use the `RandomState`
+/// hasher builder, so the iteration order is different every CLI invocation. This creates some
+/// noise in the diffs, and it can make it challenging to verify contributors have published their
+/// latest changes.
+///
+/// `ConstantState` is an attempt to make this deterministic across all CLI invocations. This is an
+/// "attempt" because, Rust does not technically guarantee what "DefaultHasher::new()" uses as its
+/// hash algorithm or what state it uses, so in theory this could change between Rust versions.
+///
+/// This is of course unlikely, so this should 80% solve the issue.
+struct ConstantState;
+
+impl BuildHasher for ConstantState {
+    type Hasher = DefaultHasher;
+
+    fn build_hasher(&self) -> Self::Hasher {
+        DefaultHasher::new()
+    }
+}
+
 pub fn execute_cli() {
     let matches = App::new("Areweguiyet CLI")
         .setting(AppSettings::SubcommandRequiredElseHelp)
@@ -303,7 +334,7 @@ fn publish(cache: &mut Cache, verify_only: bool) {
     }
 
     // merge missing crate information from crates io
-    let mut compiled_ecosystem = HashMap::new();
+    let mut compiled_ecosystem = HashMap::with_hasher(ConstantState);
     for krate in &mut crates {
         let compiled_crate = get_crate_info(krate, cache, &mut errors);
         compiled_ecosystem.insert(krate.name.clone(), compiled_crate);
