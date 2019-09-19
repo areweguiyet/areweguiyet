@@ -1,5 +1,10 @@
 [
   {
+    "name": "Iced",
+    "description": "A renderer-agnostic GUI library for Rust focused on simplicity and type-safety. Inspired by Elm.",
+    "tags": []
+  },
+  {
     "name": "core-foundation",
     "docs": "https://docs.rs/core-foundation/0.6.4/core_foundation/",
     "tags": [
