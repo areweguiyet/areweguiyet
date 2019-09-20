@@ -1,5 +1,14 @@
 [
   {
+    "name": "imgui-rs",
+    "repo": "https://github.com/Gekkio/imgui-rs",
+    "docs": "https://docs.rs/imgui",
+    "tags": [
+      "Immediate mode API",
+      "Bindings"
+    ]
+  },
+  {
     "name": "Iced",
     "description": "A renderer-agnostic GUI library for Rust focused on simplicity and type-safety. Inspired by Elm.",
     "tags": []
