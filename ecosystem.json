@@ -1,5 +1,11 @@
 [
   {
+    "name": "neutrino",
+    "repo": "https://github.com/alexislozano/neutrino",
+    "docs": "https://docs.rs/neutrino",
+    "tags": []
+  },
+  {
     "name": "imgui-rs",
     "repo": "https://github.com/Gekkio/imgui-rs",
     "docs": "https://docs.rs/imgui",
