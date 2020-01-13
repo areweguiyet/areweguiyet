@@ -145,15 +145,15 @@ impl Cache {
     }
 
     /// Get crate meta data from crates io API, and cache the result
-    fn get_crates_io(&mut self, name: &str) -> Result<&Option<CratesIoCrateResponse>, Box<Error>> {
+    fn get_crates_io(&mut self, name: &str) -> Result<&Option<CratesIoCrateResponse>, Box<dyn Error>> {
         // We can perhaps make this better with NLL?
         if !self.crates_io.contains_key(name) {
             println!("Cache miss. Requesting data for {}", name);
             let url = crates_io_api_url(name);
-            let mut res = reqwest::get(&url)?;
+            let res = reqwest::blocking::get(&url)?;
             let parsed: Option<CratesIoEnvelopeResponse> = match res.status() {
-                reqwest::StatusCode::Ok => res.json()?,
-                reqwest::StatusCode::NotFound => None,
+                reqwest::StatusCode::OK => res.json()?,
+                reqwest::StatusCode::NOT_FOUND => None,
                 _ => return Err("Unknown request error".into()),
             };
             self.crates_io.insert(name.to_string(), parsed.map(|x| x.krate));
@@ -162,7 +162,7 @@ impl Cache {
     }
 
     /// Save the cache to disk at path
-    fn write_cache(&self, path: &str) -> Result<(), Box<Error>> {
+    fn write_cache(&self, path: &str) -> Result<(), Box<dyn Error>> {
         let out = File::create(path)?;
 
         // This is fatal because running the app again will cause it fail as the cache file exists
@@ -709,7 +709,7 @@ fn get_crate_info(krate: &Crate, cache: &mut Cache, errors: &mut Vec<String>) ->
     }
 }
 
-fn parse_json_file<T: DeserializeOwned, P: AsRef<Path>>(path: P) -> Result<T, Box<Error>> {
+fn parse_json_file<T: DeserializeOwned, P: AsRef<Path>>(path: P) -> Result<T, Box<dyn Error>> {
     let f = File::open(path)?;
     Ok(serde_json::from_reader(f)?)
 }
