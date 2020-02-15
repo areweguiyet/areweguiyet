@@ -441,7 +441,8 @@ fn publish(cache: &mut Cache, verify_only: bool) {
         for i in &errors {
             println!("\t{}", i);
         }
-        panic!("Failed to generate site.");
+        eprintln!("Failed to generate site.");
+        return;
     }
 
     if !verify_only {
