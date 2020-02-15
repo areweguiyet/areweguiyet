@@ -1,7 +1,6 @@
 [
   {
     "name": "KAS",
-    "repo": "https://github.com/dhardy/kas",
     "description": "The toolKit Abstraction System leverages generics and macros to compose widgets with encapsulated user data, provides a powerful event-handling model and scales to at least 100'000 widgets per window.",
     "docs": "https://docs.rs/kas",
     "tags": [
