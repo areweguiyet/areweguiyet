@@ -154,7 +154,13 @@ impl Cache {
             let parsed: Option<CratesIoEnvelopeResponse> = match res.status() {
                 reqwest::StatusCode::OK => res.json()?,
                 reqwest::StatusCode::NOT_FOUND => None,
-                _ => return Err("Unknown request error".into()),
+                status => {
+                    return Err(
+                        format!("Unexpected request status ({}) while fetching {}",
+                        status,
+                        &url,
+                    ).into());
+                },
             };
             self.crates_io.insert(name.to_string(), parsed.map(|x| x.krate));
         }
