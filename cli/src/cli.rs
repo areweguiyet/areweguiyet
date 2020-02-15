@@ -3,6 +3,7 @@ use crate::newsfeed::*;
 use serde::de::DeserializeOwned;
 
 use clap::{App, SubCommand, Arg, AppSettings, ArgGroup};
+use reqwest::blocking::Client as HttpClient;
 
 use std::path::Path;
 use std::io::Write;
@@ -39,6 +40,7 @@ const NEWSFEED_POST_HTML_TEMPLATE_NAME: &str = "newsfeed_post.tera.raw.html";
 const CACHE_FILE: &str = "../cache.json";
 const CACHE_FILE_DELETION_FAILED: &str = "Failed to remove the cache file. Try deleting it \
     manually and running without the clean option.";
+const CACHE_CLIENT_USER_AGENT: &str = "areweguiyet_cli (areweguiyet.com)";
 
 // error messages
 const READ_LINE_PANIC_MESSAGE: &str = "Failed to read line";
@@ -134,7 +136,9 @@ struct CompiledCrate {
 /// Stores parsed raw requests data from any services we query (like crates.io or GitHub).
 #[derive(Serialize, Deserialize)]
 struct Cache {
-    crates_io: HashMap<String, Option<CratesIoCrateResponse>>
+    crates_io: HashMap<String, Option<CratesIoCrateResponse>>,
+    #[serde(skip)]
+    client: Option<HttpClient>,
 }
 
 impl Cache {
@@ -144,13 +148,27 @@ impl Cache {
             .unwrap_or_else(|_| Default::default())
     }
 
+    fn client(&mut self) -> &mut HttpClient {
+        if self.client.is_none() {
+            let mut builder = HttpClient::builder();
+            builder = builder.user_agent(CACHE_CLIENT_USER_AGENT);
+            let client = builder.build()
+                .expect("Reqwest client build error (TLS backend init failure)");
+            self.client = Some(client);
+        }
+
+        self.client.as_mut()
+            .unwrap()
+    }
+
     /// Get crate meta data from crates io API, and cache the result
     fn get_crates_io(&mut self, name: &str) -> Result<&Option<CratesIoCrateResponse>, Box<dyn Error>> {
         // We can perhaps make this better with NLL?
         if !self.crates_io.contains_key(name) {
             println!("Cache miss. Requesting data for {}", name);
             let url = crates_io_api_url(name);
-            let res = reqwest::blocking::get(&url)?;
+            let req = self.client().get(&url);
+            let res = req.send()?;
             let parsed: Option<CratesIoEnvelopeResponse> = match res.status() {
                 reqwest::StatusCode::OK => res.json()?,
                 reqwest::StatusCode::NOT_FOUND => None,
@@ -196,7 +214,8 @@ impl Cache {
 impl Default for Cache {
     fn default() -> Cache {
         Cache {
-            crates_io: HashMap::new()
+            crates_io: HashMap::new(),
+            client: None,
         }
     }
 }
