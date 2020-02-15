@@ -395,9 +395,7 @@ fn publish(cache: &mut Cache, verify_only: bool) {
                     post_content: rendered_content,
                 };
                 let rendered_page = tera.render(NEWSFEED_POST_HTML_TEMPLATE_NAME, &post_content)
-                    .expect("Failed to render hosted news post")
-                    .replace("\r\n", " ")
-                    .replace("\n", " ");
+                    .expect("Failed to render hosted news post");
                 // save the rendered template so we can output it later
                 let mut link = file_name.replace(".md", ".html");
                 news_post_rendered_html.insert(link.clone(), rendered_page);
@@ -424,15 +422,11 @@ fn publish(cache: &mut Cache, verify_only: bool) {
     // (we could actually minify it too)
     awgy.page_title = None;
     let index = tera.render(INDEX_HTML_TEMPLATE_NAME, &awgy)
-        .expect("Failed to render template")
-        .replace("\r\n", " ")
-        .replace("\n", " ");
+        .expect("Failed to render template");
 
     awgy.page_title = Some("News Feed".to_string());
     let newsfeed = tera.render(NEWSFEED_HTML_TEMPLATE_NAME, &awgy)
-        .expect("Failed to render template")
-        .replace("\r\n", " ")
-        .replace("\n", " ");
+        .expect("Failed to render template");
 
     println!("Successfully rendered templates.");
 
@@ -448,7 +442,7 @@ fn publish(cache: &mut Cache, verify_only: bool) {
     if !verify_only {
         let mut out_compiled_ecosystem = File::create(COMPILED_ECOSYSTEM)
             .expect("Failed to create compiled ecosystem file");
-        serde_json::to_writer(&mut out_compiled_ecosystem, &compiled_ecosystem)
+        serde_json::to_writer_pretty(&mut out_compiled_ecosystem, &compiled_ecosystem)
             .expect("Failed to write the compiled ecosystem to the output file");
 
         output_html(INDEX_HTML_OUTPUT_PATH, &index)
