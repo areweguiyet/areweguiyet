@@ -73,6 +73,16 @@
       "CSS"
     ]
   },
+  "fltk": {
+    "crates_io": "https://crates.io/crates/fltk",
+    "repo": "https://github.com/MoAlyousef/fltk-rs",
+    "description": "The FLTK crate is a crossplatform lightweight gui library which can be linked to statically to produce small, self-contained and fast binaries",
+    "docs": null,
+    "tags": [
+      "Bindings",
+      "FLTK"
+    ]
+  },
   "imgui-rs": {
     "crates_io": "https://crates.io/crates/imgui-rs",
     "repo": "https://github.com/Gekkio/imgui-rs",
