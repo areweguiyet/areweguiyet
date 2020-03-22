@@ -1,5 +1,13 @@
 [
   {
+    "name": "fltk",
+    "description": "The FLTK crate is a crossplatform lightweight gui library which can be linked to statically to produce small, self-contained and fast binaries",
+    "tags": [
+      "Bindings",
+      "FLTK"
+    ]
+  },
+  {
     "name": "KAS",
     "description": "The toolKit Abstraction System leverages generics and macros to compose widgets with encapsulated user data, provides a powerful event-handling model and scales to at least 100'000 widgets per window.",
     "docs": "https://docs.rs/kas",
