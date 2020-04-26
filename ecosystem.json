@@ -1,5 +1,15 @@
 [
   {
+    "name": "qt_ritual_build",
+    "description": "Qt bindings for Rust language generated with ritual.",
+    "docs": "https://github.com/rust-qt",
+    "tags": [
+      "Qt",
+      "Bindings",
+      "QML"
+    ]
+  },
+  {
     "name": "fltk",
     "description": "The FLTK crate is a crossplatform lightweight gui library which can be linked to statically to produce small, self-contained and fast binaries",
     "tags": [

@@ -77,7 +77,7 @@
     "crates_io": "https://crates.io/crates/fltk",
     "repo": "https://github.com/MoAlyousef/fltk-rs",
     "description": "The FLTK crate is a crossplatform lightweight gui library which can be linked to statically to produce small, self-contained and fast binaries",
-    "docs": "https://docs.rs/crate/fltk",
+    "docs": "https://docs.rs/fltk",
     "tags": [
       "Bindings",
       "FLTK"
@@ -146,6 +146,17 @@
     "tags": [
       "Bindings",
       "GTK"
+    ]
+  },
+  "qt_ritual_build": {
+    "crates_io": "https://crates.io/crates/qt_ritual_build",
+    "repo": "https://github.com/rust-qt/ritual",
+    "description": "Qt bindings for Rust language generated with ritual.",
+    "docs": "https://github.com/rust-qt",
+    "tags": [
+      "Qt",
+      "Bindings",
+      "QML"
     ]
   }
 }
