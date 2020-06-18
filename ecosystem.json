@@ -1,5 +1,12 @@
 [
   {
+    "name": "iui",
+    "tags": [
+      "Native",
+      "Bindings"
+    ]
+  },
+  {
     "name": "fltk",
     "description": "The FLTK crate is a crossplatform lightweight gui library which can be linked to statically to produce small, self-contained and fast binaries",
     "tags": [

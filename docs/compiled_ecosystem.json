@@ -1,4 +1,14 @@
 {
+  "iui": {
+    "crates_io": "https://crates.io/crates/iui",
+    "repo": "https://github.com/LeoTindall/libui-rs",
+    "description": "Simple, small, easy to distribute GUI bindings.",
+    "docs": "https://docs.rs/iui/",
+    "tags": [
+      "Native",
+      "Bindings"
+    ]
+  },
   "OrbTk": {
     "crates_io": "https://crates.io/crates/OrbTk",
     "repo": "https://github.com/redox-os/orbtk",
@@ -44,7 +54,7 @@
   },
   "KAS": {
     "crates_io": "https://crates.io/crates/KAS",
-    "repo": "https://github.com/dhardy/kas",
+    "repo": "https://github.com/kas-gui/kas",
     "description": "The toolKit Abstraction System leverages generics and macros to compose widgets with encapsulated user data, provides a powerful event-handling model and scales to at least 100'000 widgets per window.",
     "docs": "https://docs.rs/kas",
     "tags": [
@@ -77,7 +87,7 @@
     "crates_io": "https://crates.io/crates/fltk",
     "repo": "https://github.com/MoAlyousef/fltk-rs",
     "description": "The FLTK crate is a crossplatform lightweight gui library which can be linked to statically to produce small, self-contained and fast binaries",
-    "docs": "https://docs.rs/crate/fltk",
+    "docs": "https://docs.rs/fltk",
     "tags": [
       "Bindings",
       "FLTK"
