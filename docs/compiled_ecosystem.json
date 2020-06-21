@@ -44,7 +44,7 @@
   },
   "KAS": {
     "crates_io": "https://crates.io/crates/KAS",
-    "repo": "https://github.com/dhardy/kas",
+    "repo": "https://github.com/kas-gui/kas",
     "description": "The toolKit Abstraction System leverages generics and macros to compose widgets with encapsulated user data, provides a powerful event-handling model and scales to at least 100'000 widgets per window.",
     "docs": "https://docs.rs/kas",
     "tags": [
@@ -77,10 +77,20 @@
     "crates_io": "https://crates.io/crates/fltk",
     "repo": "https://github.com/MoAlyousef/fltk-rs",
     "description": "The FLTK crate is a crossplatform lightweight gui library which can be linked to statically to produce small, self-contained and fast binaries",
-    "docs": "https://docs.rs/crate/fltk",
+    "docs": "https://docs.rs/fltk",
     "tags": [
       "Bindings",
       "FLTK"
+    ]
+  },
+  "qt_widgets": {
+    "crates_io": "https://crates.io/crates/qt_widgets",
+    "repo": "https://github.com/rust-qt/ritual",
+    "description": "Ritual Qt bindings",
+    "docs": "https://rust-qt.github.io/qt/",
+    "tags": [
+      "Bindings",
+      "Qt"
     ]
   },
   "imgui-rs": {
