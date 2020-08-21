@@ -1,5 +1,14 @@
 [
     {
+        "title": "A Survey of Rust GUI Libraries",
+        "author": "boringcactus",
+        "source": {
+            "kind": "Link",
+            "link": "https://www.boringcactus.com/2020/08/21/survey-of-rust-gui-libraries.html"
+        },
+        "order": 2
+    },
+    {
         "title": "#Rust2019 Are We GUI Yet?",
         "author": "Dustin Bensing",
         "source": {
