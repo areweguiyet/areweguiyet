@@ -1,5 +1,11 @@
 [
   {
+    "name": "conrod-core",
+    "tags": [
+      "Immediate mode API"
+    ]
+  },
+  {
     "name": "qt_widgets",
     "description": "Ritual Qt bindings",
     "docs": "https://rust-qt.github.io/qt/",
@@ -58,12 +64,6 @@
     "tags": [
       "HTML",
       "CSS"
-    ]
-  },
-  {
-    "name": "Conrod",
-    "tags": [
-      "Immediate mode API"
     ]
   },
   {
