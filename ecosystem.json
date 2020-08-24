@@ -1,5 +1,12 @@
 [
   {
+    "name": "imgui",
+    "tags": [
+      "Bindings",
+      "Immediate mode API"
+    ]
+  },
+  {
     "name": "tauri",
     "skip_crates_io": true,
     "repo": "https://github.com/tauri-apps/tauri",
@@ -55,15 +62,6 @@
     "repo": "https://github.com/alexislozano/neutrino",
     "docs": "https://docs.rs/neutrino",
     "tags": []
-  },
-  {
-    "name": "imgui-rs",
-    "repo": "https://github.com/Gekkio/imgui-rs",
-    "docs": "https://docs.rs/imgui",
-    "tags": [
-      "Immediate mode API",
-      "Bindings"
-    ]
   },
   {
     "name": "Iced",
