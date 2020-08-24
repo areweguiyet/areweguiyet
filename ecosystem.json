@@ -1,5 +1,11 @@
 [
   {
+    "name": "vgtk",
+    "tags": [
+      "GTK"
+    ]
+  },
+  {
     "name": "conrod-core",
     "tags": [
       "Immediate mode API"
