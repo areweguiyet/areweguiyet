@@ -1,5 +1,17 @@
 [
   {
+    "name": "tauri",
+    "skip_crates_io": true,
+    "repo": "https://github.com/tauri-apps/tauri",
+    "description": "Tauri is a framework for building tiny, blazing fast binaries for all major desktop platforms.",
+    "docs": "https://tauri.studio/en/",
+    "tags": [
+      "HTML",
+      "MacOS",
+      "GTK"
+    ]
+  },
+  {
     "name": "vgtk",
     "tags": [
       "GTK"
