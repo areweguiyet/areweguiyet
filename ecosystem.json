@@ -1,5 +1,13 @@
 [
   {
+    "name": "lvgl",
+    "docs": "https://github.com/rafaelcaricio/lvgl-rs",
+    "tags": [
+      "Bindings",
+      "Embedded"
+    ]
+  },
+  {
     "name": "imgui",
     "tags": [
       "Bindings",
