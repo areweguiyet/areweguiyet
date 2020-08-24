@@ -6,6 +6,16 @@
     "docs": "https://docs.rs/orbtk",
     "tags": []
   },
+  "lvgl": {
+    "crates_io": "https://crates.io/crates/lvgl",
+    "repo": "https://github.com/rafaelcaricio/lvgl-rs",
+    "description": "LittlevGL bindings for Rust. A powerful and easy-to-use embedded GUI with many widgets, advanced visual effects (opacity, antialiasing, animations) and low memory requirements (16K RAM, 64K Flash).",
+    "docs": "https://github.com/rafaelcaricio/lvgl-rs",
+    "tags": [
+      "Bindings",
+      "Embedded"
+    ]
+  },
   "Iced": {
     "crates_io": "https://crates.io/crates/Iced",
     "repo": "https://github.com/hecrj/iced",
@@ -24,6 +34,15 @@
       "QML"
     ]
   },
+  "vgtk": {
+    "crates_io": "https://crates.io/crates/vgtk",
+    "repo": "https://github.com/bodil/vgtk",
+    "description": "A declarative UI framework for GTK",
+    "docs": "https://docs.rs/vgtk",
+    "tags": [
+      "GTK"
+    ]
+  },
   "Azul": {
     "crates_io": "https://crates.io/crates/Azul",
     "repo": "https://github.com/maps4print/azul",
@@ -33,13 +52,15 @@
       "WebRender"
     ]
   },
-  "druid": {
-    "crates_io": "https://crates.io/crates/druid",
-    "repo": "https://github.com/xi-editor/druid",
-    "description": "Druid is a new Rust-native UI toolkit, still in early stages. Its main goal is performance, also aiming for small binary size and compile time, fast startup, and very easy build configuration (just cargo run). It is currently supporting Windows and macOS, with hope to support more in the future.",
-    "docs": null,
+  "tauri": {
+    "crates_io": null,
+    "repo": "https://github.com/tauri-apps/tauri",
+    "description": "Tauri is a framework for building tiny, blazing fast binaries for all major desktop platforms.",
+    "docs": "https://tauri.studio/en/",
     "tags": [
-      "piet"
+      "HTML",
+      "MacOS",
+      "GTK"
     ]
   },
   "KAS": {
@@ -53,24 +74,23 @@
       "proc-macro"
     ]
   },
-  "GTK": {
-    "crates_io": "https://crates.io/crates/GTK",
-    "repo": "https://github.com/gtk-rs/gtk",
-    "description": "Rust bindings and wrappers for GLib, GDK 3, GTK+ 3 and Cairo.",
-    "docs": "https://gtk-rs.org/docs-src/",
+  "imgui": {
+    "crates_io": "https://crates.io/crates/imgui",
+    "repo": "https://github.com/Gekkio/imgui-rs",
+    "description": "High-level Rust bindings to dear imgui",
+    "docs": null,
     "tags": [
       "Bindings",
-      "GTK"
+      "Immediate mode API"
     ]
   },
-  "sciter-rs": {
-    "crates_io": "https://crates.io/crates/sciter-rs",
-    "repo": "https://github.com/sciter-sdk/rust-sciter",
-    "description": "Rust bindings for Sciter - Embeddable HTML/CSS/script engine (cross-platform desktop GUI toolkit). Also capable with DirectX / OpenGL.",
-    "docs": "https://docs.rs/sciter-rs",
+  "conrod-core": {
+    "crates_io": "https://crates.io/crates/conrod-core",
+    "repo": "https://github.com/pistondevelopers/conrod.git",
+    "description": "An easy-to-use, 100% Rust, extensible 2D GUI library.",
+    "docs": "https://docs.rs/conrod_core/latest",
     "tags": [
-      "HTML",
-      "CSS"
+      "Immediate mode API"
     ]
   },
   "fltk": {
@@ -93,14 +113,14 @@
       "Qt"
     ]
   },
-  "imgui-rs": {
-    "crates_io": "https://crates.io/crates/imgui-rs",
-    "repo": "https://github.com/Gekkio/imgui-rs",
-    "description": "IMGUI-RS provides Rust bindings for IMGUI, a bloat-free intermediate mode GUI library for C/C++.\n\nIMGUI outputs vertex buffers that you can render in your 3D-pipeline enabled application. It is fast, portable, renderer agnostic and self-contained.\n\nIMGUI does away with state synchronization by requiring the application to explicitly pass all state required in real-time. The user interface only retains the minimal amount of state required to facilitate the functionality required by each type of widget supported by the system.\n",
-    "docs": "https://docs.rs/imgui",
+  "sciter-rs": {
+    "crates_io": "https://crates.io/crates/sciter-rs",
+    "repo": "https://github.com/sciter-sdk/rust-sciter",
+    "description": "Rust bindings for Sciter - Embeddable HTML/CSS/script engine (cross-platform desktop GUI toolkit). Also capable with DirectX / OpenGL.",
+    "docs": "https://docs.rs/sciter-rs",
     "tags": [
-      "Immediate mode API",
-      "Bindings"
+      "HTML",
+      "CSS"
     ]
   },
   "WebRender": {
@@ -110,6 +130,15 @@
     "docs": "https://doc.servo.org/webrender/index.html",
     "tags": [
       "WebRender"
+    ]
+  },
+  "druid": {
+    "crates_io": "https://crates.io/crates/druid",
+    "repo": "https://github.com/xi-editor/druid",
+    "description": "Druid is a new Rust-native UI toolkit, still in early stages. Its main goal is performance, also aiming for small binary size and compile time, fast startup, and very easy build configuration (just cargo run). It is currently supporting Windows and macOS, with hope to support more in the future.",
+    "docs": null,
+    "tags": [
+      "piet"
     ]
   },
   "core-foundation": {
@@ -132,13 +161,14 @@
       "QML"
     ]
   },
-  "Conrod": {
-    "crates_io": "https://crates.io/crates/Conrod",
-    "repo": "https://github.com/pistondevelopers/conrod.git",
-    "description": "An easy-to-use, 100% Rust, extensible 2D GUI library.",
-    "docs": "http://docs.piston.rs/conrod/conrod/",
+  "relm": {
+    "crates_io": "https://crates.io/crates/relm",
+    "repo": "https://github.com/antoyo/relm",
+    "description": "Asynchronous, GTK+-based, GUI library, inspired by Elm, written in Rust",
+    "docs": "https://docs.rs/relm/",
     "tags": [
-      "Immediate mode API"
+      "Bindings",
+      "GTK"
     ]
   },
   "neutrino": {
@@ -148,11 +178,11 @@
     "docs": "https://docs.rs/neutrino",
     "tags": []
   },
-  "relm": {
-    "crates_io": "https://crates.io/crates/relm",
-    "repo": "https://github.com/antoyo/relm",
-    "description": "Asynchronous, GTK+-based, GUI library, inspired by Elm, written in Rust",
-    "docs": "https://docs.rs/relm/",
+  "GTK": {
+    "crates_io": "https://crates.io/crates/GTK",
+    "repo": "https://github.com/gtk-rs/gtk",
+    "description": "Rust bindings and wrappers for GLib, GDK 3, GTK+ 3 and Cairo.",
+    "docs": "https://gtk-rs.org/docs-src/",
     "tags": [
       "Bindings",
       "GTK"
