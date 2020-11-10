@@ -1,5 +1,14 @@
 [
   {
+    "name": "fui-core",
+    "description": "MVVM-oriented (properties, observable collections, bindings), ui! macro, multiplatform, renderer-agnostic, with styles.",
+    "docs": "https://github.com/marek-g/rust-fui/blob/master/doc/SUMMARY.md",
+    "tags": [
+		"winit",
+		"proc-macro"
+    ]
+  },
+  {
     "name": "lvgl",
     "docs": "https://github.com/rafaelcaricio/lvgl-rs",
     "tags": [

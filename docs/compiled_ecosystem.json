@@ -43,15 +43,6 @@
       "GTK"
     ]
   },
-  "druid": {
-    "crates_io": "https://crates.io/crates/druid",
-    "repo": "https://github.com/xi-editor/druid",
-    "description": "Druid is a new Rust-native UI toolkit, still in early stages. Its main goal is performance, also aiming for small binary size and compile time, fast startup, and very easy build configuration (just cargo run). It is currently supporting Windows and macOS, with hope to support more in the future.",
-    "docs": null,
-    "tags": [
-      "piet"
-    ]
-  },
   "Azul": {
     "crates_io": "https://crates.io/crates/Azul",
     "repo": "https://github.com/maps4print/azul",
@@ -81,6 +72,16 @@
       "winit",
       "WebGPU",
       "proc-macro"
+    ]
+  },
+  "imgui": {
+    "crates_io": "https://crates.io/crates/imgui",
+    "repo": "https://github.com/Gekkio/imgui-rs",
+    "description": "High-level Rust bindings to dear imgui",
+    "docs": null,
+    "tags": [
+      "Bindings",
+      "Immediate mode API"
     ]
   },
   "conrod-core": {
@@ -131,14 +132,13 @@
       "WebRender"
     ]
   },
-  "imgui": {
-    "crates_io": "https://crates.io/crates/imgui",
-    "repo": "https://github.com/Gekkio/imgui-rs",
-    "description": "High-level Rust bindings to dear imgui",
+  "druid": {
+    "crates_io": "https://crates.io/crates/druid",
+    "repo": "https://github.com/xi-editor/druid",
+    "description": "Druid is a new Rust-native UI toolkit, still in early stages. Its main goal is performance, also aiming for small binary size and compile time, fast startup, and very easy build configuration (just cargo run). It is currently supporting Windows and macOS, with hope to support more in the future.",
     "docs": null,
     "tags": [
-      "Bindings",
-      "Immediate mode API"
+      "piet"
     ]
   },
   "core-foundation": {
@@ -169,6 +169,16 @@
     "tags": [
       "Bindings",
       "GTK"
+    ]
+  },
+  "fui-core": {
+    "crates_io": "https://crates.io/crates/fui-core",
+    "repo": "https://github.com/marek-g/rust-fui",
+    "description": "MVVM-oriented (properties, observable collections, bindings), ui! macro, multiplatform, renderer-agnostic, with styles.",
+    "docs": "https://github.com/marek-g/rust-fui/blob/master/doc/SUMMARY.md",
+    "tags": [
+      "winit",
+      "proc-macro"
     ]
   },
   "GTK": {
