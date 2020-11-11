@@ -25,7 +25,7 @@ jobs:
 
     - name: Publish
       if: github.ref == 'refs/heads/master'
-      run: ./cli/target/debug/cli --clean publish
+      run: ./cli/target/debug/cli publish
 
     - name: Deploy
       if: github.ref == 'refs/heads/master'
