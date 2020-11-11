@@ -28,7 +28,6 @@ jobs:
       run: ./cli/target/debug/cli --clean publish
 
     - name: Deploy
-      if: github.ref == 'refs/heads/master'
       uses: JamesIves/github-pages-deploy-action@3.7.1
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
