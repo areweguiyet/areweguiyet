@@ -22,7 +22,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Verify
-      run: cd cli && cargo run --verbose -- --clean publish --verify-only
+      run: cd cli && cargo run --verbose -- publish --verify-only
 
   deploy:
     name: Deploys to GH Pages
@@ -34,7 +34,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Publish
-      run: cd cli && cargo run --verbose -- --clean publish
+      run: cd cli && cargo run --verbose -- publish
 
     - name: Deploy
       uses: JamesIves/github-pages-deploy-action@3.7.1
