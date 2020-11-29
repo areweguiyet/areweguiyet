@@ -1,5 +1,11 @@
 [
   {
+    "name": "iui",
+    "tags": [
+      "Bindings"
+    ]
+  },
+  {
     "name": "lvgl",
     "docs": "https://github.com/rafaelcaricio/lvgl-rs",
     "tags": [
