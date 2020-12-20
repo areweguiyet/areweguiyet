@@ -440,6 +440,9 @@ fn publish(cache: &mut Cache, verify_only: bool) {
     }
 
     if !verify_only {
+        fs::create_dir_all(Path::new(COMPILED_ECOSYSTEM).parent().unwrap())
+            .expect("Failed to create directory");
+
         let mut out_compiled_ecosystem = File::create(COMPILED_ECOSYSTEM)
             .expect("Failed to create compiled ecosystem file");
         serde_json::to_writer_pretty(&mut out_compiled_ecosystem, &compiled_ecosystem)
@@ -463,8 +466,9 @@ fn publish(cache: &mut Cache, verify_only: bool) {
     }
 }
 
-// this is a little sloppy but hey! it works...
-fn output_html(path: &str, page: &str) -> io::Result<()> {
+fn output_html<P: AsRef<Path>>(path: P, page: &str) -> io::Result<()> {
+    fs::create_dir_all(path.as_ref().parent().unwrap())
+        .expect("Failed to create parent dir for HTML file");
     let mut out_index = File::create(path)?;
     out_index.write_all(page.as_bytes())
 }
