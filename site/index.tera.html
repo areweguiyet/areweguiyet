@@ -27,28 +27,22 @@
 <section id="newsfeed" class="centered-content">
     <h2><a href="./newsfeed">Stay in the loop.</a></h2>
     <p>If you're working on or writing about GUIs in Rust, please contribute! Each
-        news entry can either be a post contributed to the Repo or a link back to
+        news entry can either be a post contributed to the repo or a link back to
         your blog, Reddit thread, etc. See
         <a href="https://github.com/areweguiyet/areweguiyet/blob/master/README.md">
         README</a> for details.</p>
-    <p>Here are the most recent posts on AreWeGuiYet:</p>
+    <p>Here are also some popular and recommended community links submitted to the site:</p>
     <div class="newsfeed-posts">
-        {% if news_posts | length > 0 %}
-            <div>
-                <h3 class="featured">{{news_posts.0.title}} by {{news_posts.0.author}}</h3>
-                {{macros::link(label=news_posts.0.link, href=news_posts.0.link)}}
-            </div>
-        {% endif %}
-        {% for post in news_posts | slice(start=1, end=3) %}
+        {% for post in news_links | slice(start=0, end=3) %}
             <div>
                 <h3>{{post.title}} by {{post.author}}</h3>
                 {{macros::link(label=post.link, href=post.link)}}
             </div>
         {% endfor %}
     </div>
-    <p>Here are also some popular and recommended community links submitted to the site:</p>
+    <p>Here are the most recent posts on AreWeGuiYet:</p>
     <div class="newsfeed-posts">
-        {% for post in news_links | slice(start=0, end=3) %}
+        {% for post in news_posts | slice(start=0, end=3) %}
             <div>
                 <h3>{{post.title}} by {{post.author}}</h3>
                 {{macros::link(label=post.link, href=post.link)}}
