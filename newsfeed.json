@@ -1,5 +1,14 @@
 [
     {
+        "title": "Rust 2021: GUI",
+        "author": "Raph Levien",
+        "source": {
+            "kind": "Link",
+            "link": "https://raphlinus.github.io/rust/druid/2020/09/28/rust-2021.html"
+        },
+        "order": 2
+    },
+    {
         "title": "#Rust2019 Are We GUI Yet?",
         "author": "Dustin Bensing",
         "source": {
