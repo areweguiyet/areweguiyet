@@ -105,7 +105,7 @@
   },
   {
     "name": "druid",
-    "description": "Druid is a new Rust-native UI toolkit, still in early stages. Its main goal is performance, also aiming for small binary size and compile time, fast startup, and very easy build configuration (just cargo run). It is currently supporting Windows and macOS, with hope to support more in the future.",
+    "description": "Druid is an experimental Rust-native UI toolkit. Its main goal is to offer a polished user experience. There are many factors to this goal, including performance, a rich palette of interactions (hence a widget library to support them), and playing well with the native platform.",
     "tags": [
       "piet"
     ]
