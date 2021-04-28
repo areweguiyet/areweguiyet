@@ -1,5 +1,13 @@
 [
   {
+    "name": "native-windows-gui",
+    "tags": [
+      "Bindings",
+      "proc-macro",
+      "WinApi"
+    ]
+  },
+  {
     "name": "iui",
     "tags": [
       "Bindings"
