@@ -24,7 +24,6 @@
   {
     "name": "egui",
     "crates_io": "https://crates.io/crates/egui",
-    "repo": "https://github.com/emilk/egui",
     "description": "Highly portable immediate mode GUI library in pure Rust",
     "docs": "https://docs.rs/egui",
     "tags": [
