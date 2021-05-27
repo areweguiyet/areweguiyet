@@ -1,5 +1,17 @@
 [
   {
+    "name": "WinSafe",
+    "crates_io": "https://crates.io/crates/winsafe",
+    "skip_crates_io": false,
+    "repo": "https://github.com/rodrigocfd/winsafe",
+    "description": "Win32 GUI and related APIs in safe, idiomatic Rust.",
+    "docs": "https://docs.rs/winsafe",
+    "tags": [
+        "Bindings",
+        "WinApi"
+    ]
+  },
+  {
     "name": "SixtyFPS",
     "skip_crates_io": true,
     "repo": "https://github.com/sixtyfpsui/sixtyfps",
