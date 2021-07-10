@@ -21,6 +21,9 @@ Vue.component('crate-card', {
             <div class="content">
                 <p>{{ crate.description }}</p>
             </div>
+            <div class="badge">
+                <img alt="Crates.io" v-bind:src="'https://img.shields.io/crates/d/' + crate.name + '?color=9f703d'">
+            </div>
             <ul v-if="crate.tags" class="ecosystem-tags">
                 <li v-for="tag in crate.tags">{{ tag }}</li>
             </ul>
