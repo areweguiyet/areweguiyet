@@ -299,3 +299,8 @@ p {
         flex: 0 0 378px;
     }
 }
+
+.badge {
+    margin: 1px;
+    align-self: flex-end;
+}
