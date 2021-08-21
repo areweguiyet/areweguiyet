@@ -155,8 +155,11 @@
     ]
   },
   {
-    "name": "qmetaobject",
+    "name": "qmetaobject-rs",
+    "description": "A framework empowering everyone to create Qt/QML applications with Rust. It does so by building QMetaObjects at compile time, registering QML types (optionally via exposing QQmlExtensionPlugins) and providing idiomatic wrappers.",
+    "docs": "https://docs.rs/qmetaobject/",
     "tags": [
+      "proc-macro",
       "Bindings",
       "Qt",
       "QML"
