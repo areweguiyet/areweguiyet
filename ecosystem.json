@@ -1,16 +1,23 @@
 [
   {
+    "name": "flutter_rust_bridge",
+    "docs": "https://github.com/fzyzcjy/flutter_rust_bridge",
+    "tags": [
+      "Bindings"
+    ]
+  },
+  {
     "name": "SixtyFPS",
     "skip_crates_io": true,
     "repo": "https://github.com/sixtyfpsui/sixtyfps",
     "description": "SixtyFPS is a toolkit to efficiently develop fluid graphical user interfaces for any display: embedded devices and desktop applications. It comes with a fast OpenGL renderer, a designer-friendly markup language and is written in Rust.",
     "docs": "https://docs.rs/sixtyfps/",
     "tags": [
-        "proc-macro",
-        "winit",
-        "Embedded",
-        "CSS",
-        "MacOS"
+      "proc-macro",
+      "winit",
+      "Embedded",
+      "CSS",
+      "MacOS"
     ]
   },
   {
@@ -37,7 +44,6 @@
   },
   {
     "name": "egui",
-    "crates_io": "https://crates.io/crates/egui",
     "description": "Highly portable immediate mode GUI library in pure Rust",
     "docs": "https://docs.rs/egui",
     "tags": [
