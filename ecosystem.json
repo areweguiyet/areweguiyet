@@ -1,5 +1,12 @@
 [
   {
+    "name": "gladis",
+    "docs": "https://docs.rs/gladis",
+    "tags": [
+      "GTK"
+    ]
+  },
+  {
     "name": "SixtyFPS",
     "skip_crates_io": true,
     "repo": "https://github.com/sixtyfpsui/sixtyfps",
