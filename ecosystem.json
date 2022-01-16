@@ -32,13 +32,11 @@
   },
   {
     "name": "WinSafe",
-    "crates_io": "https://crates.io/crates/winsafe",
-    "skip_crates_io": false,
     "description": "Win32 GUI and related APIs in safe, idiomatic Rust.",
     "docs": "https://docs.rs/winsafe",
     "tags": [
-        "Bindings",
-        "WinApi"
+      "Bindings",
+      "WinApi"
     ]
   },
   {
