@@ -1,5 +1,14 @@
 [
   {
+    "name": "fui-core",
+    "description": "MVVM-oriented (properties, observable collections, bindings), ui! macro, multiplatform, renderer-agnostic, with styles.",
+    "docs": "https://github.com/marek-g/rust-fui/blob/master/doc/SUMMARY.md",
+    "tags": [
+      "winit",
+      "proc-macro"
+    ]
+  },
+  {
     "name": "SixtyFPS",
     "skip_crates_io": true,
     "repo": "https://github.com/sixtyfpsui/sixtyfps",
