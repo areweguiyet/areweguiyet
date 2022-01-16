@@ -58,7 +58,6 @@
       "proc-macro",
       "winit",
       "Embedded",
-      "CSS",
       "MacOS"
     ]
   },
