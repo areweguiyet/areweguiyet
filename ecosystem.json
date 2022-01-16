@@ -1,5 +1,17 @@
 [
   {
+    "name": "WinSafe",
+    "crates_io": "https://crates.io/crates/winsafe",
+    "skip_crates_io": false,
+    "repo": "https://github.com/rodrigocfd/winsafe",
+    "description": "Win32 GUI and related APIs in safe, idiomatic Rust.",
+    "docs": "https://docs.rs/winsafe",
+    "tags": [
+        "Bindings",
+        "WinApi"
+    ]
+  },
+  {
     "name": "fui-core",
     "description": "MVVM-oriented (properties, observable collections, bindings), ui! macro, multiplatform, renderer-agnostic, with styles.",
     "docs": "https://github.com/marek-g/rust-fui/blob/master/doc/SUMMARY.md",
