@@ -143,6 +143,16 @@
     ]
   },
   {
+    "name": "cacao",
+    "repo": "https://github.com/ryanmcgrath/cacao",
+    "description": "Rust bindings for AppKit (macOS, beta) and UIKit (iOS/tvOS, alpha).",
+    "docs": "https://docs.rs/cacao/",
+    "tags": [
+      "MacOS",
+      "iOS"
+    ]
+  },
+  {
     "name": "sciter-rs",
     "tags": [
       "HTML",
