@@ -301,6 +301,6 @@ p {
 }
 
 .badge {
-    margin: 1px;
+    margin-right: 10px;
     align-self: flex-end;
 }
