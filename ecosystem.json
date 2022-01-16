@@ -1,16 +1,65 @@
 [
   {
+    "name": "gladis",
+    "docs": "https://docs.rs/gladis",
+    "tags": [
+      "GTK"
+    ]
+  },
+  {
+    "name": "flutter_rust_bridge",
+    "docs": "https://github.com/fzyzcjy/flutter_rust_bridge",
+    "tags": [
+      "Bindings"
+    ]
+  },
+  {
+    "name": "Relm4",
+    "tags": [
+      "GTK",
+      "Bindings",
+      "MacOS",
+      "CSS"
+    ]
+  },
+  {
+    "name": "Makepad",
+    "repo": "https://github.com/makepad/makepad",
+    "description": "Makepad is a new VR, web and native-rendering UI framework.",
+    "tags": [
+      "WebGPU"
+    ]
+  },
+  {
+    "name": "WinSafe",
+    "description": "Win32 GUI and related APIs in safe, idiomatic Rust.",
+    "docs": "https://docs.rs/winsafe",
+    "tags": [
+      "Bindings",
+      "WinApi"
+    ]
+  },
+  {
+    "name": "fui-core",
+    "description": "MVVM-oriented (properties, observable collections, bindings), ui! macro, multiplatform, renderer-agnostic, with styles.",
+    "docs": "https://github.com/marek-g/rust-fui/blob/master/doc/SUMMARY.md",
+    "tags": [
+      "winit",
+      "proc-macro"
+    ]
+  },
+  {
     "name": "SixtyFPS",
     "skip_crates_io": true,
     "repo": "https://github.com/sixtyfpsui/sixtyfps",
     "description": "SixtyFPS is a toolkit to efficiently develop fluid graphical user interfaces for any display: embedded devices and desktop applications. It comes with a fast OpenGL renderer, a designer-friendly markup language and is written in Rust.",
     "docs": "https://docs.rs/sixtyfps/",
     "tags": [
-        "proc-macro",
-        "winit",
-        "Embedded",
-        "CSS",
-        "MacOS"
+      "proc-macro",
+      "winit",
+      "Embedded",
+      "CSS",
+      "MacOS"
     ]
   },
   {
@@ -37,7 +86,6 @@
   },
   {
     "name": "egui",
-    "crates_io": "https://crates.io/crates/egui",
     "description": "Highly portable immediate mode GUI library in pure Rust",
     "docs": "https://docs.rs/egui",
     "tags": [
@@ -109,9 +157,18 @@
   },
   {
     "name": "core-foundation",
-    "docs": "https://docs.rs/core-foundation/0.6.4/core_foundation/",
+    "docs": "https://docs.rs/core-foundation/",
     "tags": [
+      "Bindings",
       "MacOS"
+    ]
+  },
+  {
+    "name": "cacao",
+    "docs": "https://docs.rs/cacao/",
+    "tags": [
+      "MacOS",
+      "iOS"
     ]
   },
   {
