@@ -111,6 +111,7 @@
     "name": "core-foundation",
     "docs": "https://docs.rs/core-foundation/0.6.4/core_foundation/",
     "tags": [
+      "Bindings",
       "MacOS"
     ]
   },
