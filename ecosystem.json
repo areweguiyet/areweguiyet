@@ -1,5 +1,13 @@
 [
   {
+    "name": "gtk_comfy",
+    "description": "Gtk Comfy allows you to use any serde format to declare a GTK interface",
+    "docs": "https://docs.rs/gtk_comfy/latest/gtk_comfy/",
+    "tags": [
+      "GTK"
+    ]
+  },
+  {
     "name": "gladis",
     "docs": "https://docs.rs/gladis",
     "tags": [
