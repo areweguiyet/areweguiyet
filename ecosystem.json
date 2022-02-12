@@ -49,11 +49,11 @@
     ]
   },
   {
-    "name": "SixtyFPS",
+    "name": "Slint",
     "skip_crates_io": true,
-    "repo": "https://github.com/sixtyfpsui/sixtyfps",
-    "description": "SixtyFPS is a toolkit to efficiently develop fluid graphical user interfaces for any display: embedded devices and desktop applications. It comes with a fast OpenGL renderer, a designer-friendly markup language and is written in Rust.",
-    "docs": "https://docs.rs/sixtyfps/",
+    "repo": "https://github.com/slint-ui/slint",
+    "description": "Slint is a toolkit to efficiently develop fluid graphical user interfaces for any display: embedded devices and desktop applications. It comes with a fast OpenGL renderer, a designer-friendly markup language and is written in Rust.",
+    "docs": "https://docs.rs/slint/",
     "tags": [
       "proc-macro",
       "winit",
