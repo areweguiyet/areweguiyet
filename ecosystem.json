@@ -1,5 +1,10 @@
 [
   {
+    "name": "Dominator",
+    "docs": "https://docs.rs/dominator/latest/dominator/",
+    "tags": []
+  },
+  {
     "name": "gladis",
     "docs": "https://docs.rs/gladis",
     "tags": [
