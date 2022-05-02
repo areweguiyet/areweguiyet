@@ -1,5 +1,11 @@
 [
   {
+    "name": "Dioxus",
+    "description": "Elegant React-like library for building user interfaces for desktop, web, mobile, SSR, liveview, and more.",
+    "docs": "https://docs.rs/dioxus/latest/dioxus/",
+    "tags": []
+  },
+  {
     "name": "gladis",
     "docs": "https://docs.rs/gladis",
     "tags": [
