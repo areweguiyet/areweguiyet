@@ -1,5 +1,14 @@
 [
     {
+        "title": "Xilem: an architecture for UI in Rust",
+        "author": "Raph Levien",
+        "source": {
+            "kind": "Link",
+            "link": "https://raphlinus.github.io/rust/gui/2022/05/07/ui-architecture.html"
+        },
+        "order": 3
+    },
+    {
         "title": "Rust 2021: GUI",
         "author": "Raph Levien",
         "source": {
