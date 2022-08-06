@@ -233,6 +233,16 @@
     ]
   },
   {
+    "name": "CXX-Qt",
+    "description": "CXX-Qt is a library that automatically generates code to transfer data between Rust and C++ through common interfaces such as QObjects that can be exposed directly into QML. It uses the cxx crate for safe interaction between Rust and C++.",
+    "docs": "https://kdab.github.io/cxx-qt/book/",
+    "tags": [
+      "Bindings",
+      "Qt",
+      "QML"
+    ]
+  },
+  {
     "name": "relm",
     "tags": [
       "Bindings",
