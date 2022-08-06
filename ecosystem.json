@@ -1,5 +1,10 @@
 [
   {
+    "name": "Dominator",
+    "docs": "https://docs.rs/dominator/latest/dominator/",
+    "tags": []
+  },
+  {
     "name": "Dioxus",
     "description": "Elegant React-like library for building user interfaces for desktop, web, mobile, SSR, liveview, and more.",
     "docs": "https://docs.rs/dioxus/latest/dioxus/",
