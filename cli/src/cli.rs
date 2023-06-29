@@ -2,7 +2,7 @@ use crate::newsfeed::*;
 
 use serde::de::DeserializeOwned;
 
-use clap::{Arg, ArgAction, ArgGroup, Command};
+use clap::{Arg, ArgAction, Command};
 use reqwest::blocking::Client as HttpClient;
 
 use std::collections::hash_map::DefaultHasher;
@@ -16,7 +16,7 @@ use std::io::Write;
 use std::path::Path;
 
 // source files
-const NEWSFEED: &str = "../newsfeed.json";
+const NEWSFEED: &str = "../newsfeed.toml";
 const ECOSYSTEM: &str = "../ecosystem.toml";
 const COMPILED_ECOSYSTEM: &str = "../docs/compiled_ecosystem.json";
 const ECOSYSTEM_TAGS: &str = "../ecosystem_tags.toml";
@@ -89,16 +89,14 @@ struct NewsfeedTemplateArgs {
     title: String,
     author: String,
     link: String,
-    order: u32,
 }
 
 impl NewsfeedTemplateArgs {
-    fn new(n: &NewsfeedEntry, link: &str) -> NewsfeedTemplateArgs {
+    fn new(n: &NewsfeedCommon, link: &str) -> NewsfeedTemplateArgs {
         // I should get a prize for being this efficient!
         NewsfeedTemplateArgs {
             title: n.title.clone(),
             author: n.author.clone(),
-            order: n.order,
             link: link.to_owned(),
         }
     }
@@ -263,19 +261,6 @@ fn cli() -> Command {
                 .long("verify-only")
                 .help("Run all normal checks before publishing without generating HTML.")
                 .action(ArgAction::SetTrue)))
-        .subcommand(Command::new("news")
-            .about("Adds a new news post from either a link or a markdown file.")
-            .arg(Arg::new("link")
-                .long("link")
-                .short('l')
-                .help("Adds a new news post from a link to another website"))
-            .arg(Arg::new("post")
-                .long("post")
-                .short('p')
-                .help("Creates a new news post hosted on Areweguiyet"))
-            .group(ArgGroup::new("newsfeed_type")
-                .args(["post", "link"])
-                .required(true)))
 }
 
 pub fn execute_cli() {
@@ -296,9 +281,6 @@ pub fn execute_cli() {
 
             publish(&mut cache, verify_only);
         }
-        Some(("news", _)) => {
-            unimplemented!();
-        }
         _ => unreachable!(),
     }
 
@@ -315,8 +297,7 @@ fn publish(cache: &mut Cache, verify_only: bool) {
     let ecosystem: Ecosystem = parse_toml_file(ECOSYSTEM).expect("failed to parse ecosystem.toml");
     let mut tags: HashMap<String, Option<String>> =
         parse_toml_file(ECOSYSTEM_TAGS).expect("failed to parse ecosystem_tags.toml");
-    let newsfeed: Vec<NewsfeedEntry> =
-        parse_json_file(NEWSFEED).expect("Failed to parse newsfeed.json");
+    let newsfeed: Newsfeed = parse_toml_file(NEWSFEED).expect("failed to parse newsfeed.toml");
 
     println!("Found {} crates.", ecosystem.crates.len());
 
@@ -354,44 +335,41 @@ fn publish(cache: &mut Cache, verify_only: bool) {
     let mut tera = tera::Tera::new(TEMPLATE_SOURCE_GLOB).expect("failed to parse templates");
     tera.autoescape_on(vec![".tera.html"]);
 
-    // compile news posts and gather links
+    let news_links: Vec<_> = newsfeed
+        .links
+        .iter()
+        .map(|entry| NewsfeedTemplateArgs::new(&entry.common, &entry.link))
+        .collect();
+
+    // compile news posts
     let mut news_post_rendered_html = HashMap::new();
     let mut news_posts = Vec::new();
-    let mut news_links = Vec::new();
 
-    for entry in &newsfeed {
-        match &entry.source {
-            NewsfeedSource::Link { link } => {
-                news_links.push(NewsfeedTemplateArgs::new(entry, link));
-            }
-            NewsfeedSource::Post { file_name } => {
-                // open the file containing the markdown
-                let mut markdown_path = NEWSFEED_POST_MARKDOWN_ROOT.to_string();
-                markdown_path.push_str(file_name);
-                let markdown =
-                    fs::read_to_string(&markdown_path).expect("Failed to read markdown post");
-                // parse and render the markdown for this post
-                let parser = pulldown_cmark::Parser::new(&markdown);
-                let mut rendered_content = String::new();
-                pulldown_cmark::html::push_html(&mut rendered_content, parser);
-                // render to a template
-                let post_content = PostTemplateArgs {
-                    page_title: entry.title.clone(),
-                    post_content: rendered_content,
-                };
-                let context = tera::Context::from_serialize(post_content).unwrap();
-                let rendered_page = tera
-                    .render(NEWSFEED_POST_HTML_TEMPLATE_NAME, &context)
-                    .expect("Failed to render hosted news post");
-                // save the rendered template so we can output it later
-                let mut link = file_name.replace(".md", ".html");
-                news_post_rendered_html.insert(link.clone(), rendered_page);
-                // record the news post so it can be rendered into other pages on the site
-                // TODO: this is very fragile... (and arguably dangerous)
-                link.insert_str(0, NEWSFEED_POST_HTML_LINK_ROOT);
-                news_posts.push(NewsfeedTemplateArgs::new(entry, &link));
-            }
-        }
+    for entry in &newsfeed.posts {
+        // open the file containing the markdown
+        let mut markdown_path = NEWSFEED_POST_MARKDOWN_ROOT.to_string();
+        markdown_path.push_str(&entry.file_name);
+        let markdown = fs::read_to_string(&markdown_path).expect("Failed to read markdown post");
+        // parse and render the markdown for this post
+        let parser = pulldown_cmark::Parser::new(&markdown);
+        let mut rendered_content = String::new();
+        pulldown_cmark::html::push_html(&mut rendered_content, parser);
+        // render to a template
+        let post_content = PostTemplateArgs {
+            page_title: entry.common.title.clone(),
+            post_content: rendered_content,
+        };
+        let context = tera::Context::from_serialize(post_content).unwrap();
+        let rendered_page = tera
+            .render(NEWSFEED_POST_HTML_TEMPLATE_NAME, &context)
+            .expect("Failed to render hosted news post");
+        // save the rendered template so we can output it later
+        let mut link = entry.file_name.replace(".md", ".html");
+        news_post_rendered_html.insert(link.clone(), rendered_page);
+        // record the news post so it can be rendered into other pages on the site
+        // TODO: this is very fragile... (and arguably dangerous)
+        link.insert_str(0, NEWSFEED_POST_HTML_LINK_ROOT);
+        news_posts.push(NewsfeedTemplateArgs::new(&entry.common, &link));
     }
 
     println!("Found {} community news links.", news_links.len());
