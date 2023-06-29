@@ -366,7 +366,7 @@ fn publish(cache: &mut Cache, verify_only: bool) {
     }
 
     // compile the templates
-    let mut tera = compile_templates!(TEMPLATE_SOURCE_GLOB);
+    let mut tera = tera::Tera::new(TEMPLATE_SOURCE_GLOB).expect("failed to parse templates");
     tera.autoescape_on(vec![".tera.html"]);
 
     // compile news posts and gather links
@@ -394,7 +394,8 @@ fn publish(cache: &mut Cache, verify_only: bool) {
                     page_title: entry.title.clone(),
                     post_content: rendered_content,
                 };
-                let rendered_page = tera.render(NEWSFEED_POST_HTML_TEMPLATE_NAME, &post_content)
+                let context = tera::Context::from_serialize(post_content).unwrap();
+                let rendered_page = tera.render(NEWSFEED_POST_HTML_TEMPLATE_NAME, &context)
                     .expect("Failed to render hosted news post");
                 // save the rendered template so we can output it later
                 let mut link = file_name.replace(".md", ".html");
@@ -421,11 +422,13 @@ fn publish(cache: &mut Cache, verify_only: bool) {
     // Render the templates and remove newlines so people don't accidentally edit the compiled HTML
     // (we could actually minify it too)
     awgy.page_title = None;
-    let index = tera.render(INDEX_HTML_TEMPLATE_NAME, &awgy)
+    let context = tera::Context::from_serialize(&awgy).unwrap();
+    let index = tera.render(INDEX_HTML_TEMPLATE_NAME, &context)
         .expect("Failed to render template");
 
     awgy.page_title = Some("News Feed".to_string());
-    let newsfeed = tera.render(NEWSFEED_HTML_TEMPLATE_NAME, &awgy)
+    let context = tera::Context::from_serialize(&awgy).unwrap();
+    let newsfeed = tera.render(NEWSFEED_HTML_TEMPLATE_NAME, &context)
         .expect("Failed to render template");
 
     println!("Successfully rendered templates.");

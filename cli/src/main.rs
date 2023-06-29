@@ -6,7 +6,6 @@ extern crate serde_json;
 
 extern crate reqwest;
 
-#[macro_use]
 extern crate tera;
 
 extern crate clap;
