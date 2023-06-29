@@ -1,5 +1,12 @@
 [
   {
+    "name": "gtk4",
+    "tags": [
+      "GTK",
+      "Bindings"
+    ]
+  },
+  {
     "name": "rui",
     "docs": "https://docs.rs/rui/",
     "tags": [
