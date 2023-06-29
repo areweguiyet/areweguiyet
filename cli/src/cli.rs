@@ -2,7 +2,7 @@ use crate::newsfeed::*;
 
 use serde::de::DeserializeOwned;
 
-use clap::{App, SubCommand, Arg, AppSettings, ArgGroup};
+use clap::{ArgAction, Command, Arg, ArgGroup};
 use reqwest::blocking::Client as HttpClient;
 
 use std::path::Path;
@@ -262,57 +262,60 @@ impl BuildHasher for ConstantState {
     }
 }
 
-pub fn execute_cli() {
-    let matches = App::new("Areweguiyet CLI")
-        .setting(AppSettings::SubcommandRequiredElseHelp)
+fn cli() -> Command {
+    Command::new("Areweguiyet CLI")
+        .subcommand_required(true)
+        .arg_required_else_help(true)
         .about("CLI for extending areweguiyet website")
-        .arg(Arg::with_name("clean")
+        .arg(Arg::new("clean")
             .long("clean")
-            .help("Force refreshes the cache, making new network requests"))
-        .subcommand(SubCommand::with_name("publish")
+            .help("Force refreshes the cache, making new network requests")
+            .action(ArgAction::SetTrue))
+        .subcommand(Command::new("publish")
             .about("Publishes generated HTML to docs directory. Fork the repo, push the resulting \
                   changes, and then open a PR on Github to share your changes!")
-            .arg(Arg::with_name("verify-only")
+            .arg(Arg::new("verify-only")
                 .long("verify-only")
-                .help("Run all normal checks before publishing without generating HTML.")))
-        .subcommand(SubCommand::with_name("framework")
+                .help("Run all normal checks before publishing without generating HTML.")
+                .action(ArgAction::SetTrue)))
+        .subcommand(Command::new("framework")
             .about("Adds a new GUI crate or framework to ecosystem.json."))
-        .subcommand(SubCommand::with_name("news")
+        .subcommand(Command::new("news")
             .about("Adds a new news post from either a link or a markdown file.")
-            .arg(Arg::with_name("link")
+            .arg(Arg::new("link")
                 .long("link")
-                .short("l")
+                .short('l')
                 .help("Adds a new news post from a link to another website"))
-            .arg(Arg::with_name("post")
+            .arg(Arg::new("post")
                 .long("post")
-                .short("p")
+                .short('p')
                 .help("Creates a new news post hosted on Areweguiyet"))
-            .group(ArgGroup::with_name("newsfeed_type")
+            .group(ArgGroup::new("newsfeed_type")
                 .args(&["post", "link"])
                 .required(true)))
-        .get_matches();
+}
+
+pub fn execute_cli() {
+    let matches = cli().get_matches();
 
     let mut cache = Cache::new(CACHE_FILE);
 
-    if matches.is_present("clean") {
+    if matches.get_flag("clean") {
         cache.remove_cache(CACHE_FILE)
             .expect(CACHE_FILE_DELETION_FAILED);
         println!("Cache file removed.");
     }
 
     match matches.subcommand() {
-        ("publish", args) => {
-            let verify_only = match args {
-                Some(args) => args.is_present("verify-only"),
-                None => false,
-            };
+        Some(("publish", args)) => {
+            let verify_only = args.get_flag("verify-only");
 
             publish(&mut cache, verify_only);
         },
-        ("framework", _) => {
+        Some(("framework", _)) => {
             framework(&mut cache);
         },
-        ("news", _) => {
+        Some(("news", _)) => {
             unimplemented!();
         },
         _ => unreachable!(),
@@ -366,7 +369,7 @@ fn publish(cache: &mut Cache, verify_only: bool) {
     }
 
     // compile the templates
-    let mut tera = compile_templates!(TEMPLATE_SOURCE_GLOB);
+    let mut tera = tera::Tera::new(TEMPLATE_SOURCE_GLOB).expect("failed to parse templates");
     tera.autoescape_on(vec![".tera.html"]);
 
     // compile news posts and gather links
@@ -394,7 +397,8 @@ fn publish(cache: &mut Cache, verify_only: bool) {
                     page_title: entry.title.clone(),
                     post_content: rendered_content,
                 };
-                let rendered_page = tera.render(NEWSFEED_POST_HTML_TEMPLATE_NAME, &post_content)
+                let context = tera::Context::from_serialize(post_content).unwrap();
+                let rendered_page = tera.render(NEWSFEED_POST_HTML_TEMPLATE_NAME, &context)
                     .expect("Failed to render hosted news post");
                 // save the rendered template so we can output it later
                 let mut link = file_name.replace(".md", ".html");
@@ -421,11 +425,13 @@ fn publish(cache: &mut Cache, verify_only: bool) {
     // Render the templates and remove newlines so people don't accidentally edit the compiled HTML
     // (we could actually minify it too)
     awgy.page_title = None;
-    let index = tera.render(INDEX_HTML_TEMPLATE_NAME, &awgy)
+    let context = tera::Context::from_serialize(&awgy).unwrap();
+    let index = tera.render(INDEX_HTML_TEMPLATE_NAME, &context)
         .expect("Failed to render template");
 
     awgy.page_title = Some("News Feed".to_string());
-    let newsfeed = tera.render(NEWSFEED_HTML_TEMPLATE_NAME, &awgy)
+    let context = tera::Context::from_serialize(&awgy).unwrap();
+    let newsfeed = tera.render(NEWSFEED_HTML_TEMPLATE_NAME, &context)
         .expect("Failed to render template");
 
     println!("Successfully rendered templates.");
@@ -744,4 +750,14 @@ fn crates_io_api_url(crate_name: &str) -> String {
 
 fn crates_io_url(crate_name: &str) -> String {
     format!("https://crates.io/crates/{}", crate_name)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn verify_cli() {
+        cli().debug_assert();
+    }
 }
