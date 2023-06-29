@@ -19,7 +19,7 @@ use std::path::Path;
 const NEWSFEED: &str = "../newsfeed.json";
 const ECOSYSTEM: &str = "../ecosystem.toml";
 const COMPILED_ECOSYSTEM: &str = "../docs/compiled_ecosystem.json";
-const ECOSYSTEM_TAGS: &str = "../ecosystem_tags.json";
+const ECOSYSTEM_TAGS: &str = "../ecosystem_tags.toml";
 
 // templates
 const TEMPLATE_SOURCE_GLOB: &str = "../site/**/*.tera*.html";
@@ -314,7 +314,7 @@ fn publish(cache: &mut Cache, verify_only: bool) {
     // Load all the information we need
     let ecosystem: Ecosystem = parse_toml_file(ECOSYSTEM).expect("failed to parse ecosystem.toml");
     let mut tags: HashMap<String, Option<String>> =
-        parse_json_file(ECOSYSTEM_TAGS).expect("Failed to parse ecosystem_tags.json");
+        parse_toml_file(ECOSYSTEM_TAGS).expect("failed to parse ecosystem_tags.toml");
     let newsfeed: Vec<NewsfeedEntry> =
         parse_json_file(NEWSFEED).expect("Failed to parse newsfeed.json");
 
@@ -329,7 +329,7 @@ fn publish(cache: &mut Cache, verify_only: bool) {
     for krate in ecosystem.crates.values() {
         used_tags.extend(krate.tags.iter())
     }
-    // issue a warning if there are unsused tags in ecosystem_tags.json
+    // issue a warning if there are unsused tags in ecosystem_tags.toml
     for k in tags.keys() {
         if !used_tags.contains(k) {
             errors.push(format!("Tag \"{}\" is not used to describe any crate", k));
