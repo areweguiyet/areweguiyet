@@ -15,5 +15,5 @@ pub enum NewsfeedSource {
     Post {
         /// File name with no associated path
         file_name: String,
-    }
+    },
 }

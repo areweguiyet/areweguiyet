@@ -14,11 +14,14 @@ env:
 
 jobs:
   lint-cli:
-    name: Run cargo clippy on the CLI script
+    name: Run cargo fmt and cargo clippy on the CLI script
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
+
+    - name: cargo fmt
+      run: cargo fmt --check
 
     - name: cargo clippy
       run: cargo clippy
