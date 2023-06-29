@@ -1,5 +1,10 @@
 [
   {
+    "name": "GemGui",
+    "docs": "https://docs.rs/gemgui/latest/gemgui/",
+    "tags": []
+  },
+  {
     "name": "gtk4",
     "tags": [
       "GTK",
