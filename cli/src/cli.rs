@@ -101,13 +101,13 @@ struct NewsfeedTemplateArgs {
 }
 
 impl NewsfeedTemplateArgs {
-    fn new(n: &NewsfeedEntry, link: &String) -> NewsfeedTemplateArgs {
+    fn new(n: &NewsfeedEntry, link: &str) -> NewsfeedTemplateArgs {
         // I should get a prize for being this efficient!
         NewsfeedTemplateArgs {
             title: n.title.clone(),
             author: n.author.clone(),
-            order: n.order.clone(),
-            link: link.clone(),
+            order: n.order,
+            link: link.to_owned(),
         }
     }
 }
@@ -135,6 +135,7 @@ struct CompiledCrate {
 
 /// Stores parsed raw requests data from any services we query (like crates.io or GitHub).
 #[derive(Serialize, Deserialize)]
+#[derive(Default)]
 struct Cache {
     crates_io: HashMap<String, Option<CratesIoCrateResponse>>,
     #[serde(skip)]
@@ -211,14 +212,7 @@ impl Cache {
     }
 }
 
-impl Default for Cache {
-    fn default() -> Cache {
-        Cache {
-            crates_io: HashMap::new(),
-            client: None,
-        }
-    }
-}
+
 
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 struct CratesIoEnvelopeResponse {
@@ -291,7 +285,7 @@ fn cli() -> Command {
                 .short('p')
                 .help("Creates a new news post hosted on Areweguiyet"))
             .group(ArgGroup::new("newsfeed_type")
-                .args(&["post", "link"])
+                .args(["post", "link"])
                 .required(true)))
 }
 
@@ -350,7 +344,7 @@ fn publish(cache: &mut Cache, verify_only: bool) {
         used_tags.extend(krate.tags.iter())
     }
     // issue a warning if there are unsused tags in ecosystem_tags.json
-    for (k, _) in &tags {
+    for k in tags.keys() {
         if !used_tags.contains(k) {
             errors.push(format!("Tag \"{}\" is not used to describe any crate", k));
         }
@@ -380,7 +374,7 @@ fn publish(cache: &mut Cache, verify_only: bool) {
     for entry in &newsfeed {
         match &entry.source {
             NewsfeedSource::Link { link } => {
-                news_links.push(NewsfeedTemplateArgs::new(&entry, link));
+                news_links.push(NewsfeedTemplateArgs::new(entry, link));
             },
             NewsfeedSource::Post { file_name } => {
                 // open the file containing the markdown
@@ -406,7 +400,7 @@ fn publish(cache: &mut Cache, verify_only: bool) {
                 // record the news post so it can be rendered into other pages on the site
                 // TODO: this is very fragile... (and arguably dangerous)
                 link.insert_str(0, NEWSFEED_POST_HTML_LINK_ROOT);
-                news_posts.push(NewsfeedTemplateArgs::new(&entry, &link));
+                news_posts.push(NewsfeedTemplateArgs::new(entry, &link));
             }
         }
     }
@@ -436,7 +430,7 @@ fn publish(cache: &mut Cache, verify_only: bool) {
 
     println!("Successfully rendered templates.");
 
-    if errors.len() > 0 {
+    if !errors.is_empty() {
         eprintln!("The following issues are preventing HTML generation:");
         for i in &errors {
             println!("\t{}", i);
@@ -600,21 +594,21 @@ fn framework(cache: &mut Cache) {
     //   - we erase the default (that we had just stored in the Crate instance) with None
 
     println_default!("Description{}:", krate.description.as_ref());
-    if get_input_allow_empty(&mut handle, &mut buffer) == None {
+    if get_input_allow_empty(&mut handle, &mut buffer).is_none() {
         krate.description = None
     } else {
         krate.description = Some(buffer.clone());
     }
 
     println_default!("Docs{}:", krate.docs.as_ref());
-    if get_input_allow_empty(&mut handle, &mut buffer) == None {
+    if get_input_allow_empty(&mut handle, &mut buffer).is_none() {
         krate.docs = None
     } else {
         krate.docs = Some(buffer.clone());
     }
 
     println_default!("Repo{}:", krate.repo.as_ref());
-    if get_input_allow_empty(&mut handle, &mut buffer) == None {
+    if get_input_allow_empty(&mut handle, &mut buffer).is_none() {
         krate.repo = None
     } else {
         krate.repo = Some(buffer.clone());
@@ -624,7 +618,7 @@ fn framework(cache: &mut Cache) {
     loop {
         println!("Enter the name of a tag (enter nothing to finish):");
         get_input_allow_empty(&mut handle, &mut buffer);
-        if buffer.len() == 0 {
+        if buffer.is_empty() {
             break;
         }
         krate.tags.push(buffer.to_string());
@@ -652,7 +646,7 @@ fn get_input_non_empty(handle: &mut io::StdinLock, buffer: &mut String) {
             .expect(READ_LINE_PANIC_MESSAGE);
         // TODO: Do without allocating?
         *buffer = buffer.trim().to_string();
-        if buffer.len() != 0 {
+        if !buffer.is_empty() {
             return;
         }
         println!(" (you must enter a value)");
@@ -668,7 +662,7 @@ fn get_input_allow_empty(handle: &mut io::StdinLock, buffer: &mut String) -> Opt
         .expect(READ_LINE_PANIC_MESSAGE);
     // TODO: Do without allocating?
     *buffer = buffer.trim().to_string();
-    if buffer.len() == 0 {
+    if buffer.is_empty() {
         None
     } else {
         Some(())
@@ -677,7 +671,7 @@ fn get_input_allow_empty(handle: &mut io::StdinLock, buffer: &mut String) -> Opt
 
 fn get_input_yes(handle: &mut io::StdinLock, buffer: &mut String) -> bool {
     get_input_non_empty(handle, buffer);
-    buffer.starts_with("y") || buffer.starts_with("Y")
+    buffer.starts_with('y') || buffer.starts_with('Y')
 }
 
 /// Merge saved data with data from crates io (if the crate is on crates io).

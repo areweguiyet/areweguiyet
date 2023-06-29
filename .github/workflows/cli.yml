@@ -13,6 +13,16 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
+  lint-cli:
+    name: Run cargo clippy on the CLI script
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: cargo clippy
+      run: cargo clippy
+
   build:
     name: Builds project, fetching latest metadata and verifying configuration
     runs-on: ubuntu-latest
