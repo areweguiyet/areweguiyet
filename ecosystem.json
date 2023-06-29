@@ -1,5 +1,15 @@
 [
   {
+    "name": "rui",
+    "docs": "https://docs.rs/rui/",
+    "tags": [
+      "winit",
+      "iOS",
+      "MacOS",
+      "WebGPU"
+    ]
+  },
+  {
     "name": "Dominator",
     "docs": "https://docs.rs/dominator/latest/dominator/",
     "tags": []
