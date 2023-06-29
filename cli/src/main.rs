@@ -10,10 +10,9 @@ extern crate tera;
 
 extern crate clap;
 
-mod newsfeed;
 mod cli;
+mod newsfeed;
 
 fn main() {
     cli::execute_cli();
-    return;
 }

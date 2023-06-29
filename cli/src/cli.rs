@@ -2,19 +2,19 @@ use crate::newsfeed::*;
 
 use serde::de::DeserializeOwned;
 
-use clap::{ArgAction, Command, Arg, ArgGroup};
+use clap::{Arg, ArgAction, ArgGroup, Command};
 use reqwest::blocking::Client as HttpClient;
 
-use std::path::Path;
-use std::io::Write;
-use std::fs::File;
+use std::collections::hash_map::DefaultHasher;
 use std::collections::{HashMap, HashSet};
 use std::error::Error;
 use std::fs;
+use std::fs::File;
+use std::hash::BuildHasher;
 use std::io;
 use std::io::BufRead;
-use std::hash::BuildHasher;
-use std::collections::hash_map::DefaultHasher;
+use std::io::Write;
+use std::path::Path;
 
 // source files
 const NEWSFEED: &str = "../newsfeed.json";
@@ -58,7 +58,7 @@ macro_rules! println_default {
         } else {
             println!($msg, "");
         }
-    }
+    };
 }
 
 /// The arguments needed for Tera to render the template.
@@ -101,13 +101,13 @@ struct NewsfeedTemplateArgs {
 }
 
 impl NewsfeedTemplateArgs {
-    fn new(n: &NewsfeedEntry, link: &String) -> NewsfeedTemplateArgs {
+    fn new(n: &NewsfeedEntry, link: &str) -> NewsfeedTemplateArgs {
         // I should get a prize for being this efficient!
         NewsfeedTemplateArgs {
             title: n.title.clone(),
             author: n.author.clone(),
-            order: n.order.clone(),
-            link: link.clone(),
+            order: n.order,
+            link: link.to_owned(),
         }
     }
 }
@@ -134,7 +134,7 @@ struct CompiledCrate {
 }
 
 /// Stores parsed raw requests data from any services we query (like crates.io or GitHub).
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Default)]
 struct Cache {
     crates_io: HashMap<String, Option<CratesIoCrateResponse>>,
     #[serde(skip)]
@@ -144,25 +144,27 @@ struct Cache {
 impl Cache {
     /// Attempt to load cache from path; creates empty cache on failure
     fn new(path: &str) -> Self {
-        parse_json_file(path)
-            .unwrap_or_else(|_| Default::default())
+        parse_json_file(path).unwrap_or_else(|_| Default::default())
     }
 
     fn client(&mut self) -> &mut HttpClient {
         if self.client.is_none() {
             let mut builder = HttpClient::builder();
             builder = builder.user_agent(CACHE_CLIENT_USER_AGENT);
-            let client = builder.build()
+            let client = builder
+                .build()
                 .expect("Reqwest client build error (TLS backend init failure)");
             self.client = Some(client);
         }
 
-        self.client.as_mut()
-            .unwrap()
+        self.client.as_mut().unwrap()
     }
 
     /// Get crate meta data from crates io API, and cache the result
-    fn get_crates_io(&mut self, name: &str) -> Result<&Option<CratesIoCrateResponse>, Box<dyn Error>> {
+    fn get_crates_io(
+        &mut self,
+        name: &str,
+    ) -> Result<&Option<CratesIoCrateResponse>, Box<dyn Error>> {
         // We can perhaps make this better with NLL?
         if !self.crates_io.contains_key(name) {
             println!("Cache miss. Requesting data for {}", name);
@@ -173,14 +175,15 @@ impl Cache {
                 reqwest::StatusCode::OK => res.json()?,
                 reqwest::StatusCode::NOT_FOUND => None,
                 status => {
-                    return Err(
-                        format!("Unexpected request status ({}) while fetching {}",
-                        status,
-                        &url,
-                    ).into());
-                },
+                    return Err(format!(
+                        "Unexpected request status ({}) while fetching {}",
+                        status, &url,
+                    )
+                    .into());
+                }
             };
-            self.crates_io.insert(name.to_string(), parsed.map(|x| x.krate));
+            self.crates_io
+                .insert(name.to_string(), parsed.map(|x| x.krate));
         }
         Ok(&self.crates_io[name])
     }
@@ -191,8 +194,7 @@ impl Cache {
 
         // This is fatal because running the app again will cause it fail as the cache file exists
         // but may contain garbage/be empty
-        serde_json::to_writer_pretty(out, self)
-            .expect("Failed to write the cache file.");
+        serde_json::to_writer_pretty(out, self).expect("Failed to write the cache file.");
 
         Ok(())
     }
@@ -201,22 +203,13 @@ impl Cache {
     fn remove_cache(&mut self, path: &str) -> Result<(), io::Error> {
         self.crates_io.clear();
         // remove the cache (NotFound errors are fine)
-        fs::remove_file(path)
-            .or_else(|err|
-                if err.kind() != io::ErrorKind::NotFound {
-                    Ok(())
-                } else {
-                    Err(err)
-                })
-    }
-}
-
-impl Default for Cache {
-    fn default() -> Cache {
-        Cache {
-            crates_io: HashMap::new(),
-            client: None,
-        }
+        fs::remove_file(path).or_else(|err| {
+            if err.kind() != io::ErrorKind::NotFound {
+                Ok(())
+            } else {
+                Err(err)
+            }
+        })
     }
 }
 
@@ -291,7 +284,7 @@ fn cli() -> Command {
                 .short('p')
                 .help("Creates a new news post hosted on Areweguiyet"))
             .group(ArgGroup::new("newsfeed_type")
-                .args(&["post", "link"])
+                .args(["post", "link"])
                 .required(true)))
 }
 
@@ -301,7 +294,8 @@ pub fn execute_cli() {
     let mut cache = Cache::new(CACHE_FILE);
 
     if matches.get_flag("clean") {
-        cache.remove_cache(CACHE_FILE)
+        cache
+            .remove_cache(CACHE_FILE)
             .expect(CACHE_FILE_DELETION_FAILED);
         println!("Cache file removed.");
     }
@@ -311,13 +305,13 @@ pub fn execute_cli() {
             let verify_only = args.get_flag("verify-only");
 
             publish(&mut cache, verify_only);
-        },
+        }
         Some(("framework", _)) => {
             framework(&mut cache);
-        },
+        }
         Some(("news", _)) => {
             unimplemented!();
-        },
+        }
         _ => unreachable!(),
     }
 
@@ -331,12 +325,12 @@ pub fn execute_cli() {
 /// Compile ecosystem info, cache result, and generate warnings
 fn publish(cache: &mut Cache, verify_only: bool) {
     // Load all the information we need
-    let mut crates: Vec<Crate> = parse_json_file(ECOSYSTEM)
-        .expect("Failed to parse ecosystem.json");
-    let mut tags: HashMap<String, Option<String>> = parse_json_file(ECOSYSTEM_TAGS)
-        .expect("Failed to parse ecosystem_tags.json");
-    let newsfeed: Vec<NewsfeedEntry> = parse_json_file(NEWSFEED)
-        .expect("Failed to parse newsfeed.json");
+    let mut crates: Vec<Crate> =
+        parse_json_file(ECOSYSTEM).expect("Failed to parse ecosystem.json");
+    let mut tags: HashMap<String, Option<String>> =
+        parse_json_file(ECOSYSTEM_TAGS).expect("Failed to parse ecosystem_tags.json");
+    let newsfeed: Vec<NewsfeedEntry> =
+        parse_json_file(NEWSFEED).expect("Failed to parse newsfeed.json");
 
     println!("Found {} crates.", crates.len());
 
@@ -350,15 +344,14 @@ fn publish(cache: &mut Cache, verify_only: bool) {
         used_tags.extend(krate.tags.iter())
     }
     // issue a warning if there are unsused tags in ecosystem_tags.json
-    for (k, _) in &tags {
+    for k in tags.keys() {
         if !used_tags.contains(k) {
             errors.push(format!("Tag \"{}\" is not used to describe any crate", k));
         }
     }
     // merge description-less used tags into ecosystem_tags
     for k in used_tags {
-        tags.entry(k.to_string())
-            .or_insert(None);
+        tags.entry(k.to_string()).or_insert(None);
     }
 
     // merge missing crate information from crates io
@@ -380,14 +373,14 @@ fn publish(cache: &mut Cache, verify_only: bool) {
     for entry in &newsfeed {
         match &entry.source {
             NewsfeedSource::Link { link } => {
-                news_links.push(NewsfeedTemplateArgs::new(&entry, link));
-            },
+                news_links.push(NewsfeedTemplateArgs::new(entry, link));
+            }
             NewsfeedSource::Post { file_name } => {
                 // open the file containing the markdown
                 let mut markdown_path = NEWSFEED_POST_MARKDOWN_ROOT.to_string();
                 markdown_path.push_str(file_name);
-                let markdown = fs::read_to_string(&markdown_path)
-                    .expect("Failed to read markdown post");
+                let markdown =
+                    fs::read_to_string(&markdown_path).expect("Failed to read markdown post");
                 // parse and render the markdown for this post
                 let parser = pulldown_cmark::Parser::new(&markdown);
                 let mut rendered_content = String::new();
@@ -398,7 +391,8 @@ fn publish(cache: &mut Cache, verify_only: bool) {
                     post_content: rendered_content,
                 };
                 let context = tera::Context::from_serialize(post_content).unwrap();
-                let rendered_page = tera.render(NEWSFEED_POST_HTML_TEMPLATE_NAME, &context)
+                let rendered_page = tera
+                    .render(NEWSFEED_POST_HTML_TEMPLATE_NAME, &context)
                     .expect("Failed to render hosted news post");
                 // save the rendered template so we can output it later
                 let mut link = file_name.replace(".md", ".html");
@@ -406,7 +400,7 @@ fn publish(cache: &mut Cache, verify_only: bool) {
                 // record the news post so it can be rendered into other pages on the site
                 // TODO: this is very fragile... (and arguably dangerous)
                 link.insert_str(0, NEWSFEED_POST_HTML_LINK_ROOT);
-                news_posts.push(NewsfeedTemplateArgs::new(&entry, &link));
+                news_posts.push(NewsfeedTemplateArgs::new(entry, &link));
             }
         }
     }
@@ -426,17 +420,19 @@ fn publish(cache: &mut Cache, verify_only: bool) {
     // (we could actually minify it too)
     awgy.page_title = None;
     let context = tera::Context::from_serialize(&awgy).unwrap();
-    let index = tera.render(INDEX_HTML_TEMPLATE_NAME, &context)
+    let index = tera
+        .render(INDEX_HTML_TEMPLATE_NAME, &context)
         .expect("Failed to render template");
 
     awgy.page_title = Some("News Feed".to_string());
     let context = tera::Context::from_serialize(&awgy).unwrap();
-    let newsfeed = tera.render(NEWSFEED_HTML_TEMPLATE_NAME, &context)
+    let newsfeed = tera
+        .render(NEWSFEED_HTML_TEMPLATE_NAME, &context)
         .expect("Failed to render template");
 
     println!("Successfully rendered templates.");
 
-    if errors.len() > 0 {
+    if !errors.is_empty() {
         eprintln!("The following issues are preventing HTML generation:");
         for i in &errors {
             println!("\t{}", i);
@@ -449,21 +445,18 @@ fn publish(cache: &mut Cache, verify_only: bool) {
         fs::create_dir_all(Path::new(COMPILED_ECOSYSTEM).parent().unwrap())
             .expect("Failed to create directory");
 
-        let mut out_compiled_ecosystem = File::create(COMPILED_ECOSYSTEM)
-            .expect("Failed to create compiled ecosystem file");
+        let mut out_compiled_ecosystem =
+            File::create(COMPILED_ECOSYSTEM).expect("Failed to create compiled ecosystem file");
         serde_json::to_writer_pretty(&mut out_compiled_ecosystem, &compiled_ecosystem)
             .expect("Failed to write the compiled ecosystem to the output file");
 
-        output_html(INDEX_HTML_OUTPUT_PATH, &index)
-            .expect("Failed to create index page");
-        output_html(NEWSFEED_HTML_OUTPUT_PATH, &newsfeed)
-            .expect("Failed to create newsfeed page");
+        output_html(INDEX_HTML_OUTPUT_PATH, &index).expect("Failed to create index page");
+        output_html(NEWSFEED_HTML_OUTPUT_PATH, &newsfeed).expect("Failed to create newsfeed page");
 
         // output the rendered markdown posts
         for (mut file_name, rendered_html) in news_post_rendered_html.into_iter() {
             file_name.insert_str(0, NEWSFEED_POST_HTML_OUTPUT_ROOT);
-            output_html(&file_name, &rendered_html)
-                .expect("Failed to create hosted post page");
+            output_html(&file_name, &rendered_html).expect("Failed to create hosted post page");
         }
 
         println!("Site written to disk.");
@@ -524,10 +517,12 @@ fn framework(cache: &mut Cache) {
             Ok(None) => {
                 // this crate is not on crates io
 
-                println!("This crate does not appear on crates.io. Do you want to continue \
+                println!(
+                    "This crate does not appear on crates.io. Do you want to continue \
                     without linking to a crate on crates.io? (y/n)\
                     \n\n(Please check your spelling and enter no if there is a typo; \
-                    crate names must match exactly.)");
+                    crate names must match exactly.)"
+                );
                 if get_input_yes(&mut handle, &mut buffer) {
                     break;
                 } else {
@@ -555,20 +550,21 @@ fn framework(cache: &mut Cache) {
                     krate.skip_crates_io = false;
                     // the description is the most important one to trim but we might as well
                     // trim all
-                    krate.description = res.description.as_ref()
-                        .map(|s| s.trim().to_owned());
-                    krate.repo = res.repository.as_ref()
-                        .map(|s| s.trim().to_owned());
-                    krate.docs = res.documentation.as_ref()
-                        .map(|s| s.trim().to_owned());
+                    krate.description = res.description.as_ref().map(|s| s.trim().to_owned());
+                    krate.repo = res.repository.as_ref().map(|s| s.trim().to_owned());
+                    krate.docs = res.documentation.as_ref().map(|s| s.trim().to_owned());
                     break;
                 } else {
                     // not the correct crate
-                    println!("Please check if you made any spelling mistakes in the crate \
-                        name.\n");
-                    println!("Do you want to continue without linking to a crate on \
+                    println!(
+                        "Please check if you made any spelling mistakes in the crate \
+                        name.\n"
+                    );
+                    println!(
+                        "Do you want to continue without linking to a crate on \
                         crates.io? (if no, you will have to enter a different crate name) \
-                        (y/n)");
+                        (y/n)"
+                    );
                     if get_input_yes(&mut handle, &mut buffer) {
                         krate.skip_crates_io = true;
                         break;
@@ -600,21 +596,21 @@ fn framework(cache: &mut Cache) {
     //   - we erase the default (that we had just stored in the Crate instance) with None
 
     println_default!("Description{}:", krate.description.as_ref());
-    if get_input_allow_empty(&mut handle, &mut buffer) == None {
+    if get_input_allow_empty(&mut handle, &mut buffer).is_none() {
         krate.description = None
     } else {
         krate.description = Some(buffer.clone());
     }
 
     println_default!("Docs{}:", krate.docs.as_ref());
-    if get_input_allow_empty(&mut handle, &mut buffer) == None {
+    if get_input_allow_empty(&mut handle, &mut buffer).is_none() {
         krate.docs = None
     } else {
         krate.docs = Some(buffer.clone());
     }
 
     println_default!("Repo{}:", krate.repo.as_ref());
-    if get_input_allow_empty(&mut handle, &mut buffer) == None {
+    if get_input_allow_empty(&mut handle, &mut buffer).is_none() {
         krate.repo = None
     } else {
         krate.repo = Some(buffer.clone());
@@ -624,7 +620,7 @@ fn framework(cache: &mut Cache) {
     loop {
         println!("Enter the name of a tag (enter nothing to finish):");
         get_input_allow_empty(&mut handle, &mut buffer);
-        if buffer.len() == 0 {
+        if buffer.is_empty() {
             break;
         }
         krate.tags.push(buffer.to_string());
@@ -635,8 +631,7 @@ fn framework(cache: &mut Cache) {
     // (only the lines actually added appear changed)
     crates.insert(0, krate);
 
-    let out = File::create(ECOSYSTEM)
-        .expect("Failed to create/open ecosystem.json.");
+    let out = File::create(ECOSYSTEM).expect("Failed to create/open ecosystem.json.");
     serde_json::to_writer_pretty(out, &crates)
         .expect("Failed to write the updated ecosystem.json.");
 
@@ -648,11 +643,10 @@ fn framework(cache: &mut Cache) {
 fn get_input_non_empty(handle: &mut io::StdinLock, buffer: &mut String) {
     loop {
         buffer.clear();
-        handle.read_line(buffer)
-            .expect(READ_LINE_PANIC_MESSAGE);
+        handle.read_line(buffer).expect(READ_LINE_PANIC_MESSAGE);
         // TODO: Do without allocating?
         *buffer = buffer.trim().to_string();
-        if buffer.len() != 0 {
+        if !buffer.is_empty() {
             return;
         }
         println!(" (you must enter a value)");
@@ -664,11 +658,10 @@ fn get_input_non_empty(handle: &mut io::StdinLock, buffer: &mut String) {
 /// Returns None when the input is empty
 fn get_input_allow_empty(handle: &mut io::StdinLock, buffer: &mut String) -> Option<()> {
     buffer.clear();
-    handle.read_line(buffer)
-        .expect(READ_LINE_PANIC_MESSAGE);
+    handle.read_line(buffer).expect(READ_LINE_PANIC_MESSAGE);
     // TODO: Do without allocating?
     *buffer = buffer.trim().to_string();
-    if buffer.len() == 0 {
+    if buffer.is_empty() {
         None
     } else {
         Some(())
@@ -677,7 +670,7 @@ fn get_input_allow_empty(handle: &mut io::StdinLock, buffer: &mut String) -> Opt
 
 fn get_input_yes(handle: &mut io::StdinLock, buffer: &mut String) -> bool {
     get_input_non_empty(handle, buffer);
-    buffer.starts_with("y") || buffer.starts_with("Y")
+    buffer.starts_with('y') || buffer.starts_with('Y')
 }
 
 /// Merge saved data with data from crates io (if the crate is on crates io).
@@ -689,7 +682,8 @@ fn get_crate_info(krate: &Crate, cache: &mut Cache, errors: &mut Vec<String>) ->
     let crates_io;
 
     if !krate.skip_crates_io {
-        let res = cache.get_crates_io(&krate.name)
+        let res = cache
+            .get_crates_io(&krate.name)
             .expect("Failed to fetch from Crates.io");
 
         if let Some(res) = res {
@@ -704,18 +698,27 @@ fn get_crate_info(krate: &Crate, cache: &mut Cache, errors: &mut Vec<String>) ->
             } = res.clone();
 
             if krate.repo.is_some() && krate.repo == repository {
-                errors.push(format!("Please remove {}'s repo in ecosystem.json since \
-                        it duplicates the value on crates.io", &krate.name));
+                errors.push(format!(
+                    "Please remove {}'s repo in ecosystem.json since \
+                        it duplicates the value on crates.io",
+                    &krate.name
+                ));
             }
 
             if krate.description.is_some() && krate.description == description {
-                errors.push(format!("Please remove {}'s description in ecosystem.json since \
-                        it duplicates the value on crates.io", &krate.name));
+                errors.push(format!(
+                    "Please remove {}'s description in ecosystem.json since \
+                        it duplicates the value on crates.io",
+                    &krate.name
+                ));
             }
 
             if krate.docs.is_some() && krate.docs == documentation {
-                errors.push(format!("Please remove {}'s docs in ecosystem.json since \
-                        it duplicates the value on crates.io", &krate.name));
+                errors.push(format!(
+                    "Please remove {}'s docs in ecosystem.json since \
+                        it duplicates the value on crates.io",
+                    &krate.name
+                ));
             }
 
             return CompiledCrate {
@@ -724,7 +727,7 @@ fn get_crate_info(krate: &Crate, cache: &mut Cache, errors: &mut Vec<String>) ->
                 description: krate.description.clone().or(description),
                 docs: krate.docs.clone().or(documentation),
                 tags: krate.tags.clone(),
-            }
+            };
         }
         // the crate was not found on crates io
     }
