@@ -2,23 +2,28 @@
 title = "Xilem: an architecture for UI in Rust"
 author = "Raph Levien"
 link = "https://raphlinus.github.io/rust/gui/2022/05/07/ui-architecture.html"
+date = 2022-05-07
 
 [[links]]
 title = "Rust 2021: GUI"
 author = "Raph Levien"
 link = "https://raphlinus.github.io/rust/druid/2020/09/28/rust-2021.html"
+date = 2020-09-28
 
 [[links]]
 title = "A Survey of Rust GUI Libraries"
 author = "boringcactus"
 link = "https://www.boringcactus.com/2020/08/21/survey-of-rust-gui-libraries.html"
+date = 2020-08-21
 
 [[posts]]
 title = "#Rust2019 Are We GUI Yet?"
 author = "Dustin Bensing"
 file-name = "2019-01-13_rust2019.md"
+date = 2019-01-13
 
 [[links]]
 title = "Entity-Component-System architecture for UI in Rust"
 author = "Raph Levien"
 link = "https://raphlinus.github.io/personal/2018/05/08/ecs-ui.html"
+date = 2018-05-08

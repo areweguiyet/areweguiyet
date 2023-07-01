@@ -1,5 +1,6 @@
 {% extends "base.tera.html" %}
 {% import "macros.tera.html" as macros %}
+
 {% block content %}
 <section class="centered-content">
     <h2>Stay in the loop.</h2>
@@ -11,24 +12,10 @@
     <h2>AreWeGuiYet Posts</h2>
     <p>These are posts contributed directly to this repo! Check out the README above 
         to learn how you can contribute your own posts!</p>
-    <div class="newsfeed-posts">
-        {% for post in news_posts %}
-            <div>
-                <h3>{{post.title}} by {{post.author}}</h3>
-                {{macros::link(label=post.link, href=post.link)}}
-            </div>
-        {% endfor %}
-    </div>
+    {{ macros::newsfeed_posts(posts=news_posts | sort(attribute="date") | reverse) }}
     <h2>Community Links</h2>
     <p>These are posts found out in the wild. Saw a post that you think is important?
         See the README above for how to contribute!</p>
-    <div class="newsfeed-posts">
-        {% for post in news_links %}
-            <div>
-                <h3>{{post.title}} by {{post.author}}</h3>
-                {{macros::link(label=post.link, href=post.link)}}
-            </div>
-        {% endfor %}
-    </div>
+    {{ macros::newsfeed_posts(posts=news_links | sort(attribute="date") | reverse) }}
 </section>
 {% endblock content %}

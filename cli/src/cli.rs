@@ -88,6 +88,7 @@ struct AreWeGuiYetTemplateArgs {
 struct NewsfeedTemplateArgs {
     title: String,
     author: String,
+    date: String,
     link: String,
 }
 
@@ -97,6 +98,7 @@ impl NewsfeedTemplateArgs {
         NewsfeedTemplateArgs {
             title: n.title.clone(),
             author: n.author.clone(),
+            date: n.date.to_string(),
             link: link.to_owned(),
         }
     }
