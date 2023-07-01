@@ -2,7 +2,7 @@ use crate::newsfeed::*;
 
 use serde::de::DeserializeOwned;
 
-use clap::{Arg, ArgAction, ArgGroup, Command};
+use clap::{Arg, ArgAction, Command};
 use reqwest::blocking::Client as HttpClient;
 
 use std::collections::hash_map::DefaultHasher;
@@ -12,15 +12,14 @@ use std::fs;
 use std::fs::File;
 use std::hash::BuildHasher;
 use std::io;
-use std::io::BufRead;
 use std::io::Write;
 use std::path::Path;
 
 // source files
-const NEWSFEED: &str = "../newsfeed.json";
-const ECOSYSTEM: &str = "../ecosystem.json";
+const NEWSFEED: &str = "../newsfeed.toml";
+const ECOSYSTEM: &str = "../ecosystem.toml";
 const COMPILED_ECOSYSTEM: &str = "../docs/compiled_ecosystem.json";
-const ECOSYSTEM_TAGS: &str = "../ecosystem_tags.json";
+const ECOSYSTEM_TAGS: &str = "../ecosystem_tags.toml";
 
 // templates
 const TEMPLATE_SOURCE_GLOB: &str = "../site/**/*.tera*.html";
@@ -42,29 +41,39 @@ const CACHE_FILE_DELETION_FAILED: &str = "Failed to remove the cache file. Try d
     manually and running without the clean option.";
 const CACHE_CLIENT_USER_AGENT: &str = "areweguiyet_cli (areweguiyet.com)";
 
-// error messages
-const READ_LINE_PANIC_MESSAGE: &str = "Failed to read line";
-
 // TODO: There's plenty more messages encoded as string literals; easy PR! ;^)
 
-/// Prints a message, and fills in a single placeholder with a default value
-///
-/// The placeholder is filled with nothing if default is None, otherwise it is filled
-/// with " (default.unwrap())".
-macro_rules! println_default {
-    ($msg:expr, $default:expr) => {
-        if let Some(default) = $default {
-            println!($msg, format!(" ({})", default));
-        } else {
-            println!($msg, "");
-        }
-    };
+/// Info in ecosystem.toml
+#[derive(Serialize, Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
+struct Ecosystem {
+    #[serde(rename = "crate")]
+    crates: HashMap<String, Crate>,
+}
+
+/// Crate info in ecosystem.toml
+#[derive(Serialize, Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
+struct Crate {
+    name: Option<String>,
+    /// Should be either missing or true; implied to be false
+    #[serde(default)]
+    #[serde(skip_serializing_if = "is_false")]
+    #[serde(rename = "skip-crates-io")]
+    skip_crates_io: bool,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    repo: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    description: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    docs: Option<String>,
+    #[serde(default)]
+    tags: Vec<String>,
 }
 
 /// The arguments needed for Tera to render the template.
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 struct AreWeGuiYetTemplateArgs {
-    crates: Vec<Crate>,
     /// Collection of tags.
     ///
     /// Some tags may have descriptions.
@@ -74,39 +83,20 @@ struct AreWeGuiYetTemplateArgs {
     page_title: Option<String>,
 }
 
-/// Crate info in ecosystem.json
-#[derive(Serialize, Deserialize)]
-struct Crate {
-    name: String,
-    /// Should be either missing or true; implied to be false
-    #[serde(default)]
-    #[serde(skip_serializing_if = "is_false")]
-    skip_crates_io: bool,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    repo: Option<String>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    description: Option<String>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    docs: Option<String>,
-    tags: Vec<String>,
-}
-
 /// The template args mas all variants to NewsFeedLinks for template simplicity
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 struct NewsfeedTemplateArgs {
     title: String,
     author: String,
     link: String,
-    order: u32,
 }
 
 impl NewsfeedTemplateArgs {
-    fn new(n: &NewsfeedEntry, link: &str) -> NewsfeedTemplateArgs {
+    fn new(n: &NewsfeedCommon, link: &str) -> NewsfeedTemplateArgs {
         // I should get a prize for being this efficient!
         NewsfeedTemplateArgs {
             title: n.title.clone(),
             author: n.author.clone(),
-            order: n.order,
             link: link.to_owned(),
         }
     }
@@ -271,21 +261,6 @@ fn cli() -> Command {
                 .long("verify-only")
                 .help("Run all normal checks before publishing without generating HTML.")
                 .action(ArgAction::SetTrue)))
-        .subcommand(Command::new("framework")
-            .about("Adds a new GUI crate or framework to ecosystem.json."))
-        .subcommand(Command::new("news")
-            .about("Adds a new news post from either a link or a markdown file.")
-            .arg(Arg::new("link")
-                .long("link")
-                .short('l')
-                .help("Adds a new news post from a link to another website"))
-            .arg(Arg::new("post")
-                .long("post")
-                .short('p')
-                .help("Creates a new news post hosted on Areweguiyet"))
-            .group(ArgGroup::new("newsfeed_type")
-                .args(["post", "link"])
-                .required(true)))
 }
 
 pub fn execute_cli() {
@@ -306,12 +281,6 @@ pub fn execute_cli() {
 
             publish(&mut cache, verify_only);
         }
-        Some(("framework", _)) => {
-            framework(&mut cache);
-        }
-        Some(("news", _)) => {
-            unimplemented!();
-        }
         _ => unreachable!(),
     }
 
@@ -325,14 +294,12 @@ pub fn execute_cli() {
 /// Compile ecosystem info, cache result, and generate warnings
 fn publish(cache: &mut Cache, verify_only: bool) {
     // Load all the information we need
-    let mut crates: Vec<Crate> =
-        parse_json_file(ECOSYSTEM).expect("Failed to parse ecosystem.json");
+    let ecosystem: Ecosystem = parse_toml_file(ECOSYSTEM).expect("failed to parse ecosystem.toml");
     let mut tags: HashMap<String, Option<String>> =
-        parse_json_file(ECOSYSTEM_TAGS).expect("Failed to parse ecosystem_tags.json");
-    let newsfeed: Vec<NewsfeedEntry> =
-        parse_json_file(NEWSFEED).expect("Failed to parse newsfeed.json");
+        parse_toml_file(ECOSYSTEM_TAGS).expect("failed to parse ecosystem_tags.toml");
+    let newsfeed: Newsfeed = parse_toml_file(NEWSFEED).expect("failed to parse newsfeed.toml");
 
-    println!("Found {} crates.", crates.len());
+    println!("Found {} crates.", ecosystem.crates.len());
 
     let mut errors = Vec::new();
 
@@ -340,10 +307,10 @@ fn publish(cache: &mut Cache, verify_only: bool) {
 
     // verify that every tag in the tags file is actually used
     let mut used_tags = HashSet::new();
-    for krate in &mut crates {
+    for krate in ecosystem.crates.values() {
         used_tags.extend(krate.tags.iter())
     }
-    // issue a warning if there are unsused tags in ecosystem_tags.json
+    // issue a warning if there are unsused tags in ecosystem_tags.toml
     for k in tags.keys() {
         if !used_tags.contains(k) {
             errors.push(format!("Tag \"{}\" is not used to describe any crate", k));
@@ -356,60 +323,59 @@ fn publish(cache: &mut Cache, verify_only: bool) {
 
     // merge missing crate information from crates io
     let mut compiled_ecosystem = HashMap::with_hasher(ConstantState);
-    for krate in &mut crates {
-        let compiled_crate = get_crate_info(krate, cache, &mut errors);
-        compiled_ecosystem.insert(krate.name.clone(), compiled_crate);
+    for (crate_id, krate) in &ecosystem.crates {
+        let compiled_crate = get_crate_info(crate_id, krate, cache, &mut errors);
+        compiled_ecosystem.insert(
+            krate.name.clone().unwrap_or_else(|| crate_id.clone()),
+            compiled_crate,
+        );
     }
 
     // compile the templates
     let mut tera = tera::Tera::new(TEMPLATE_SOURCE_GLOB).expect("failed to parse templates");
     tera.autoescape_on(vec![".tera.html"]);
 
-    // compile news posts and gather links
+    let news_links: Vec<_> = newsfeed
+        .links
+        .iter()
+        .map(|entry| NewsfeedTemplateArgs::new(&entry.common, &entry.link))
+        .collect();
+
+    // compile news posts
     let mut news_post_rendered_html = HashMap::new();
     let mut news_posts = Vec::new();
-    let mut news_links = Vec::new();
 
-    for entry in &newsfeed {
-        match &entry.source {
-            NewsfeedSource::Link { link } => {
-                news_links.push(NewsfeedTemplateArgs::new(entry, link));
-            }
-            NewsfeedSource::Post { file_name } => {
-                // open the file containing the markdown
-                let mut markdown_path = NEWSFEED_POST_MARKDOWN_ROOT.to_string();
-                markdown_path.push_str(file_name);
-                let markdown =
-                    fs::read_to_string(&markdown_path).expect("Failed to read markdown post");
-                // parse and render the markdown for this post
-                let parser = pulldown_cmark::Parser::new(&markdown);
-                let mut rendered_content = String::new();
-                pulldown_cmark::html::push_html(&mut rendered_content, parser);
-                // render to a template
-                let post_content = PostTemplateArgs {
-                    page_title: entry.title.clone(),
-                    post_content: rendered_content,
-                };
-                let context = tera::Context::from_serialize(post_content).unwrap();
-                let rendered_page = tera
-                    .render(NEWSFEED_POST_HTML_TEMPLATE_NAME, &context)
-                    .expect("Failed to render hosted news post");
-                // save the rendered template so we can output it later
-                let mut link = file_name.replace(".md", ".html");
-                news_post_rendered_html.insert(link.clone(), rendered_page);
-                // record the news post so it can be rendered into other pages on the site
-                // TODO: this is very fragile... (and arguably dangerous)
-                link.insert_str(0, NEWSFEED_POST_HTML_LINK_ROOT);
-                news_posts.push(NewsfeedTemplateArgs::new(entry, &link));
-            }
-        }
+    for entry in &newsfeed.posts {
+        // open the file containing the markdown
+        let mut markdown_path = NEWSFEED_POST_MARKDOWN_ROOT.to_string();
+        markdown_path.push_str(&entry.file_name);
+        let markdown = fs::read_to_string(&markdown_path).expect("Failed to read markdown post");
+        // parse and render the markdown for this post
+        let parser = pulldown_cmark::Parser::new(&markdown);
+        let mut rendered_content = String::new();
+        pulldown_cmark::html::push_html(&mut rendered_content, parser);
+        // render to a template
+        let post_content = PostTemplateArgs {
+            page_title: entry.common.title.clone(),
+            post_content: rendered_content,
+        };
+        let context = tera::Context::from_serialize(post_content).unwrap();
+        let rendered_page = tera
+            .render(NEWSFEED_POST_HTML_TEMPLATE_NAME, &context)
+            .expect("Failed to render hosted news post");
+        // save the rendered template so we can output it later
+        let mut link = entry.file_name.replace(".md", ".html");
+        news_post_rendered_html.insert(link.clone(), rendered_page);
+        // record the news post so it can be rendered into other pages on the site
+        // TODO: this is very fragile... (and arguably dangerous)
+        link.insert_str(0, NEWSFEED_POST_HTML_LINK_ROOT);
+        news_posts.push(NewsfeedTemplateArgs::new(&entry.common, &link));
     }
 
     println!("Found {} community news links.", news_links.len());
     println!("Found {} hosted news posts.", news_posts.len());
 
     let mut awgy = AreWeGuiYetTemplateArgs {
-        crates,
         tags,
         news_posts,
         news_links,
@@ -472,222 +438,26 @@ fn output_html<P: AsRef<Path>>(path: P, page: &str) -> io::Result<()> {
     out_index.write_all(page.as_bytes())
 }
 
-fn framework(cache: &mut Cache) {
-    let mut crates: Vec<Crate> = parse_json_file(ECOSYSTEM)
-        .expect("Failed to parse ecosystem.json. This must be fixed before we can add more.");
-
-    let mut buffer = String::new();
-    let stdin = io::stdin();
-    let mut handle = stdin.lock();
-
-    let mut krate = Crate {
-        name: String::new(),
-        skip_crates_io: false,
-        docs: None,
-        repo: None,
-        description: None,
-        tags: Vec::new(),
-    };
-
-    println!("\tADDING GUI FRAMEWORK");
-
-    loop {
-        println!("What is the name of the GUI framework?");
-        get_input_non_empty(&mut handle, &mut buffer);
-        krate.name.clear();
-        krate.name.push_str(&buffer);
-
-        // make sure this crate isn't already present
-        let mut already_done = false;
-        for c in &crates {
-            let this_name = krate.name.to_lowercase();
-            let other_name = c.name.to_lowercase();
-            if this_name == other_name {
-                println!("The crate {} is already on the website!", krate.name);
-                already_done = true;
-                break;
-            }
-        }
-        if already_done {
-            continue;
-        }
-
-        // make a request to crates io about this crate
-        match cache.get_crates_io(&krate.name) {
-            Ok(None) => {
-                // this crate is not on crates io
-
-                println!(
-                    "This crate does not appear on crates.io. Do you want to continue \
-                    without linking to a crate on crates.io? (y/n)\
-                    \n\n(Please check your spelling and enter no if there is a typo; \
-                    crate names must match exactly.)"
-                );
-                if get_input_yes(&mut handle, &mut buffer) {
-                    break;
-                } else {
-                    continue;
-                }
-            }
-            Ok(Some(res)) => {
-                // this crate is on crates io
-
-                println!("There is a crate on crates.io with this name! Woo!\n");
-                println!("  Crate: {}", &krate.name);
-                println!("  Link: {}", crates_io_url(&krate.name));
-                println!("  Repo: {:?}", &res.repository);
-                if let Some(desc) = &res.description {
-                    let desc = desc.trim();
-                    if desc.len() > 70 {
-                        println!("  Description: {}...", &desc[..70]);
-                    } else {
-                        println!("  Description: {}", desc);
-                    }
-                }
-                println!("\nIs this the correct crate? (y/n)");
-                if get_input_yes(&mut handle, &mut buffer) {
-                    // this is the correct crate, set some defaults pulled from crates.io
-                    krate.skip_crates_io = false;
-                    // the description is the most important one to trim but we might as well
-                    // trim all
-                    krate.description = res.description.as_ref().map(|s| s.trim().to_owned());
-                    krate.repo = res.repository.as_ref().map(|s| s.trim().to_owned());
-                    krate.docs = res.documentation.as_ref().map(|s| s.trim().to_owned());
-                    break;
-                } else {
-                    // not the correct crate
-                    println!(
-                        "Please check if you made any spelling mistakes in the crate \
-                        name.\n"
-                    );
-                    println!(
-                        "Do you want to continue without linking to a crate on \
-                        crates.io? (if no, you will have to enter a different crate name) \
-                        (y/n)"
-                    );
-                    if get_input_yes(&mut handle, &mut buffer) {
-                        krate.skip_crates_io = true;
-                        break;
-                    } else {
-                        continue;
-                    }
-                }
-            }
-            Err(e) => {
-                // there was a problem fetching
-                eprintln!("Error fetching from crates.io: {}", e);
-                println!("Failed to fetch from crates.io. Try again? (y/n)");
-                if get_input_yes(&mut handle, &mut buffer) {
-                    break;
-                } else {
-                    continue;
-                }
-            }
-        };
-    }
-
-    println!("Press enter to accept the defaults provided in `()`, if any.\n");
-
-    // this gets a little sloppy, and could probably be done better
-
-    // we abuse the Crate instance here; if it already has stuff in it, assume it is a default
-    // if we want to use the defaults (which are pulled from crates io)
-    //   - the user enters nothing or whitespace
-    //   - we erase the default (that we had just stored in the Crate instance) with None
-
-    println_default!("Description{}:", krate.description.as_ref());
-    if get_input_allow_empty(&mut handle, &mut buffer).is_none() {
-        krate.description = None
-    } else {
-        krate.description = Some(buffer.clone());
-    }
-
-    println_default!("Docs{}:", krate.docs.as_ref());
-    if get_input_allow_empty(&mut handle, &mut buffer).is_none() {
-        krate.docs = None
-    } else {
-        krate.docs = Some(buffer.clone());
-    }
-
-    println_default!("Repo{}:", krate.repo.as_ref());
-    if get_input_allow_empty(&mut handle, &mut buffer).is_none() {
-        krate.repo = None
-    } else {
-        krate.repo = Some(buffer.clone());
-    }
-
-    // tags
-    loop {
-        println!("Enter the name of a tag (enter nothing to finish):");
-        get_input_allow_empty(&mut handle, &mut buffer);
-        if buffer.is_empty() {
-            break;
-        }
-        krate.tags.push(buffer.to_string());
-    }
-
-    // add this crate to the front of the list
-    // JSON doesn't like trailing commas so adding to the front of the list makes diffs nicer
-    // (only the lines actually added appear changed)
-    crates.insert(0, krate);
-
-    let out = File::create(ECOSYSTEM).expect("Failed to create/open ecosystem.json.");
-    serde_json::to_writer_pretty(out, &crates)
-        .expect("Failed to write the updated ecosystem.json.");
-
-    println!("Updated ../ecosystem.json. Review your changes and make any edits there.\n");
-    println!("When you are done, please run `cargo run -- publish` to generate HTML.");
-}
-
-/// Clear buffer and fill it with the next line of (trimmed) input
-fn get_input_non_empty(handle: &mut io::StdinLock, buffer: &mut String) {
-    loop {
-        buffer.clear();
-        handle.read_line(buffer).expect(READ_LINE_PANIC_MESSAGE);
-        // TODO: Do without allocating?
-        *buffer = buffer.trim().to_string();
-        if !buffer.is_empty() {
-            return;
-        }
-        println!(" (you must enter a value)");
-    }
-}
-
-/// Clear buffer and fill it with the next line of (trimmed) input
-///
-/// Returns None when the input is empty
-fn get_input_allow_empty(handle: &mut io::StdinLock, buffer: &mut String) -> Option<()> {
-    buffer.clear();
-    handle.read_line(buffer).expect(READ_LINE_PANIC_MESSAGE);
-    // TODO: Do without allocating?
-    *buffer = buffer.trim().to_string();
-    if buffer.is_empty() {
-        None
-    } else {
-        Some(())
-    }
-}
-
-fn get_input_yes(handle: &mut io::StdinLock, buffer: &mut String) -> bool {
-    get_input_non_empty(handle, buffer);
-    buffer.starts_with('y') || buffer.starts_with('Y')
-}
-
 /// Merge saved data with data from crates io (if the crate is on crates io).
 ///
 /// No fields will be overwritten if they are already specified.
 ///
 /// Issues errors if the data from crates io is the same as the local data.
-fn get_crate_info(krate: &Crate, cache: &mut Cache, errors: &mut Vec<String>) -> CompiledCrate {
+fn get_crate_info(
+    crate_id: &str,
+    krate: &Crate,
+    cache: &mut Cache,
+    errors: &mut Vec<String>,
+) -> CompiledCrate {
     let crates_io;
 
     if !krate.skip_crates_io {
         let res = cache
-            .get_crates_io(&krate.name)
+            .get_crates_io(crate_id)
             .expect("Failed to fetch from Crates.io");
 
         if let Some(res) = res {
-            let url = crates_io_url(&krate.name);
+            let url = crates_io_url(crate_id);
             crates_io = Some(url);
             // there's more cloning than necessary here but this is much cleaner than zero-copying!
 
@@ -699,25 +469,22 @@ fn get_crate_info(krate: &Crate, cache: &mut Cache, errors: &mut Vec<String>) ->
 
             if krate.repo.is_some() && krate.repo == repository {
                 errors.push(format!(
-                    "Please remove {}'s repo in ecosystem.json since \
+                    "Please remove {crate_id}'s repo in ecosystem.toml since \
                         it duplicates the value on crates.io",
-                    &krate.name
                 ));
             }
 
             if krate.description.is_some() && krate.description == description {
                 errors.push(format!(
-                    "Please remove {}'s description in ecosystem.json since \
+                    "Please remove {crate_id}'s description in ecosystem.toml since \
                         it duplicates the value on crates.io",
-                    &krate.name
                 ));
             }
 
             if krate.docs.is_some() && krate.docs == documentation {
                 errors.push(format!(
-                    "Please remove {}'s docs in ecosystem.json since \
+                    "Please remove {crate_id}'s docs in ecosystem.toml since \
                         it duplicates the value on crates.io",
-                    &krate.name
                 ));
             }
 
@@ -745,6 +512,11 @@ fn get_crate_info(krate: &Crate, cache: &mut Cache, errors: &mut Vec<String>) ->
 fn parse_json_file<T: DeserializeOwned, P: AsRef<Path>>(path: P) -> Result<T, Box<dyn Error>> {
     let f = File::open(path)?;
     Ok(serde_json::from_reader(f)?)
+}
+
+fn parse_toml_file<T: DeserializeOwned>(path: impl AsRef<Path>) -> Result<T, Box<dyn Error>> {
+    let s = std::fs::read_to_string(path)?;
+    Ok(toml::from_str(&s)?)
 }
 
 fn crates_io_api_url(crate_name: &str) -> String {

@@ -1,0 +1,6 @@
+# This file lists descriptions for tags.
+#
+# There should not be any unused tags listed in here, and not all tags need to
+# have a description, so not all tags need to be in this file.
+
+Bindings = "Bindings to an existing framework"
