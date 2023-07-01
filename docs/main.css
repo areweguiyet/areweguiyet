@@ -1,4 +1,4 @@
-* {
+body {
     margin: 0px;
 }
 
@@ -86,6 +86,11 @@ p {
 
 .centered-content {
     padding: 5px;
+}
+
+section.centered-content {
+    padding-right: 10px;
+    padding-left: 10px;
 }
 
 .centered-content > h2, .centered-content > p {
@@ -220,8 +225,12 @@ p {
     border-color: #eee
 }
 
-.ecosystem-tags > li:hover {
-    border-color: #ccc;
+/* Only enable hover effect when well supported (since we also use the border
+color to signify active items) */
+@media (hover: hover) {
+    .ecosystem-tags > li:hover {
+        border-color: #ccc;
+    }
 }
 
 .ecosystem-card > header {
@@ -260,7 +269,7 @@ p {
     font-size: 16px;
 }
 
-@media only screen and (min-device-width: 1200px) {
+@media only screen and (min-width: 1200px) {
     h2 {
         width: 900px;
         margin-left: auto;
@@ -287,7 +296,7 @@ p {
     }
 }
 
-@media only screen and (min-device-width: 700px) {
+@media only screen and (min-width: 700px) {
     .ecosystem-crates {
         flex-flow: row wrap;
         align-items: stretch;
