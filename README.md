@@ -28,8 +28,18 @@ Companion website to
 Add the crate to the `ecosystem.toml` file (using the keys documented
 therein), and open a pull request.
 
-You are strongly encouraged to default to the crate's own defaults, which are
-written and updated by the crate maintainers themselves.
+For crates on crates.io, you should usually only include `name` and `tags`,
+and leave all other fields blank. The remaining fields will be populated with
+the crate's own defaults, which are written and updated by the crate
+maintainers themselves. AWGY is rebuilt weekly to keep these fields (e.g.
+`docs`, `repo`) up to date.
+
+Your pull request will fail to build if `ecosystem.toml` includes these fields
+with the same data as crates.io.
+
+For projects/libraries/etc not on crates.io, or that are not well represented
+by a single crate, you can provide all the fields, along with `skip-crates-io`
+to prevent checking against crates.io.
 
 
 ### Submitting a news link
@@ -39,12 +49,14 @@ Add the post to the `newsfeed.toml` file, and open a pull request.
 
 ### Using the CLI
 
-AreWeGuiYet uses a custom Rust CLI to fetch data from crates.io. It's
-currently a work in progress and is a little rough around the edges.
+AreWeGuiYet uses Github Actions to build the site. The Github Action is
+powered by a Rust CLI, which fetches the latest data for crates from
+crates.io.
 
-Building the CLI requires Rust 1.31+. The CLI maintains a cache so it doesn't
-hammer any APIs with more calls than it needs to. If you downloaded the repo
-awhile ago, please be sure to run with the `--clean` flag.
+If you wish to build the site locally, you will need to run the CLI manually
+with `cargo run -- publish`. The CLI maintains a cache so it doesn't hammer
+any APIs with more calls than it needs to. If you downloaded the repo awhile
+ago, please be sure to run with the `--clean` flag.
 
 If you need assistance (or especially if there's a bug, of which there are
 certainly many), please open an issue (it's much appreciated! 💖).
