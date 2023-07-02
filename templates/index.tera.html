@@ -27,18 +27,20 @@
         in itself.</p>
 </section>
 <section id="newsfeed" class="centered-content">
-    <h2><a href="./newsfeed">Stay in the loop.</a></h2>
+    <h2><a href="{{ get_url(path="@/newsfeed/_index.md") }}">Stay in the loop.</a></h2>
     <p>If you're working on or writing about GUIs in Rust, please contribute! Each
         news entry can either be a post contributed to the repo or a link back to
         your blog, Reddit thread, etc. See
         <a href="https://github.com/areweguiyet/areweguiyet/blob/master/README.md">
         README</a> for details.</p>
     <p>Here are also some popular and recommended community links submitted to the site:</p>
-    {{ macros::newsfeed_posts(posts=news_links | sort(attribute="date") | reverse | slice(end=3)) }}
+    {% set news_links = load_data(path="content/newsfeed/links.toml") %}
+    {{ macros::newsfeed_links(pages=news_links.links | sort(attribute="date") | reverse | slice(end=3)) }}
     <p>Here are the most recent posts on AreWeGuiYet:</p>
-    {{ macros::newsfeed_posts(posts=news_posts | sort(attribute="date") | reverse | slice(end=3)) }}
-    {% if news_links | length > 3 or news_posts | length > 3 %}
-        <a href="/newsfeed">See more posts</a>
+    {% set news_posts = get_section(path="newsfeed/_index.md") %}
+    {{ macros::newsfeed_posts(pages=news_posts.pages | sort(attribute="date") | reverse | slice(end=3)) }}
+    {% if news_links.links | length > 3 or news_posts.pages | length > 3 %}
+        <a href="{{ get_url(path="@/newsfeed/_index.md") }}">See more posts</a>
     {% endif %}
 </section>
 <section id="ecosystem" class="ecosystem-navigator">
@@ -46,11 +48,12 @@
         <h2><a href="#ecosystem">Ecosystem</a></h2>
         <p>Select a tag (or tags) below to only show relevant crates. All crates will be shown when no tags are selected.</p>
         <ul class="ecosystem-tags" id="ecosystem-tags">
-            {% for tag, description in tags %}
-                {% if description %}
-                    <li title="{{description | addslashes }}" data-crate-tag="{{tag}}">{{tag}}</li>
+            {% set ecosystem = get_section(path="ecosystem/_index.md") %}
+            {% for page in ecosystem.pages | sort(attribute="title") %}
+                {% if page.description %}
+                    <li title="{{ page.description | addslashes }}" data-crate-tag="{{ page.title }}">{{ page.title }}</li>
                 {% else %}
-                    <li data-crate-tag="{{tag}}">{{tag}}</li>
+                    <li data-crate-tag="{{ page.title }}">{{ page.title }}</li>
                 {% endif %}
             {% endfor %}
         </ul>
@@ -64,5 +67,5 @@
 {% endblock content %}
 
 {% block scripts %}
-<script src="main.js"></script>
+<script src="{{ get_url(path="main.js") }}"></script>
 {% endblock scripts %}

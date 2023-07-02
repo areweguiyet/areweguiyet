@@ -60,5 +60,5 @@
 {% endblock head %}
 
 {% block content %}
-<section class="centered-content">{{post_content}}</section>
+<section class="centered-content">{{ page.content | safe }}</section>
 {% endblock content %}

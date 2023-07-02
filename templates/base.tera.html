@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Are we GUI yet?{% if page_title%} - {{page_title}}{% endif %}</title>
+        <title>{{ config.title }}{% if section %} - {{ section.title }}{% endif %}</title>
         <link href="https://fonts.googleapis.com/css?family=Lato:400,400i" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="/main.css">
+        <link rel="stylesheet" type="text/css" href="{{ get_url(path="main.css") }}">
         {% block head %}{% endblock head %}
     </head>
     <body class="column">
@@ -13,14 +13,14 @@
 
         <div class="header-background">
             <nav class="nav">
-                <a href="/" {% if not page_title %}class="active"{% endif %}>Home</a>
-                <a href="/#ecosystem" {% if page_title == "Ecosystem" %}class="active"{% endif %}>Ecosystem</a>
-                <a href="/newsfeed" {% if page_title == "News Feed" %}class="active"{% endif %}>News Feed</a>
-                <a href="/#about">About</a>
+                <a href="{{ get_url(path="@/_index.md") }}" {% if section and section.relative_path == "_index.md" %}class="active"{% endif %}>Home</a>
+                <a href="{{ get_url(path="@/_index.md") }}#ecosystem">Ecosystem</a>
+                <a href="{{ get_url(path="@/newsfeed/_index.md") }}" {% if section and section.relative_path == "newsfeed/_index.md" %}class="active"{% endif %}>News Feed</a>
+                <a href="{{ get_url(path="@/_index.md") }}#about">About</a>
             </nav>
 
             <div class="header-content">
-                <image width="128" height="128" src="/assets/rust-logo-128x128-blk-v2.png">
+                <image width="128" height="128" src="{{ get_url(path="images/rust-logo-128x128-blk-v2.png") }}">
                 <header>
                     <h1>Are we <span>GUI</span> Yet?</h1>
                     <p>The state of building user interfaces in Rust.</p>

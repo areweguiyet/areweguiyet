@@ -28,17 +28,17 @@ docs = "https://docs.rs/gemgui/latest/gemgui/"
 [crate.gtk4]
 name = "GTK 4"
 tags = [
-  "GTK",
-  "Bindings",
+  "gtk",
+  "bindings",
 ]
 
 [crate.rui]
 docs = "https://docs.rs/rui/"
 tags = [
   "winit",
-  "iOS",
-  "MacOS",
-  "WebGPU",
+  "ios",
+  "macos",
+  "webgpu",
 ]
 
 [crate.dominator]
@@ -53,22 +53,22 @@ docs = "https://docs.rs/dioxus/latest/dioxus/"
 [crate.gladis]
 docs = "https://docs.rs/gladis"
 tags = [
-  "GTK",
+  "gtk",
 ]
 
 [crate.flutter_rust_bridge]
 docs = "https://github.com/fzyzcjy/flutter_rust_bridge"
 tags = [
-  "Bindings",
+  "bindings",
 ]
 
 [crate.relm4]
 name = "Relm4"
 tags = [
-  "GTK",
-  "Bindings",
-  "MacOS",
-  "CSS",
+  "gtk",
+  "bindings",
+  "macos",
+  "css",
 ]
 
 [crate.makepad]
@@ -76,7 +76,7 @@ name = "Makepad"
 repo = "https://github.com/makepad/makepad"
 description = "Makepad is a new VR, web and native-rendering UI framework."
 tags = [
-  "WebGPU",
+  "webgpu",
 ]
 
 [crate.winsafe]
@@ -84,8 +84,8 @@ name = "WinSafe"
 description = "Win32 GUI and related APIs in safe, idiomatic Rust."
 docs = "https://docs.rs/winsafe"
 tags = [
-  "Bindings",
-  "WinApi",
+  "bindings",
+  "winapi",
 ]
 
 [crate.fui_core]
@@ -106,40 +106,40 @@ docs = "https://docs.rs/slint/"
 tags = [
   "proc-macro",
   "winit",
-  "Embedded",
-  "MacOS",
+  "embedded",
+  "macos",
 ]
 
 [crate.native-windows-gui]
 tags = [
-  "Bindings",
+  "bindings",
   "proc-macro",
-  "WinApi",
+  "winapi",
 ]
 
 [crate.iui]
 tags = [
-  "Bindings",
+  "bindings",
 ]
 
 [crate.lvgl]
 docs = "https://github.com/rafaelcaricio/lvgl-rs"
 tags = [
-  "Bindings",
-  "Embedded",
+  "bindings",
+  "embedded",
 ]
 
 [crate.egui]
 description = "Highly portable immediate mode GUI library in pure Rust"
 docs = "https://docs.rs/egui"
 tags = [
-  "Immediate mode API",
+  "immediate",
 ]
 
 [crate.imgui]
 tags = [
-  "Bindings",
-  "Immediate mode API",
+  "bindings",
+  "immediate",
 ]
 
 [crate.tauri]
@@ -148,34 +148,34 @@ repo = "https://github.com/tauri-apps/tauri"
 description = "Tauri is a framework for building tiny, blazing fast binaries for all major desktop platforms."
 docs = "https://tauri.studio/en/"
 tags = [
-  "HTML",
-  "MacOS",
-  "GTK",
+  "html",
+  "macos",
+  "gtk",
 ]
 
 [crate.vgtk]
 tags = [
-  "GTK",
+  "gtk",
 ]
 
 [crate.conrod-core]
 tags = [
-  "Immediate mode API",
+  "immediate",
 ]
 
 [crate.qt_widgets]
 description = "Ritual Qt bindings"
 docs = "https://rust-qt.github.io/qt/"
 tags = [
-  "Bindings",
-  "Qt",
+  "bindings",
+  "qt",
 ]
 
 [crate.fltk]
 description = "The FLTK crate is a crossplatform lightweight gui library which can be linked to statically to produce small, self-contained and fast binaries"
 tags = [
-  "Bindings",
-  "FLTK",
+  "bindings",
+  "fltk",
 ]
 
 [crate.kas]
@@ -184,7 +184,7 @@ description = "The toolKit Abstraction System leverages generics and macros to c
 docs = "https://docs.rs/kas"
 tags = [
   "winit",
-  "WebGPU",
+  "webgpu",
   "proc-macro",
 ]
 
@@ -195,34 +195,34 @@ description = "A renderer-agnostic GUI library for Rust focused on simplicity an
 [crate.core-foundation]
 docs = "https://docs.rs/core-foundation/"
 tags = [
-  "Bindings",
-  "MacOS",
+  "bindings",
+  "macos",
 ]
 
 [crate.cacao]
 docs = "https://docs.rs/cacao/"
 tags = [
-  "MacOS",
-  "iOS",
+  "macos",
+  "ios",
 ]
 
 [crate.sciter-rs]
 tags = [
-  "HTML",
-  "CSS",
+  "html",
+  "css",
 ]
 
 [crate.azul]
 name = "Azul"
 tags = [
-  "WebRender",
+  "webrender",
 ]
 
 [crate.webrender]
 name = "WebRender"
 docs = "https://doc.servo.org/webrender/index.html"
 tags = [
-  "WebRender",
+  "webrender",
 ]
 
 [crate.druid]
@@ -237,9 +237,9 @@ description = "The Orbital Widget Toolkit is a multi platform (G)UI toolkit for 
 
 [crate.rust-qt-binding-generator]
 tags = [
-  "Bindings",
-  "Qt",
-  "QML",
+  "bindings",
+  "qt",
+  "qml",
 ]
 
 [crate.qmetaobject]
@@ -247,9 +247,9 @@ description = "A framework empowering everyone to create Qt/QML applications wit
 docs = "https://docs.rs/qmetaobject/"
 tags = [
   "proc-macro",
-  "Bindings",
-  "Qt",
-  "QML",
+  "bindings",
+  "qt",
+  "qml",
 ]
 
 [crate.cxx-qt]
@@ -257,15 +257,15 @@ name = "CXX-Qt"
 description = "CXX-Qt is a library that automatically generates code to transfer data between Rust and C++ through common interfaces such as QObjects that can be exposed directly into QML. It uses the cxx crate for safe interaction between Rust and C++."
 docs = "https://kdab.github.io/cxx-qt/book/"
 tags = [
-  "Bindings",
-  "Qt",
-  "QML",
+  "bindings",
+  "qt",
+  "qml",
 ]
 
 [crate.relm]
 tags = [
-  "Bindings",
-  "GTK",
+  "bindings",
+  "gtk",
 ]
 
 [crate.gtk]
@@ -273,6 +273,6 @@ name = "GTK"
 description = "Rust bindings and wrappers for GLib, GDK 3, GTK+ 3 and Cairo."
 docs = "https://gtk-rs.org/docs-src/"
 tags = [
-  "Bindings",
-  "GTK",
+  "bindings",
+  "gtk",
 ]

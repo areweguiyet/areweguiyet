@@ -1,0 +1,7 @@
+# See https://www.getzola.org/documentation/getting-started/configuration/
+
+base_url = "https://areweguiyet.com/"
+title = "Are we GUI yet?"
+description = "The state of building user interfaces in Rust"
+# compile_sass = true
+# highlight_code = true

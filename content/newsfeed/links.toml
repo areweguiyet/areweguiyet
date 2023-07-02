@@ -164,12 +164,6 @@ author = "Raph Levien"
 link = "https://raphlinus.github.io/ui/druid/2019/11/22/reactive-ui.html"
 date = 2019-11-22
 
-[[posts]]
-title = "#Rust2019 Are We GUI Yet?"
-author = "Dustin Bensing"
-file-name = "2019-01-13_rust2019.md"
-date = 2019-01-13
-
 [[links]]
 title = "Entity-Component-System architecture for UI in Rust"
 author = "Raph Levien"

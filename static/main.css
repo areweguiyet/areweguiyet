@@ -103,7 +103,7 @@ section.centered-content {
             rgba(62, 52, 32, 0.81),
             rgba(62, 52, 32, 0.81)
         ),
-        url(./assets/guiemptycanvas.jpg) #222;
+        url(/images/guiemptycanvas.jpg) #222;
     background-position: center center;
     background-size: cover;
 }
@@ -162,7 +162,7 @@ section.centered-content {
             rgba(62, 52, 32, 0.81),
             rgba(62, 52, 32, 0.81)
         ),
-        url(./assets/crates.jpg) #222;
+        url(/images/crates.jpg) #222;
     background-position: center center;
     background-size: cover;
 }

@@ -25,8 +25,8 @@ Companion website to
 
 ### Submitting a crate
 
-Add the crate to the `ecosystem.toml` file (using the keys documented
-therein), and open a pull request.
+Add the crate to the `ecosystem.toml` file using the keys documented therein,
+and open a pull request.
 
 For crates on crates.io, you should usually only include `name` and `tags`,
 and leave all other fields blank. The remaining fields will be populated with
@@ -44,7 +44,8 @@ to prevent checking against crates.io.
 
 ### Submitting a news link
 
-Add the post to the `newsfeed.toml` file, and open a pull request.
+Add the post to the `content/newsfeed/links.toml` file using the keys
+documented therein, and open a pull request.
 
 
 ### Using the CLI

@@ -34,8 +34,20 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Verify
-      run: cd cli && cargo run --verbose -- publish --verify-only
+    - name: Build CLI
+      run: cargo build --verbose
+
+    - name: Update data
+      run: |
+        cargo run -- clean
+        cargo run -- fetch
+
+    - name: Build site
+      uses: shalzz/zola-deploy-action@v0.17.2
+      env:
+        BUILD_ONLY: true
+        BUILD_FLAGS: --drafts
+        CHECK_LINKS: true
 
   deploy:
     name: Deploys to GH Pages
@@ -45,13 +57,17 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Publish
-      run: cd cli && cargo run --verbose -- publish
+    - name: Build CLI
+      run: cargo build --verbose
 
-    - name: Deploy
-      uses: JamesIves/github-pages-deploy-action@3.7.1
-      with:
+    - name: Update data
+      run: |
+        cargo run -- clean
+        cargo run -- fetch
+
+    - name: Deploy site
+      uses: shalzz/zola-deploy-action@v0.17.2
+      env:
+        PAGES_BRANCH: gh-pages
+        CHECK_LINKS: true
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        BRANCH: gh-pages
-        FOLDER: docs
-        CLEAN: true
