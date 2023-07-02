@@ -3,6 +3,7 @@
 pub struct NewsfeedCommon {
     pub title: String,
     pub author: String,
+    pub date: toml::value::Datetime,
 }
 
 #[derive(Debug, Deserialize, Serialize)]

@@ -1,8 +1,10 @@
 {% extends "base.tera.html" %}
 {% import "macros.tera.html" as macros %}
+
 {% block head %}
 <script src="https://cdn.jsdelivr.net/npm/vue@legacy"></script>
 {% endblock head%}
+
 {% block content %}
 <section class="centered-content">
     <h2>The roots aren't deep but the seeds are planted.</h2>
@@ -32,23 +34,9 @@
         <a href="https://github.com/areweguiyet/areweguiyet/blob/master/README.md">
         README</a> for details.</p>
     <p>Here are also some popular and recommended community links submitted to the site:</p>
-    <div class="newsfeed-posts">
-        {% for post in news_links | slice(start=0, end=3) %}
-            <div>
-                <h3>{{post.title}} by {{post.author}}</h3>
-                {{macros::link(label=post.link, href=post.link)}}
-            </div>
-        {% endfor %}
-    </div>
+    {{ macros::newsfeed_posts(posts=news_links | sort(attribute="date") | reverse | slice(end=3)) }}
     <p>Here are the most recent posts on AreWeGuiYet:</p>
-    <div class="newsfeed-posts">
-        {% for post in news_posts | slice(start=0, end=3) %}
-            <div>
-                <h3>{{post.title}} by {{post.author}}</h3>
-                {{macros::link(label=post.link, href=post.link)}}
-            </div>
-        {% endfor %}
-    </div>
+    {{ macros::newsfeed_posts(posts=news_posts | sort(attribute="date") | reverse | slice(end=3)) }}
     {% if news_links | length > 3 or news_posts | length > 3 %}
         <a href="/newsfeed">See more posts</a>
     {% endif %}
@@ -74,6 +62,7 @@
     <crates-list v-bind:crates_map="crates" v-bind:tag_filter="tag_filter"/>
 </section>
 {% endblock content %}
+
 {% block scripts %}
 <script src="main.js"></script>
 {% endblock scripts %}

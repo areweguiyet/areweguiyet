@@ -1,3 +1,10 @@
-{% macro link(label, href) %}
-    <a href="{{href}}">{{ label }}</a>
-{% endmacro input %}
+{% macro newsfeed_posts(posts) %}
+    <div class="newsfeed-posts">
+        {% for post in posts %}
+            <div>
+                <h3>{{ post.title }} by {{ post.author }}</h3>
+                <a href="{{ post.link | safe }}">/{{ post.link }}</a>
+            </div>
+        {% endfor %}
+    </div>
+{% endmacro %}
