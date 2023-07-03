@@ -22,7 +22,7 @@ Vue.component('crate-card', {
                 <p>{{ crate.description }}</p>
             </div>
             <div class="badge">
-                <img alt="Crates.io" v-bind:src="'https://img.shields.io/crates/d/' + crate.name + '?color=9f703d'">
+                <img alt="crates.io" v-bind:src="'https://img.shields.io/crates/d/' + crate.id + '?color=9f703d'">
             </div>
             <ul v-if="crate.tags" class="ecosystem-tags">
                 <li v-for="tag in crate.tags">{{ tag }}</li>
@@ -62,7 +62,7 @@ Vue.component('crates-list', {
         let crates = Object.keys(this.crates_map)
         crates = crates.map(function (key) {
                 return {
-                    name: key,
+                    id: key,
                     ...this.crates_map[key]
                 }
             }.bind(this))
