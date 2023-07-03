@@ -120,8 +120,9 @@ fn fetch(root: &Path) {
     for (crate_id, krate) in &ecosystem.crates {
         if krate.skip_crates_io {
             compiled_ecosystem.insert(
-                krate.name.clone().unwrap_or_else(|| crate_id.to_string()),
+                crate_id.to_string(),
                 CompiledCrate {
+                    name: krate.name.clone().unwrap_or_else(|| crate_id.to_string()),
                     crates_io: None,
                     repo: krate.repo.clone(),
                     description: krate.description.clone(),
@@ -140,10 +141,7 @@ fn fetch(root: &Path) {
             println!("done.");
         }
         let compiled_crate = get_compiled_crate(crate_id, krate, &data.crates_io[crate_id]);
-        compiled_ecosystem.insert(
-            krate.name.clone().unwrap_or_else(|| crate_id.clone()),
-            compiled_crate,
-        );
+        compiled_ecosystem.insert(crate_id.clone(), compiled_crate);
     }
 
     // Write compiled ecosystem file
@@ -159,7 +157,7 @@ fn fetch(root: &Path) {
 /// Crate info that gets put into the compiled ecosystem file.
 #[derive(Serialize)]
 struct CompiledCrate {
-    // name: String, // Compiled Crates are stored in a HashMap, no longer need this
+    name: String,
     crates_io: Option<String>,
     repo: Option<String>,
     description: Option<String>,
@@ -199,6 +197,7 @@ fn get_compiled_crate(crate_id: &str, krate: &Crate, crates_io: &CrateResponse) 
     }
 
     CompiledCrate {
+        name: krate.name.clone().unwrap_or_else(|| crate_id.to_string()),
         crates_io: Some(format!("https://crates.io/crates/{crate_id}")),
         repo: krate.repo.clone().or(repository),
         description: krate.description.clone().or(description),

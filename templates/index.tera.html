@@ -50,11 +50,12 @@
         <ul class="ecosystem-tags" id="ecosystem-tags">
             {% set ecosystem = get_section(path="ecosystem/_index.md") %}
             {% for page in ecosystem.pages | sort(attribute="title") %}
-                {% if page.description %}
-                    <li title="{{ page.description | addslashes }}" data-crate-tag="{{ page.title }}">{{ page.title }}</li>
-                {% else %}
-                    <li data-crate-tag="{{ page.title }}">{{ page.title }}</li>
-                {% endif %}
+                <li
+                    {% if page.description %}
+                        title="{{ page.description | addslashes }}"
+                    {% endif %}
+                    data-crate-tag="{{ page.slug }}"
+                >{{ page.title }}</li>
             {% endfor %}
         </ul>
     </div>
