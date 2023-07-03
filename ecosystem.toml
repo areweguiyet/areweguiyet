@@ -59,11 +59,6 @@ name = "Dominator"
 name = "Dioxus"
 description = "Elegant React-like library for building user interfaces for desktop, web, mobile, SSR, liveview, and more."
 
-[crate.gladis]
-tags = [
-  "gtk",
-]
-
 [crate.flutter_rust_bridge]
 tags = [
   "bindings",
