@@ -150,8 +150,7 @@ tags = [
 ]
 
 [crate.tauri]
-skip-crates-io = true
-repo = "https://github.com/tauri-apps/tauri"
+name = "Tauri"
 description = "Tauri is a framework for building tiny, blazing fast binaries for all major desktop platforms."
 docs = "https://tauri.studio/en/"
 tags = [
