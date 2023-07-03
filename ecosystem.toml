@@ -116,6 +116,12 @@ tags = [
   "winapi",
 ]
 
+[crate.windows]
+tags = [
+  "bindings",
+  "winapi",
+]
+
 [crate.iui]
 tags = [
   "bindings",
