@@ -88,7 +88,6 @@ tags = [
 
 [crate.winsafe]
 name = "WinSafe"
-description = "Win32 GUI and related APIs in safe, idiomatic Rust."
 tags = [
   "bindings",
   "winapi",
@@ -138,7 +137,6 @@ tags = [
 ]
 
 [crate.egui]
-description = "Highly portable immediate mode GUI library in pure Rust"
 tags = [
   "immediate",
 ]
@@ -270,8 +268,7 @@ tags = [
 ]
 
 [crate.gtk]
-name = "GTK"
-description = "Rust bindings and wrappers for GLib, GDK 3, GTK+ 3 and Cairo."
+name = "GTK 3"
 tags = [
   "bindings",
   "gtk",
