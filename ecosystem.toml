@@ -98,9 +98,7 @@ tags = [
 ]
 
 [crate.slint]
-skip-crates-io = true
 name = "Slint"
-repo = "https://github.com/slint-ui/slint"
 description = "Slint is a toolkit to efficiently develop fluid graphical user interfaces for any display: embedded devices and desktop applications. It comes with a fast OpenGL renderer, a designer-friendly markup language and is written in Rust."
 docs = "https://docs.rs/slint/"
 tags = [
