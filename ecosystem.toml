@@ -21,6 +21,17 @@
 # # Defaults to what is specified on crates.io, or otherwise to docs.rs.
 # docs = "https://docs.rs/mycrate"
 
+[crate.freya]
+name = "Freya"
+description = "Cross-platform native GUI library powered by Dioxus and Skia."
+docs = "https://docs.freyaui.dev/freya/"
+repo = "https://github.com/marc2332/freya/"
+tags = [
+  "skia",
+  "winit",
+  "dioxus",
+]
+
 [crate.gemgui]
 name = "GemGui"
 docs = "https://docs.rs/gemgui/latest/gemgui/"
