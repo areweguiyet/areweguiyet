@@ -24,7 +24,7 @@
 [crate.freya]
 name = "Freya"
 description = "Cross-platform native GUI library powered by Dioxus and Skia."
-docs = "https://docs.freyaui.dev/freya/"
+docs = "https://docs.rs/freya/latest/freya/"
 repo = "https://github.com/marc2332/freya/"
 tags = [
   "skia",
