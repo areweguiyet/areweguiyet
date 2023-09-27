@@ -77,7 +77,7 @@ struct ExternalData {
 }
 
 impl ExternalData {
-    const FILE: &str = "content/external_data.json";
+    const FILE: &str = "target/external_data.json";
 
     fn clean(root: &Path) {
         // Remove the data, and ignore if the file was not found
@@ -123,22 +123,11 @@ fn fetch(root: &Path) {
     )
     .expect("failed initializing crates.io client");
 
-    let mut compiled_ecosystem = BTreeMap::new();
     for (crate_id, krate) in &ecosystem.crates {
         if krate.skip_crates_io {
-            compiled_ecosystem.insert(
-                crate_id.to_string(),
-                CompiledCrate {
-                    name: krate.name.clone().unwrap_or_else(|| crate_id.to_string()),
-                    crates_io: None,
-                    repo: krate.repo.clone(),
-                    description: krate.description.clone(),
-                    docs: krate.docs.clone(),
-                    tags: krate.tags.clone(),
-                },
-            );
             continue;
         }
+
         if !data.crates_io.contains_key(crate_id) {
             print!("Requesting crates.io data for {crate_id}... ");
             let response = client
@@ -147,37 +136,16 @@ fn fetch(root: &Path) {
             data.crates_io.insert(crate_id.to_string(), response);
             println!("done.");
         }
-        let compiled_crate = get_compiled_crate(crate_id, krate, &data.crates_io[crate_id]);
-        compiled_ecosystem.insert(crate_id.clone(), compiled_crate);
-    }
 
-    // Write compiled ecosystem file
-    let s = serde_json::to_string(&compiled_ecosystem)
-        .expect("failed to serialize the compiled ecosystem");
-    fs::write(root.join("static/compiled_ecosystem.json"), s)
-        .expect("failed writing compiled ecosystem");
+        check_compiled_crate(crate_id, krate, &data.crates_io[crate_id]);
+    }
 
     data.write(root);
     println!("External data fetched.");
 }
 
-/// Crate info that gets put into the compiled ecosystem file.
-#[derive(Serialize)]
-struct CompiledCrate {
-    name: String,
-    crates_io: Option<String>,
-    repo: Option<String>,
-    description: Option<String>,
-    docs: Option<String>,
-    tags: Vec<String>,
-}
-
-/// Merge saved data with data from crates io (if the crate is on crates io).
-///
-/// No fields will be overwritten if they are already specified.
-///
 /// Issues errors if the data from crates io is the same as the local data.
-fn get_compiled_crate(crate_id: &str, krate: &Crate, crates_io: &CrateResponse) -> CompiledCrate {
+fn check_compiled_crate(crate_id: &str, krate: &Crate, crates_io: &CrateResponse) {
     let crates_io_api::Crate {
         repository,
         description,
@@ -201,21 +169,6 @@ fn get_compiled_crate(crate_id: &str, krate: &Crate, crates_io: &CrateResponse) 
         panic!(
             "Please remove {crate_id}'s docs in ecosystem.toml since it duplicates the value on crates.io",
         );
-    }
-
-    CompiledCrate {
-        name: krate.name.clone().unwrap_or_else(|| crate_id.to_string()),
-        crates_io: Some(format!("https://crates.io/crates/{crate_id}")),
-        repo: krate.repo.clone().or(repository),
-        description: krate.description.clone().or(description),
-        docs: Some(
-            krate
-                .docs
-                .clone()
-                .or(documentation)
-                .unwrap_or_else(|| format!("https://docs.rs/{crate_id}/latest/{crate_id}/")),
-        ),
-        tags: krate.tags.clone(),
     }
 }
 
