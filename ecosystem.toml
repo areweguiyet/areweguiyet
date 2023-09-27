@@ -20,12 +20,3 @@
 # #
 # # Defaults to what is specified on crates.io, or otherwise to docs.rs.
 # docs = "https://domain.invalid/mycrate/docs"
-
-[crate.rifs]
-name = "Rust-In-Flutter"
-tags = [
-  "bindings",
-  "flutter",
-  "native",
-  "cross-platform",
-]
