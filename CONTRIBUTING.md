@@ -8,8 +8,34 @@ below.
 
 ## Submitting a crate
 
-Add the crate to the `ecosystem.toml` file using the keys documented therein,
-and open a pull request.
+Add the crate to the relevant category under the `ecosystem` directory, and
+open a pull request.
+
+The allowed keys are as follows:
+
+```toml
+# A crate on crates.io.
+[extra.crates.my-crate]
+# The name of the crate. Defaults to the crate name, but may be capitalized
+# or named differently if desired.
+name = "MyCrate"
+# A description of the crate. Defaults to the description on crates.io.
+description = "A crate to do stuff"
+# The graphics / layout technology that the crate uses.
+#
+# This is required for the `bindings`, `framework` and `toolkit` categories.
+technology = "native" | "custom" | "web"
+# The platforms that this crate supports.
+platform = ["desktop", "mobile", "web"]
+# Location of the crate's code repository.
+#
+# Defaults to what is specified on crates.io.
+repo = "https://domain.invalid/mycrate/git"
+# Location of the crate's documentation.
+#
+# Defaults to what is specified on crates.io, or otherwise to docs.rs.
+docs = "https://domain.invalid/mycrate/docs"
+```
 
 For crates on crates.io, you should usually only include `name` and `tags`,
 and leave all other fields blank. The remaining fields will be populated with
