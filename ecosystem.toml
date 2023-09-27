@@ -278,3 +278,6 @@ tags = [
 name = "Pax"
 description = "User interface language and 2D layout engine for cross-platform apps"
 tags = []
+
+[crate.tinyfiledialogs]
+tags = ["bindings", "tooling"]
