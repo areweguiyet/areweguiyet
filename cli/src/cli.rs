@@ -201,7 +201,13 @@ fn get_compiled_crate(crate_id: &str, krate: &Crate, crates_io: &CrateResponse) 
         crates_io: Some(format!("https://crates.io/crates/{crate_id}")),
         repo: krate.repo.clone().or(repository),
         description: krate.description.clone().or(description),
-        docs: krate.docs.clone().or(documentation),
+        docs: Some(
+            krate
+                .docs
+                .clone()
+                .or(documentation)
+                .unwrap_or_else(|| format!("https://docs.rs/{crate_id}/latest/{crate_id}/")),
+        ),
         tags: krate.tags.clone(),
     }
 }

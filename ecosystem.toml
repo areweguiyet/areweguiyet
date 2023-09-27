@@ -15,26 +15,27 @@
 # # Location of the crate's code repository.
 # #
 # # Defaults to what is specified on crates.io.
-# repo = "https://mycrate.com/git"
+# repo = "https://domain.invalid/mycrate/git"
 # # Location of the crate's documentation.
 # #
 # # Defaults to what is specified on crates.io, or otherwise to docs.rs.
-# docs = "https://docs.rs/mycrate"
+# docs = "https://domain.invalid/mycrate/docs"
 
 [crate.freya]
 name = "Freya"
 description = "Cross-platform native GUI library powered by Dioxus and Skia."
-docs = "https://docs.rs/freya/latest/freya/"
-repo = "https://github.com/marc2332/freya/"
 tags = [
   "skia",
   "winit",
   "dioxus",
 ]
 
+[crate.leptos]
+name = "Leptos"
+tags = []
+
 [crate.gemgui]
 name = "GemGui"
-docs = "https://docs.rs/gemgui/latest/gemgui/"
 
 [crate.gtk4]
 name = "GTK 4"
@@ -44,7 +45,6 @@ tags = [
 ]
 
 [crate.rui]
-docs = "https://docs.rs/rui/"
 tags = [
   "winit",
   "ios",
@@ -54,21 +54,12 @@ tags = [
 
 [crate.dominator]
 name = "Dominator"
-docs = "https://docs.rs/dominator/latest/dominator/"
 
 [crate.dioxus]
 name = "Dioxus"
 description = "Elegant React-like library for building user interfaces for desktop, web, mobile, SSR, liveview, and more."
-docs = "https://docs.rs/dioxus/latest/dioxus/"
-
-[crate.gladis]
-docs = "https://docs.rs/gladis"
-tags = [
-  "gtk",
-]
 
 [crate.flutter_rust_bridge]
-docs = "https://github.com/fzyzcjy/flutter_rust_bridge"
 tags = [
   "bindings",
 ]
@@ -92,8 +83,6 @@ tags = [
 
 [crate.winsafe]
 name = "WinSafe"
-description = "Win32 GUI and related APIs in safe, idiomatic Rust."
-docs = "https://docs.rs/winsafe"
 tags = [
   "bindings",
   "winapi",
@@ -111,7 +100,6 @@ tags = [
 [crate.slint]
 name = "Slint"
 description = "Slint is a toolkit to efficiently develop fluid graphical user interfaces for any display: embedded devices and desktop applications. It comes with a fast OpenGL renderer, a designer-friendly markup language and is written in Rust. Triple-licensed: GPLv3, Royalty-free, and Commercial."
-docs = "https://docs.rs/slint/"
 tags = [
   "proc-macro",
   "winit",
@@ -126,21 +114,24 @@ tags = [
   "winapi",
 ]
 
+[crate.windows]
+tags = [
+  "bindings",
+  "winapi",
+]
+
 [crate.iui]
 tags = [
   "bindings",
 ]
 
 [crate.lvgl]
-docs = "https://github.com/rafaelcaricio/lvgl-rs"
 tags = [
   "bindings",
   "embedded",
 ]
 
 [crate.egui]
-description = "Highly portable immediate mode GUI library in pure Rust"
-docs = "https://docs.rs/egui"
 tags = [
   "immediate",
 ]
@@ -152,8 +143,7 @@ tags = [
 ]
 
 [crate.tauri]
-skip-crates-io = true
-repo = "https://github.com/tauri-apps/tauri"
+name = "Tauri"
 description = "Tauri is a framework for building tiny, blazing fast binaries for all major desktop platforms."
 docs = "https://tauri.studio/en/"
 tags = [
@@ -190,7 +180,6 @@ tags = [
 [crate.kas]
 name = "KAS"
 description = "The toolKit Abstraction System leverages generics and macros to compose widgets with encapsulated user data, provides a powerful event-handling model and scales to at least 100'000 widgets per window."
-docs = "https://docs.rs/kas"
 tags = [
   "winit",
   "webgpu",
@@ -202,14 +191,12 @@ name = "Iced"
 description = "A renderer-agnostic GUI library for Rust focused on simplicity and type-safety. Inspired by Elm."
 
 [crate.core-foundation]
-docs = "https://docs.rs/core-foundation/"
 tags = [
   "bindings",
   "macos",
 ]
 
 [crate.cacao]
-docs = "https://docs.rs/cacao/"
 tags = [
   "macos",
   "ios",
@@ -229,20 +216,24 @@ tags = [
 
 [crate.webrender]
 name = "WebRender"
-docs = "https://doc.servo.org/webrender/index.html"
 tags = [
   "webrender",
 ]
 
 [crate.druid]
-description = "Druid is an experimental Rust-native UI toolkit. Its main goal is to offer a polished user experience. There are many factors to this goal, including performance, a rich palette of interactions (hence a widget library to support them), and playing well with the native platform."
+description = "(Discontinued) Druid is an experimental Rust-native UI toolkit. Its main goal is to offer a polished user experience. There are many factors to this goal, including performance, a rich palette of interactions (hence a widget library to support them), and playing well with the native platform."
 tags = [
   "piet",
 ]
 
-[crate.orbtk]
-name = "OrbTk"
-description = "The Orbital Widget Toolkit is a multi platform (G)UI toolkit for building scalable user interfaces with the programming language Rust. It's based on the Entity Component System Pattern and provides a functional-reactive API."
+[crate.masonry]
+tags = []
+
+[crate.xilem]
+skip-crates-io = true
+name = "Xilem"
+description = "An experimental Rust architecture for reactive UI"
+repo = "https://github.com/linebender/xilem/"
 
 [crate.rust-qt-binding-generator]
 tags = [
@@ -253,7 +244,6 @@ tags = [
 
 [crate.qmetaobject]
 description = "A framework empowering everyone to create Qt/QML applications with Rust. It does so by building QMetaObjects at compile time, registering QML types (optionally via exposing QQmlExtensionPlugins) and providing idiomatic wrappers."
-docs = "https://docs.rs/qmetaobject/"
 tags = [
   "proc-macro",
   "bindings",
@@ -278,9 +268,7 @@ tags = [
 ]
 
 [crate.gtk]
-name = "GTK"
-description = "Rust bindings and wrappers for GLib, GDK 3, GTK+ 3 and Cairo."
-docs = "https://gtk-rs.org/docs-src/"
+name = "GTK 3"
 tags = [
   "bindings",
   "gtk",
@@ -294,3 +282,11 @@ tags = [
   "native",
   "cross-platform",
 ]
+
+[crate.pax-std]
+name = "Pax"
+description = "User interface language and 2D layout engine for cross-platform apps"
+tags = []
+
+[crate.tinyfiledialogs]
+tags = ["bindings", "tooling"]
