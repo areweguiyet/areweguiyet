@@ -30,6 +30,10 @@ tags = [
   "dioxus",
 ]
 
+[crate.leptos]
+name = "Leptos"
+tags = []
+
 [crate.gemgui]
 name = "GemGui"
 
