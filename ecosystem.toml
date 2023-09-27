@@ -21,15 +21,6 @@
 # # Defaults to what is specified on crates.io, or otherwise to docs.rs.
 # docs = "https://domain.invalid/mycrate/docs"
 
-[crate.webrender]
-name = "WebRender"
-tags = [
-  "webrender",
-]
-
-[crate.masonry]
-tags = []
-
 [crate.rifs]
 name = "Rust-In-Flutter"
 tags = [
@@ -38,6 +29,3 @@ tags = [
   "native",
   "cross-platform",
 ]
-
-[crate.tinyfiledialogs]
-tags = ["bindings", "tooling"]
