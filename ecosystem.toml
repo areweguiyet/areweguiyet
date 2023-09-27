@@ -21,59 +21,9 @@
 # # Defaults to what is specified on crates.io, or otherwise to docs.rs.
 # docs = "https://domain.invalid/mycrate/docs"
 
-[crate.freya]
-name = "Freya"
-description = "Cross-platform native GUI library powered by Dioxus and Skia."
-tags = [
-  "skia",
-  "winit",
-  "dioxus",
-]
-
-[crate.leptos]
-name = "Leptos"
-tags = []
-
-[crate.rui]
-tags = [
-  "winit",
-  "ios",
-  "macos",
-  "webgpu",
-]
-
-[crate.dominator]
-name = "Dominator"
-
 [crate.dioxus]
 name = "Dioxus"
 description = "Elegant React-like library for building user interfaces for desktop, web, mobile, SSR, liveview, and more."
-
-[crate.relm4]
-name = "Relm4"
-tags = [
-  "gtk",
-  "bindings",
-  "macos",
-  "css",
-]
-
-[crate.makepad]
-name = "Makepad"
-repo = "https://github.com/makepad/makepad"
-description = "Makepad is a new VR, web and native-rendering UI framework."
-tags = [
-  "webgpu",
-]
-
-[crate.fui_core]
-name = "fui"
-description = "MVVM-oriented (properties, observable collections, bindings), ui! macro, multiplatform, renderer-agnostic, with styles."
-docs = "https://github.com/marek-g/rust-fui/blob/master/doc/SUMMARY.md"
-tags = [
-  "winit",
-  "proc-macro",
-]
 
 [crate.slint]
 name = "Slint"
@@ -83,18 +33,6 @@ tags = [
   "winit",
   "embedded",
   "macos",
-]
-
-[crate.native-windows-gui]
-tags = [
-  "bindings",
-  "proc-macro",
-  "winapi",
-]
-
-[crate.egui]
-tags = [
-  "immediate",
 ]
 
 [crate.tauri]
@@ -107,61 +45,14 @@ tags = [
   "gtk",
 ]
 
-[crate.vgtk]
-tags = [
-  "gtk",
-]
-
-[crate.conrod-core]
-tags = [
-  "immediate",
-]
-
-[crate.kas]
-name = "KAS"
-description = "The toolKit Abstraction System leverages generics and macros to compose widgets with encapsulated user data, provides a powerful event-handling model and scales to at least 100'000 widgets per window."
-tags = [
-  "winit",
-  "webgpu",
-  "proc-macro",
-]
-
-[crate.iced]
-name = "Iced"
-description = "A renderer-agnostic GUI library for Rust focused on simplicity and type-safety. Inspired by Elm."
-
-[crate.azul]
-name = "Azul"
-tags = [
-  "webrender",
-]
-
 [crate.webrender]
 name = "WebRender"
 tags = [
   "webrender",
 ]
 
-[crate.druid]
-description = "(Discontinued) Druid is an experimental Rust-native UI toolkit. Its main goal is to offer a polished user experience. There are many factors to this goal, including performance, a rich palette of interactions (hence a widget library to support them), and playing well with the native platform."
-tags = [
-  "piet",
-]
-
 [crate.masonry]
 tags = []
-
-[crate.xilem]
-skip-crates-io = true
-name = "Xilem"
-description = "An experimental Rust architecture for reactive UI"
-repo = "https://github.com/linebender/xilem/"
-
-[crate.relm]
-tags = [
-  "bindings",
-  "gtk",
-]
 
 [crate.rifs]
 name = "Rust-In-Flutter"
@@ -171,11 +62,6 @@ tags = [
   "native",
   "cross-platform",
 ]
-
-[crate.pax-std]
-name = "Pax"
-description = "User interface language and 2D layout engine for cross-platform apps"
-tags = []
 
 [crate.tinyfiledialogs]
 tags = ["bindings", "tooling"]
