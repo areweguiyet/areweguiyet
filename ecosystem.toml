@@ -285,3 +285,12 @@ tags = [
   "bindings",
   "gtk",
 ]
+
+[crate.rifs]
+name = "Rust-In-Flutter"
+tags = [
+  "bindings",
+  "flutter",
+  "native",
+  "cross-platform",
+]
