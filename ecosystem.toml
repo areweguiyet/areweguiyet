@@ -282,3 +282,8 @@ tags = [
   "native",
   "cross-platform",
 ]
+
+[crate.pax-std]
+name = "Pax"
+description = "User interface language and 2D layout engine for cross-platform apps"
+tags = []
