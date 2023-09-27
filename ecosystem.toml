@@ -221,10 +221,19 @@ tags = [
 ]
 
 [crate.druid]
-description = "Druid is an experimental Rust-native UI toolkit. Its main goal is to offer a polished user experience. There are many factors to this goal, including performance, a rich palette of interactions (hence a widget library to support them), and playing well with the native platform."
+description = "(Discontinued) Druid is an experimental Rust-native UI toolkit. Its main goal is to offer a polished user experience. There are many factors to this goal, including performance, a rich palette of interactions (hence a widget library to support them), and playing well with the native platform."
 tags = [
   "piet",
 ]
+
+[crate.masonry]
+tags = []
+
+[crate.xilem]
+skip-crates-io = true
+name = "Xilem"
+description = "An experimental Rust architecture for reactive UI"
+repo = "https://github.com/linebender/xilem/"
 
 [crate.rust-qt-binding-generator]
 tags = [
