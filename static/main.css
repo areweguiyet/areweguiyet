@@ -182,6 +182,10 @@ section.centered-content {
     flex: 1;
 }
 
+.ecosystem-card.hidden {
+    display: none;
+}
+
 .ecosystem-card {
     flex: auto;
     min-height: 230px;
@@ -254,6 +258,14 @@ color to signify active items) */
     flex: 0 0 auto;
     color: #555;
     margin: 10px;
+}
+
+.ecosystem-card > header .spacer, .ecosystem-card > header a + .spacer:last-child {
+    display: none;
+}
+
+.ecosystem-card > header a + .spacer {
+    display: initial;
 }
 
 .ecosystem-card > header a {

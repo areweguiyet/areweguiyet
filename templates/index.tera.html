@@ -2,7 +2,7 @@
 {% import "macros.tera.html" as macros %}
 
 {% block head %}
-<script src="https://cdn.jsdelivr.net/npm/vue@legacy"></script>
+<script src="{{ get_url(path="tag_sorting.js") }}" async></script>
 {% endblock head%}
 
 {% block content %}
@@ -54,19 +54,87 @@
                     {% if page.description %}
                         title="{{ page.description | addslashes }}"
                     {% endif %}
-                    data-crate-tag="{{ page.slug }}"
+                    data-ecosystem-tag="{{ page.slug }}"
+                    onclick="toggleTagFilter('{{ page.slug }}')"
                 >{{ page.title }}</li>
             {% endfor %}
         </ul>
     </div>
 </section>
-<section class="ecosystem-crates centered-content" id="app-crates">
-    <!-- CRATES (they are added at runtime) -->
-    <p v-if="false">Loading...</p>
-    <crates-list v-bind:crates_map="crates" v-bind:tag_filter="tag_filter"/>
+<section class="ecosystem-crates centered-content">
+    {% set ecosystem_data = load_data(path="ecosystem.toml") %}
+    {% set external_data = load_data(path="target/external_data.json") %}
+    {% for crate_id, crate in ecosystem_data.crate %}
+        {% if crate_id in external_data.crates_io %}
+            {% set crates_io = external_data.crates_io[crate_id].crate %}
+        {% endif %}
+        <div
+            class="ecosystem-card"
+            {% if crate.tags %}
+                data-tags="{%- for tag in crate.tags -%}
+                    {%- if not loop.first -%}
+                        {{ ',' }}
+                    {%- endif -%}
+                    {{- tag -}}
+                {%- endfor -%}"
+            {% else %}
+                data-tags=""
+            {% endif %}
+        >
+            <header class="header">
+                <h3>
+                    {% if crate.name %}
+                        {{ crate.name }}
+                    {% else %}
+                        {{ crate_id }}
+                    {% endif %}
+                </h3>
+                <span>[
+                    {%- if crates_io -%}
+                        <a href="https://crates.io/crates/{{ crate_id }}">crate</a>
+                    {%- endif -%}
+
+                    <span class="spacer"> · </span>
+
+                    {%- if crate.repo -%}
+                        <a href="{{ crate.repo }}">repo</a>
+                    {%- elif crates_io.repository -%}
+                        <a href="{{ crates_io.repository }}">repo</a>
+                    {%- endif -%}
+
+                    <span class="spacer"> · </span>
+
+                    {%- if crate.docs -%}
+                        <a href="{{ crate.docs }}">docs</a>
+                    {%- elif crates_io.documentation -%}
+                        <a href="{{ crates_io.documentation }}">docs</a>
+                    {%- elif crates_io -%}
+                        <a href="https://docs.rs/{{ crate_id }}/latest/{{ crate_id }}/">docs</a>
+                    {%- endif -%}
+                ]</span>
+            </header>
+            <div class="content">
+                <p>
+                    {% if crate.description %}
+                        {{ crate.description }}
+                    {% else %}
+                        {{ crates_io.description }}
+                    {% endif %}
+                </p>
+            </div>
+            {% if crates_io %}
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/{{ crate_id }}?color=9f703d">
+            </div>
+            {% endif %}
+            {% if crate.tags %}
+                <ul class="ecosystem-tags">
+                    {% for tag in crate.tags %}
+                        <li onclick="setTagFilter('{{ tag }}')">{{ tag }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    {% endfor %}
 </section>
 {% endblock content %}
-
-{% block scripts %}
-<script src="{{ get_url(path="main.js") }}"></script>
-{% endblock scripts %}

@@ -1,13 +1,10 @@
 # Previously used
 cache.json
-docs/newsfeed/
-docs/index.html
-docs/compiled_ecosystem.json
+docs/
+static/compiled_ecosystem.json
 
 # Zola
 /public
-/content/external_data.json
-/static/compiled_ecosystem.json
 
 # Cargo
 target/
