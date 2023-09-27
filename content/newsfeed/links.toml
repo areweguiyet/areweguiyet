@@ -19,6 +19,12 @@
 # All keys are required. Please keep this file in order with newest first.
 
 [[links]]
+title = "Client-Side Server with Rust: A New Approach to UI Development"
+author = "Logan Keenan"
+link = "https://logankeenan.com/posts/client-side-server-with-rust-a-new-approach-to-ui-development/"
+date = 2023-08-02
+
+[[links]]
 title = "Slint 1.0 - Rustacean Station Podcast"
 author = "Tobias Hunger"
 link = "https://rustacean-station.org/episode/tobias-hunger-slint-1.0/"
