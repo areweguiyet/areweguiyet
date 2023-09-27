@@ -4,8 +4,18 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{{ config.title }}{% if section and section.title %} - {{ section.title }}{% endif %}</title>
+
+        <!-- styles -->
         <link href="https://fonts.googleapis.com/css?family=Lato:400,400i" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="{{ get_url(path="main.css") }}">
+
+        <!-- favicon -->
+        <link rel="apple-touch-icon" sizes="180x180" href="{{ get_url(path="images/apple-touch-icon.png") }}">
+        <link rel="icon" sizes="16x16" type="image/png" href="{{ get_url(path="images/favicon-16x16.png") }}">
+        <link rel="icon" sizes="32x32" type="image/png" href="{{ get_url(path="images/favicon-32x32.png") }}">
+        <link rel="icon" type="image/svg+xml" href="{{ get_url(path="images/favicon.svg") }}">
+        <link rel="icon" href="{{ get_url(path="images/favicon.ico") }}">
+
         {% block head %}{% endblock head %}
     </head>
     <body class="column">

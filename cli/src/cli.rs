@@ -8,6 +8,8 @@ use std::io;
 use std::path::Path;
 use std::time::Duration;
 
+const USER_AGENT: &str = "areweguiyet_cli (areweguiyet.com)";
+
 fn cli() -> Command {
     Command::new("AreWeGuiYet CLI")
         .subcommand_required(true)
@@ -15,6 +17,10 @@ fn cli() -> Command {
         .about("CLI for fetching data from various sources for the AreWeGuiYet website")
         .subcommand(Command::new("clean").about("Remove the data"))
         .subcommand(Command::new("fetch").about("Fetch new data"))
+        .subcommand(
+            Command::new("update-images")
+                .about("Update Rust images from the rust-lang.org repository"),
+        )
 }
 
 pub fn execute_cli() {
@@ -25,6 +31,7 @@ pub fn execute_cli() {
     match matches.subcommand() {
         Some(("clean", _)) => ExternalData::clean(root),
         Some(("fetch", _)) => fetch(root),
+        Some(("update-images", _)) => update_images(root),
         _ => unreachable!(),
     }
 }
@@ -110,7 +117,7 @@ fn fetch(root: &Path) {
     println!("Found {} crates.", ecosystem.crates.len());
 
     let client = crates_io_api::SyncClient::new(
-        "areweguiyet_cli (areweguiyet.com)",
+        USER_AGENT,
         // Use the recommended rate limit
         Duration::from_millis(1000),
     )
@@ -209,6 +216,33 @@ fn get_compiled_crate(crate_id: &str, krate: &Crate, crates_io: &CrateResponse) 
                 .unwrap_or_else(|| format!("https://docs.rs/{crate_id}/latest/{crate_id}/")),
         ),
         tags: krate.tags.clone(),
+    }
+}
+
+fn update_images(root: &Path) {
+    let client = reqwest::blocking::Client::builder()
+        .user_agent(USER_AGENT)
+        .build()
+        .expect("failed initializing image downloader client");
+
+    let files = [
+        "apple-touch-icon.png",
+        "favicon-16x16.png",
+        "favicon-32x32.png",
+        "favicon.svg",
+        "favicon.ico",
+    ];
+    for file in files {
+        let url = format!("https://raw.githubusercontent.com/rust-lang/www.rust-lang.org/master/static/images/{file}");
+        let response = client.get(url).send().expect("failed fetching image");
+        response
+            .error_for_status_ref()
+            .expect("got an error while fetching image");
+        fs::write(
+            root.join("static/images").join(file),
+            response.bytes().expect("no body"),
+        )
+        .expect("failed writing image");
     }
 }
 
