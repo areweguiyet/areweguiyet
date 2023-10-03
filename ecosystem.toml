@@ -290,3 +290,7 @@ tags = []
 
 [crate.tinyfiledialogs]
 tags = ["bindings", "tooling"]
+
+[crate.tk]
+name = "Tk"
+tags = ["bindings","tk"]

@@ -18,7 +18,7 @@ to add it.
 
 Data from external sources are updated weekly.
 
-[CONTRIBUTING.md]: https://github.com/areweguiyet/areweguiyet/blob/master/CONTRIBUTIN.md
+[CONTRIBUTING.md]: https://github.com/areweguiyet/areweguiyet/blob/master/CONTRIBUTING.md
 
 
 ## TODO
