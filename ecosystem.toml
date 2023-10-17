@@ -274,12 +274,13 @@ tags = [
   "gtk",
 ]
 
-[crate.rifs]
-name = "Rust-In-Flutter"
+[crate.rinf]
+name = "Rinf"
+description = "Rust as your Flutter backend, Flutter as your Rust frontend"
+docs = "https://rinf-docs.cunarist.com"
 tags = [
   "bindings",
   "flutter",
-  "native",
   "cross-platform",
 ]
 
