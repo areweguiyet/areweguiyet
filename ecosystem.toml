@@ -276,7 +276,6 @@ tags = [
 
 [crate.rinf]
 name = "Rinf"
-description = "Rust as your Flutter backend, Flutter as your Rust frontend"
 docs = "https://rinf-docs.cunarist.com"
 tags = [
   "bindings",
