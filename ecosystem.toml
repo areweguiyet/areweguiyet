@@ -276,7 +276,6 @@ tags = [
 
 [crate.rinf]
 name = "Rinf"
-docs = "https://rinf-docs.cunarist.com"
 tags = [
   "bindings",
   "flutter",
