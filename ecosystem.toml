@@ -274,12 +274,11 @@ tags = [
   "gtk",
 ]
 
-[crate.rifs]
-name = "Rust-In-Flutter"
+[crate.rinf]
+name = "Rinf"
 tags = [
   "bindings",
   "flutter",
-  "native",
   "cross-platform",
 ]
 
