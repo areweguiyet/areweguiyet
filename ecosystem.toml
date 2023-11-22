@@ -293,3 +293,7 @@ tags = ["bindings", "tooling"]
 [crate.tk]
 name = "Tk"
 tags = ["bindings","tk"]
+
+[crate.rstk]
+name = "rstk"
+tags = ["tk"]
