@@ -19,6 +19,12 @@
 # All keys are required. Please keep this file in order with newest first.
 
 [[links]]
+title = "Introducing Gooey: My take on a Rusty GUI framework"
+author = "Jonathan Johnson"
+link = "https://ecton.dev/introducing-gooey/"
+date = 2023-12-18
+
+[[links]]
 title = "Client-Side Server with Rust: A New Approach to UI Development"
 author = "Logan Keenan"
 link = "https://logankeenan.com/posts/client-side-server-with-rust-a-new-approach-to-ui-development/"
