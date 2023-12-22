@@ -5,3 +5,7 @@ title = "Are we GUI yet?"
 description = "The state of building user interfaces in Rust"
 # compile_sass = true
 # highlight_code = true
+
+[link_checker]
+# Reddit sometimes 403s us in GitHub Actions
+skip_prefixes = ["https://www.reddit.com/r/rust/"]
