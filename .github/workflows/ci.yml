@@ -43,7 +43,7 @@ jobs:
           cargo run -- fetch
 
       - name: Build site
-        uses: shalzz/zola-deploy-action@v0.17.2
+        uses: shalzz/zola-deploy-action@v0.18.0
         env:
           BUILD_ONLY: true
           BUILD_FLAGS: --drafts
@@ -66,7 +66,7 @@ jobs:
           cargo run -- fetch
 
       - name: Deploy site
-        uses: shalzz/zola-deploy-action@v0.17.2
+        uses: shalzz/zola-deploy-action@v0.18.0
         env:
           PAGES_BRANCH: gh-pages
           CHECK_LINKS: true
