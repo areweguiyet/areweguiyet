@@ -2,9 +2,9 @@ name: CLI
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
   schedule:
     - cron: "0 0 * * 1"
   workflow_dispatch:
@@ -18,13 +18,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
-    - name: cargo fmt
-      run: cargo fmt --check
+      - name: cargo fmt
+        run: cargo fmt --check
 
-    - name: cargo clippy
-      run: cargo clippy
+      - name: cargo clippy
+        run: cargo clippy
 
   build:
     name: Builds project, fetching latest metadata and verifying configuration
@@ -32,22 +32,22 @@ jobs:
     if: github.ref != 'refs/heads/master'
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
-    - name: Build CLI
-      run: cargo build --verbose
+      - name: Build CLI
+        run: cargo build --verbose
 
-    - name: Update data
-      run: |
-        cargo run -- clean
-        cargo run -- fetch
+      - name: Update data
+        run: |
+          cargo run -- clean
+          cargo run -- fetch
 
-    - name: Build site
-      uses: shalzz/zola-deploy-action@v0.17.2
-      env:
-        BUILD_ONLY: true
-        BUILD_FLAGS: --drafts
-        CHECK_LINKS: true
+      - name: Build site
+        uses: shalzz/zola-deploy-action@v0.18.0
+        env:
+          BUILD_ONLY: true
+          BUILD_FLAGS: --drafts
+          CHECK_LINKS: true
 
   deploy:
     name: Deploys to GH Pages
@@ -55,19 +55,19 @@ jobs:
     if: github.ref == 'refs/heads/master'
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
-    - name: Build CLI
-      run: cargo build --verbose
+      - name: Build CLI
+        run: cargo build --verbose
 
-    - name: Update data
-      run: |
-        cargo run -- clean
-        cargo run -- fetch
+      - name: Update data
+        run: |
+          cargo run -- clean
+          cargo run -- fetch
 
-    - name: Deploy site
-      uses: shalzz/zola-deploy-action@v0.17.2
-      env:
-        PAGES_BRANCH: gh-pages
-        CHECK_LINKS: true
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Deploy site
+        uses: shalzz/zola-deploy-action@v0.18.0
+        env:
+          PAGES_BRANCH: gh-pages
+          CHECK_LINKS: true
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
