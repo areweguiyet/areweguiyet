@@ -19,6 +19,12 @@
 # All keys are required. Please keep this file in order with newest first.
 
 [[links]]
+title = "Future of rem | Cross-platform GUI in Rust in 2024?"
+author = "Various"
+link = "https://lobste.rs/s/bt4enq/future_rem_cross_platform_gui_rust_2024"
+date = 2024-01-01
+
+[[links]]
 title = "Introducing Gooey: My take on a Rusty GUI framework"
 author = "Jonathan Johnson"
 link = "https://ecton.dev/introducing-gooey/"
