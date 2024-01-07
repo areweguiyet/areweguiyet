@@ -19,6 +19,12 @@
 # All keys are required. Please keep this file in order with newest first.
 
 [[links]]
+title = "GPUI 2 is now in production"
+author = "Nathan Sobo"
+link = "https://zed.dev/blog/gpui-2-on-preview"
+date = 2024-01-03
+
+[[links]]
 title = "Future of rem | Cross-platform GUI in Rust in 2024?"
 author = "Various"
 link = "https://lobste.rs/s/bt4enq/future_rem_cross_platform_gui_rust_2024"
