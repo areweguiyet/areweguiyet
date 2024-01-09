@@ -298,8 +298,8 @@ tags = ["bindings","tk"]
 name = "rstk"
 tags = ["tk"]
 
-[crate.gooey]
-name = "Gooey"
+[crate.cushy]
+name = "Cushy"
 tags = ["winit"]
 
 [crate.floem]
