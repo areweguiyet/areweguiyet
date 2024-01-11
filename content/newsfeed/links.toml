@@ -19,6 +19,12 @@
 # All keys are required. Please keep this file in order with newest first.
 
 [[links]]
+title = "Xilem 2024 plans"
+author = "Raph Levien"
+link = "https://linebender.org/blog/xilem-2024/"
+date = 2024-01-10
+
+[[links]]
 title = "GPUI 2 is now in production"
 author = "Nathan Sobo"
 link = "https://zed.dev/blog/gpui-2-on-preview"
