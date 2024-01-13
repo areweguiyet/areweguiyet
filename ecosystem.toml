@@ -21,6 +21,13 @@
 # # Defaults to what is specified on crates.io, or otherwise to docs.rs.
 # docs = "https://domain.invalid/mycrate/docs"
 
+[crate.vizia]
+name = "Vizia"
+description = "A declarative desktop GUI framework"
+tags = [
+  "winit",
+]
+
 [crate.freya]
 name = "Freya"
 description = "Cross-platform native GUI library powered by Dioxus and Skia."
