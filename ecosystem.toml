@@ -312,4 +312,4 @@ tags = ["winit"]
 [crate.floem]
 name = "Floem"
 description = "UI library aiming to be extremely performant while providing world-class developer ergonomics. From the team that made the Lapce code editor."
-docs = "https://github.com/lapce/floem"
+tags = ["reactive", "winit"]
