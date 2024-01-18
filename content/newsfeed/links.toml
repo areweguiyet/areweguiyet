@@ -19,6 +19,12 @@
 # All keys are required. Please keep this file in order with newest first.
 
 [[links]]
+title = "Roadmap for the Xilem backend in 2024"
+author = "Oliver Faure"
+link = "https://linebender.org/blog/xilem-backend-roadmap/"
+date = 2024-01-19
+
+[[links]]
 title = "Xilem 2024 plans"
 author = "Raph Levien"
 link = "https://linebender.org/blog/xilem-2024/"
