@@ -19,6 +19,12 @@
 # All keys are required. Please keep this file in order with newest first.
 
 [[links]]
+title = "Zed is now open source"
+author = "Nathan Sobo"
+link = "https://zed.dev/blog/zed-is-now-open-source"
+date = 2024-01-24
+
+[[links]]
 title = "Roadmap for the Xilem backend in 2024"
 author = "Oliver Faure"
 link = "https://linebender.org/blog/xilem-backend-roadmap/"
