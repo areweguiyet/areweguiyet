@@ -21,6 +21,14 @@
 # # Defaults to what is specified on crates.io, or otherwise to docs.rs.
 # docs = "https://domain.invalid/mycrate/docs"
 
+[crate.gpui]
+name = "GPUI"
+description = "A hybrid immediate and retained mode, GPU accelerated, UI framework, designed to support a wide variety of applications"
+repo = "https://github.com/zed-industries/zed"
+tags = [
+  "macos",
+]
+
 [crate.vizia]
 name = "Vizia"
 description = "A declarative desktop GUI framework"
