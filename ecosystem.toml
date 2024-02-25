@@ -23,7 +23,7 @@
 
 [crate.gpui]
 name = "GPUI"
-description = "A hybrid immediate and retained mode, GPU accelerated, UI framework, designed to support a wide variety of applications"
+description = "A hybrid immediate and retained mode, GPU accelerated, UI framework, designed to support a wide variety of applications."
 repo = "https://github.com/zed-industries/zed"
 tags = [
   "macos",
@@ -31,7 +31,7 @@ tags = [
 
 [crate.vizia]
 name = "Vizia"
-description = "A declarative desktop GUI framework"
+description = "A declarative desktop GUI framework."
 tags = [
   "winit",
 ]
@@ -178,7 +178,7 @@ tags = [
 ]
 
 [crate.qt_widgets]
-description = "Ritual Qt bindings"
+description = "Ritual Qt bindings."
 docs = "https://rust-qt.github.io/qt/"
 tags = [
   "bindings",
@@ -186,7 +186,7 @@ tags = [
 ]
 
 [crate.fltk]
-description = "The FLTK crate is a crossplatform lightweight gui library which can be linked to statically to produce small, self-contained and fast binaries"
+description = "The FLTK crate is a crossplatform lightweight gui library which can be linked to statically to produce small, self-contained and fast binaries."
 tags = [
   "bindings",
   "fltk",
@@ -247,7 +247,7 @@ tags = []
 [crate.xilem]
 skip-crates-io = true
 name = "Xilem"
-description = "An experimental Rust architecture for reactive UI"
+description = "An experimental Rust architecture for reactive UI."
 repo = "https://github.com/linebender/xilem/"
 
 [crate.rust-qt-binding-generator]
@@ -299,7 +299,7 @@ tags = [
 
 [crate.pax-std]
 name = "Pax"
-description = "User interface language and 2D layout engine for cross-platform apps"
+description = "User interface language and 2D layout engine for cross-platform apps."
 tags = []
 
 [crate.tinyfiledialogs]
@@ -321,3 +321,6 @@ tags = ["winit"]
 name = "Floem"
 description = "UI library aiming to be extremely performant while providing world-class developer ergonomics. From the team that made the Lapce code editor."
 tags = ["reactive", "winit"]
+
+[crate.ribir]
+name = "Ribir"
