@@ -77,7 +77,7 @@ struct ExternalData {
 }
 
 impl ExternalData {
-    const FILE: &str = "target/external_data.json";
+    const FILE: &'static str = "target/external_data.json";
 
     fn clean(root: &Path) {
         // Remove the data, and ignore if the file was not found
