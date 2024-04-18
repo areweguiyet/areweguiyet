@@ -116,9 +116,9 @@
             <div class="content">
                 <p>
                     {% if crate.description %}
-                        {{ crate.description }}
+                        {{ crate.description | trim | trim_end_matches(pat=".") }}.
                     {% else %}
-                        {{ crates_io.description }}
+                        {{ crates_io.description | trim | trim_end_matches(pat=".") }}.
                     {% endif %}
                 </p>
             </div>
