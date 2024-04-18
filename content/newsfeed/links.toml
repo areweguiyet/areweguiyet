@@ -129,6 +129,12 @@ link = "https://samsartor.dev/guis-1/"
 date = 2023-02-06
 
 [[links]]
+title = "Tauri vs Iced vs egui: Rust GUI framework performance comparison"
+author = "Lukas Kalbertodt"
+link = "https://lukaskalbertodt.github.io/2023/02/03/tauri-iced-egui-performance-comparison.html"
+date = 2023-02-03
+
+[[links]]
 title = "Announcing Masonry 0.1, and my vision for Rust UI"
 author = "Oliver Faure"
 link = "https://poignardazur.github.io/2023/02/02/masonry-01-and-my-vision-for-rust-ui/"
