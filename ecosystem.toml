@@ -160,7 +160,7 @@ tags = [
 [crate.tauri]
 name = "Tauri"
 description = "Tauri is a framework for building tiny, blazing fast binaries for all major desktop platforms."
-docs = "https://tauri.studio/en/"
+docs = "https://tauri.app/"
 tags = [
   "html",
   "macos",
