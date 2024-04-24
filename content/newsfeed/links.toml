@@ -19,6 +19,12 @@
 # All keys are required. Please keep this file in order with newest first.
 
 [[links]]
+title = "Porting a cross-platform GUI application to Rust"
+author = "Alex Franchuk"
+link = "https://hacks.mozilla.org/2024/04/porting-a-cross-platform-gui-application-to-rust/"
+date = 2024-04-24
+
+[[links]]
 title = "Slint 1.5: Embracing Android, Improving Live-Preview"
 author = "Slint Team"
 link = "https://slint.dev/blog/slint-1.5-released"
