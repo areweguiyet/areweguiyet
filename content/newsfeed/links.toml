@@ -19,6 +19,12 @@
 # All keys are required. Please keep this file in order with newest first.
 
 [[links]]
+title = "A New Architecture for a GUI Framework"
+author = "Gavin D. Howard"
+link = "https://gavinhoward.com/2024/05/a-new-architecture-for-a-gui-framework/"
+date = 2024-05-29
+
+[[links]]
 title = "Porting a cross-platform GUI application to Rust"
 author = "Alex Franchuk"
 link = "https://hacks.mozilla.org/2024/04/porting-a-cross-platform-gui-application-to-rust/"
