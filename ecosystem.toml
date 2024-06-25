@@ -245,7 +245,6 @@ tags = [
 tags = []
 
 [crate.xilem]
-skip-crates-io = true
 name = "Xilem"
 description = "An experimental Rust architecture for reactive UI"
 repo = "https://github.com/linebender/xilem/"
