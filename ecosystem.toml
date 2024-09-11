@@ -204,6 +204,11 @@ tags = [
 [crate.iced]
 name = "Iced"
 description = "A renderer-agnostic GUI library for Rust focused on simplicity and type-safety. Inspired by Elm."
+tags = [
+  "winapi",
+  "macos",
+  "linux",
+]
 
 [crate.core-foundation]
 tags = [
