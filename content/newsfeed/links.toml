@@ -19,6 +19,12 @@
 # All keys are required. Please keep this file in order with newest first.
 
 [[links]]
+title = "Tauri 2.0 Stable Release"
+author = "Tillmann Weidinger"
+link = "https://v2.tauri.app/blog/tauri-20/"
+date = 2024-10-02
+
+[[links]]
 title = "Pax enters Beta: Rust GUIs with an integrated design tool"
 author = "Zack Brown"
 link = "https://old.reddit.com/r/rust/comments/1fdmjzl/pax_enters_beta_rust_guis_with_an_integrated/"
