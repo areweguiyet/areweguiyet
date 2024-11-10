@@ -172,11 +172,6 @@ tags = [
   "gtk",
 ]
 
-[crate.conrod-core]
-tags = [
-  "immediate",
-]
-
 [crate.qt_widgets]
 description = "Ritual Qt bindings"
 docs = "https://rust-qt.github.io/qt/"
