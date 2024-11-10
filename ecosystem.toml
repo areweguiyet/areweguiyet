@@ -32,6 +32,7 @@ tags = [
 [crate.vizia]
 name = "Vizia"
 description = "A declarative desktop GUI framework"
+repo = "https://github.com/vizia/vizia"
 tags = [
   "winit",
 ]
@@ -172,11 +173,6 @@ tags = [
   "gtk",
 ]
 
-[crate.conrod-core]
-tags = [
-  "immediate",
-]
-
 [crate.qt_widgets]
 description = "Ritual Qt bindings"
 docs = "https://rust-qt.github.io/qt/"
@@ -238,12 +234,6 @@ tags = [
 name = "WebRender"
 tags = [
   "webrender",
-]
-
-[crate.druid]
-description = "(Discontinued) Druid is an experimental Rust-native UI toolkit. Its main goal is to offer a polished user experience. There are many factors to this goal, including performance, a rich palette of interactions (hence a widget library to support them), and playing well with the native platform."
-tags = [
-  "piet",
 ]
 
 [crate.masonry]
