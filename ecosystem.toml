@@ -240,12 +240,6 @@ tags = [
   "webrender",
 ]
 
-[crate.druid]
-description = "(Discontinued) Druid is an experimental Rust-native UI toolkit. Its main goal is to offer a polished user experience. There are many factors to this goal, including performance, a rich palette of interactions (hence a widget library to support them), and playing well with the native platform."
-tags = [
-  "piet",
-]
-
 [crate.masonry]
 tags = []
 
