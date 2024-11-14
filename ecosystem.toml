@@ -303,10 +303,6 @@ tags = ["bindings", "tooling"]
 name = "Tk"
 tags = ["bindings","tk"]
 
-[crate.rstk]
-name = "rstk"
-tags = ["tk"]
-
 [crate.cushy]
 name = "Cushy"
 tags = ["winit"]
