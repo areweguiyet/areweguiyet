@@ -244,13 +244,6 @@ name = "Xilem"
 description = "An experimental Rust architecture for reactive UI"
 repo = "https://github.com/linebender/xilem/"
 
-[crate.rust-qt-binding-generator]
-tags = [
-  "bindings",
-  "qt",
-  "qml",
-]
-
 [crate.qmetaobject]
 description = "A framework empowering everyone to create Qt/QML applications with Rust. It does so by building QMetaObjects at compile time, registering QML types (optionally via exposing QQmlExtensionPlugins) and providing idiomatic wrappers."
 tags = [
@@ -302,10 +295,6 @@ tags = ["bindings", "tooling"]
 [crate.tk]
 name = "Tk"
 tags = ["bindings","tk"]
-
-[crate.rstk]
-name = "rstk"
-tags = ["tk"]
 
 [crate.cushy]
 name = "Cushy"
