@@ -31,8 +31,6 @@ tags = [
 
 [crate.vizia]
 name = "Vizia"
-description = "A declarative desktop GUI framework"
-repo = "https://github.com/vizia/vizia"
 tags = [
   "winit",
 ]
