@@ -24,9 +24,12 @@
 [crate.gpui]
 name = "GPUI"
 description = "A hybrid immediate and retained mode, GPU accelerated, UI framework, designed to support a wide variety of applications"
+docs = "https://www.gpui.rs/"
 repo = "https://github.com/zed-industries/zed"
 tags = [
+  "winapi",
   "macos",
+  "linux",
 ]
 
 [crate.vizia]
