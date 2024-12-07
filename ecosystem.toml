@@ -305,3 +305,8 @@ tags = ["winit"]
 name = "Floem"
 description = "UI library aiming to be extremely performant while providing world-class developer ergonomics. From the team that made the Lapce code editor."
 tags = ["reactive", "winit"]
+
+[crate.crux_core]
+name = "Crux"
+docs = "https://redbadger.github.io/crux/"
+tags = ["bindings"]
