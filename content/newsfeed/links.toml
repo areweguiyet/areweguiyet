@@ -19,6 +19,12 @@
 # All keys are required. Please keep this file in order with newest first.
 
 [[links]]
+title = "Dioxus 0.6"
+author = "Jonathan Kelley"
+link = "https://dioxuslabs.com/blog/release-060/"
+date = 2024-12-09
+
+[[links]]
 title = "Tauri 2.0 Stable Release"
 author = "Tillmann Weidinger"
 link = "https://v2.tauri.app/blog/tauri-20/"
