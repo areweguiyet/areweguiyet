@@ -310,3 +310,5 @@ tags = ["reactive", "winit"]
 name = "Crux"
 docs = "https://redbadger.github.io/crux/"
 tags = ["bindings"]
+
+[crate.kittest]
