@@ -19,6 +19,12 @@
 # All keys are required. Please keep this file in order with newest first.
 
 [[links]]
+title = "Linebender in November 2024: color!"
+author = "Bruce Mitchener, Daniel McNab"
+link = "https://linebender.org/blog/tmil-11/"
+date = 2024-12-18
+
+[[links]]
 title = "Dioxus 0.6"
 author = "Jonathan Kelley"
 link = "https://dioxuslabs.com/blog/release-060/"
