@@ -24,8 +24,6 @@
 [crate.ribir]
 name = "Ribir"
 description = "Ribir is a Rust GUI framework that helps you build beautiful and native multi-platform applications from a single codebase."
-docs = "https://ribir.org/"
-repo = "https://github.com/RibirX/Ribir"
 tags = [
   "non-intrusive",
   "declarative",
