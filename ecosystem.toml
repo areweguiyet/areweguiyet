@@ -21,6 +21,19 @@
 # # Defaults to what is specified on crates.io, or otherwise to docs.rs.
 # docs = "https://domain.invalid/mycrate/docs"
 
+[crate.ribir]
+name = "Ribir"
+description = "Ribir is a Rust GUI framework that helps you build beautiful and native multi-platform applications from a single codebase."
+docs = "https://ribir.org/"
+repo = "https://github.com/RibirX/Ribir"
+tags = [
+  "non-intrusive",
+  "declarative",
+  "reactive",
+  "cross-platform",
+  "native",
+]
+
 [crate.gpui]
 name = "GPUI"
 description = "A hybrid immediate and retained mode, GPU accelerated, UI framework, designed to support a wide variety of applications"
