@@ -323,3 +323,7 @@ docs = "https://redbadger.github.io/crux/"
 tags = ["bindings"]
 
 [crate.kittest]
+
+[crate.maycoon]
+name = "Maycoon"
+docs = "https://maycoon-ui.github.io/guide/"
