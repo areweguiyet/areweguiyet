@@ -4,18 +4,10 @@
 {% block content %}
 <section class="centered-content">
     <h2>Stay in the loop.</h2>
-    <p>If you're working on or writing about GUIs in Rust, please contribute! 
-        Each news entry can either be a post contributed to the Repo or a link back 
-        to your blog, Reddit thread, etc. See
+    <p>Below are community links submitted to the site. If you're working on or writing about GUIs in Rust, please contribute! Each
+        news entry can be a link back to your blog, Reddit thread, etc. See the
         <a href="https://github.com/areweguiyet/areweguiyet/blob/master/README.md">
         README</a> for details.</p>
-    <h2>AreWeGuiYet Posts</h2>
-    <p>These are posts contributed directly to this repo! Check out the README above 
-        to learn how you can contribute your own posts!</p>
-    {{ macros::newsfeed_posts(pages=section.pages | sort(attribute="date") | reverse) }}
-    <h2>Community Links</h2>
-    <p>These are posts found out in the wild. Saw a post that you think is important?
-        See the README above for how to contribute!</p>
     {% set news_links = load_data(path="content/newsfeed/links.toml") %}
     {{ macros::newsfeed_links(pages=news_links.links | sort(attribute="date") | reverse) }}
 </section>
