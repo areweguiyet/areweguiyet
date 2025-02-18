@@ -28,20 +28,13 @@
 </section>
 <section id="newsfeed" class="centered-content">
     <h2><a href="{{ get_url(path="@/newsfeed/_index.md") }}">Stay in the loop.</a></h2>
-    <p>If you're working on or writing about GUIs in Rust, please contribute! Each
-        news entry can either be a post contributed to the repo or a link back to
-        your blog, Reddit thread, etc. See
+    <p>Below are recent community links submitted to the site. If you're working on or writing about GUIs in Rust, please contribute! Each
+        news entry can be a link back to your blog, Reddit thread, etc. See the
         <a href="https://github.com/areweguiyet/areweguiyet/blob/master/README.md">
         README</a> for details.</p>
-    <p>Here are also some popular and recommended community links submitted to the site:</p>
     {% set news_links = load_data(path="content/newsfeed/links.toml") %}
     {{ macros::newsfeed_links(pages=news_links.links | sort(attribute="date") | reverse | slice(end=3)) }}
-    <p>Here are the most recent posts on AreWeGuiYet:</p>
-    {% set news_posts = get_section(path="newsfeed/_index.md") %}
-    {{ macros::newsfeed_posts(pages=news_posts.pages | sort(attribute="date") | reverse | slice(end=3)) }}
-    {% if news_links.links | length > 3 or news_posts.pages | length > 3 %}
-        <a href="{{ get_url(path="@/newsfeed/_index.md") }}">See more posts</a>
-    {% endif %}
+    <a href="{{ get_url(path="@/newsfeed/_index.md") }}">See more posts</a>
 </section>
 <section id="ecosystem" class="ecosystem-navigator">
     <div class="centered-content">
