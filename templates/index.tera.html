@@ -33,7 +33,7 @@
         <a href="https://github.com/areweguiyet/areweguiyet/blob/master/README.md">
         README</a> for details.</p>
     {% set news_links = load_data(path="content/newsfeed/links.toml") %}
-    {{ macros::newsfeed_links(pages=news_links.links | sort(attribute="date") | reverse | slice(end=3)) }}
+    {{ macros::newsfeed_links(pages=news_links.links | sort(attribute="date") | reverse | slice(end=5)) }}
     <a href="{{ get_url(path="@/newsfeed/_index.md") }}">See more posts</a>
 </section>
 <section id="ecosystem" class="ecosystem-navigator">

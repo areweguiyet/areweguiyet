@@ -14,7 +14,7 @@
         {% for page in pages %}
             <div>
                 <h3>{{ page.title }} by {{ page.author }}</h3>
-                <a href="{{ page.link | safe }}">{{ page.link }}</a>
+                <span><a href="{{ page.link | safe }}">{{ page.link }}</a> ({{ page.date }})</span>
             </div>
         {% endfor %}
     </div>
