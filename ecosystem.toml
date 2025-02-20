@@ -135,22 +135,10 @@ tags = [
   "macos",
 ]
 
-[crate.native-windows-gui]
-tags = [
-  "bindings",
-  "proc-macro",
-  "winapi",
-]
-
 [crate.windows]
 tags = [
   "bindings",
   "winapi",
-]
-
-[crate.iui]
-tags = [
-  "bindings",
 ]
 
 [crate.lvgl]
@@ -178,19 +166,6 @@ tags = [
   "html",
   "macos",
   "gtk",
-]
-
-[crate.vgtk]
-tags = [
-  "gtk",
-]
-
-[crate.qt_widgets]
-description = "Ritual Qt bindings"
-docs = "https://rust-qt.github.io/qt/"
-tags = [
-  "bindings",
-  "qt",
 ]
 
 [crate.fltk]
@@ -228,12 +203,6 @@ tags = [
 tags = [
   "macos",
   "ios",
-]
-
-[crate.sciter-rs]
-tags = [
-  "html",
-  "css",
 ]
 
 [crate.azul]
