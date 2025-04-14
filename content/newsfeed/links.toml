@@ -19,6 +19,12 @@
 # All keys are required. Please keep this file in order with newest first.
 
 [[links]]
+title = "A 2025 Survey of Rust GUI Libraries"
+author = "boringcactus"
+link = "https://www.boringcactus.com/2025/04/13/2025-survey-of-rust-gui-libraries.html"
+date = 2025-04-13
+
+[[links]]
 title = "Linebender in November 2024: color!"
 author = "Bruce Mitchener, Daniel McNab"
 link = "https://linebender.org/blog/tmil-11/"
@@ -217,6 +223,12 @@ title = "Xilem: an architecture for UI in Rust"
 author = "Raph Levien"
 link = "https://raphlinus.github.io/rust/gui/2022/05/07/ui-architecture.html"
 date = 2022-05-07
+
+[[links]]
+title = "A 2021 Survey of Rust GUI Libraries"
+author = "boringcactus"
+link = "https://www.boringcactus.com/2021/10/24/2021-survey-of-rust-gui-libraries.html"
+date = 2021-10-24
 
 [[links]]
 title = "Rust GUI Infrastructure"
