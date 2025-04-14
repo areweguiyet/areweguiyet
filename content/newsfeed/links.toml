@@ -49,6 +49,12 @@ link = "https://old.reddit.com/r/rust/comments/1fdmjzl/pax_enters_beta_rust_guis
 date = 2024-09-10
 
 [[links]]
+title = "The State of Rust UI (video)" # TODO: Add blog post once available
+author = "Nico Burns"
+link = "https://www.youtube.com/watch?v=G9vXU2oXVPw"
+date = 2024-06-04
+
+[[links]]
 title = "A New Architecture for a GUI Framework"
 author = "Gavin D. Howard"
 link = "https://gavinhoward.com/2024/05/a-new-architecture-for-a-gui-framework/"
