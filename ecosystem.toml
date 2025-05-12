@@ -296,3 +296,10 @@ tags = ["bindings"]
 [crate.maycoon]
 name = "Maycoon"
 docs = "https://maycoon-ui.github.io/guide/"
+
+[crate.craft]
+name = "Craft"
+description = "A reactive gui focused on being practical. Inspired by elm and react. No macros."
+repo = "https://github.com/craft-gui/craft"
+skip-crates-io = true
+tags = ["reactive", "winit", "cross-platform"]
