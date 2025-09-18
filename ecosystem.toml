@@ -21,6 +21,14 @@
 # # Defaults to what is specified on crates.io, or otherwise to docs.rs.
 # docs = "https://domain.invalid/mycrate/docs"
 
+[crate.yew]
+name = "Yew"
+tags = [
+  "html",
+  "css",
+  "reactive",
+]
+
 [crate.ribir]
 name = "Ribir"
 description = "Ribir is a Rust GUI framework that helps you build beautiful and native multi-platform applications from a single codebase."
