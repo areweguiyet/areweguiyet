@@ -306,3 +306,7 @@ tags = ["bindings"]
 [crate.maycoon]
 name = "Maycoon"
 docs = "https://maycoon-ui.github.io/guide/"
+
+[crate.tessera-ui]
+name = "Tessera"
+tags = ["proc-macro", "webgpu", "winit"]
