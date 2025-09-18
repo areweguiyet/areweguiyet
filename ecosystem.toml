@@ -23,9 +23,6 @@
 
 [crate.yew]
 name = "Yew"
-description = "A framework for creating reliable and efficient web applications."
-docs = "https://yew.rs/"
-repo = "https://github.com/yewstack/yew"
 tags = [
   "html",
   "css",
