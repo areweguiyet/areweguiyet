@@ -1,0 +1,285 @@
+# This file contain links informational content about GUIs in Rust.
+#
+# These are meant to be geared towards thoughts about Rust GUIs in general,
+# rather than being e.g. release announcements or tutorials for how to use a
+# specific framework.
+#
+# The keys are as follows:
+#
+# [[links]]
+# # The title of the blog post.
+# title = "..."
+# # The author of the blog post.
+# author = "A Name"
+# # The location of the blog post.
+# link = "https://domain.invalid/"
+# # The date that the item was published on.
+# date = YYYY-MM-DD
+#
+# All keys are required. Please keep this file in order with newest first.
+
+[[links]]
+title = "A 2025 Survey of Rust GUI Libraries"
+author = "boringcactus"
+link = "https://www.boringcactus.com/2025/04/13/2025-survey-of-rust-gui-libraries.html"
+date = 2025-04-13
+
+[[links]]
+title = "Linebender in November 2024: color!"
+author = "Bruce Mitchener, Daniel McNab"
+link = "https://linebender.org/blog/tmil-11/"
+date = 2024-12-18
+
+[[links]]
+title = "Dioxus 0.6"
+author = "Jonathan Kelley"
+link = "https://dioxuslabs.com/blog/release-060/"
+date = 2024-12-09
+
+[[links]]
+title = "Tauri 2.0 Stable Release"
+author = "Tillmann Weidinger"
+link = "https://v2.tauri.app/blog/tauri-20/"
+date = 2024-10-02
+
+[[links]]
+title = "Pax enters Beta: Rust GUIs with an integrated design tool"
+author = "Zack Brown"
+link = "https://old.reddit.com/r/rust/comments/1fdmjzl/pax_enters_beta_rust_guis_with_an_integrated/"
+date = 2024-09-10
+
+[[links]]
+title = "The State of Rust UI (video)" # TODO: Add blog post once available
+author = "Nico Burns"
+link = "https://www.youtube.com/watch?v=G9vXU2oXVPw"
+date = 2024-06-04
+
+[[links]]
+title = "A New Architecture for a GUI Framework"
+author = "Gavin D. Howard"
+link = "https://gavinhoward.com/2024/05/a-new-architecture-for-a-gui-framework/"
+date = 2024-05-29
+
+[[links]]
+title = "Porting a cross-platform GUI application to Rust"
+author = "Alex Franchuk"
+link = "https://hacks.mozilla.org/2024/04/porting-a-cross-platform-gui-application-to-rust/"
+date = 2024-04-24
+
+[[links]]
+title = "Slint 1.5: Embracing Android, Improving Live-Preview"
+author = "Slint Team"
+link = "https://slint.dev/blog/slint-1.5-released"
+date = 2024-03-14
+
+[[links]]
+title = "Zed is now open source"
+author = "Nathan Sobo"
+link = "https://zed.dev/blog/zed-is-now-open-source"
+date = 2024-01-24
+
+[[links]]
+title = "Roadmap for the Xilem backend in 2024"
+author = "Oliver Faure"
+link = "https://linebender.org/blog/xilem-backend-roadmap/"
+date = 2024-01-19
+
+[[links]]
+title = "Xilem 2024 plans"
+author = "Raph Levien"
+link = "https://linebender.org/blog/xilem-2024/"
+date = 2024-01-10
+
+[[links]]
+title = "GPUI 2 is now in production"
+author = "Nathan Sobo"
+link = "https://zed.dev/blog/gpui-2-on-preview"
+date = 2024-01-03
+
+[[links]]
+title = "Future of rem | Cross-platform GUI in Rust in 2024?"
+author = "Various"
+link = "https://lobste.rs/s/bt4enq/future_rem_cross_platform_gui_rust_2024"
+date = 2024-01-01
+
+[[links]]
+title = "Introducing Gooey: My take on a Rusty GUI framework"
+author = "Jonathan Johnson"
+link = "https://ecton.dev/introducing-gooey/"
+date = 2023-12-18
+
+[[links]]
+title = "Client-Side Server with Rust: A New Approach to UI Development"
+author = "Logan Keenan"
+link = "https://logankeenan.com/posts/client-side-server-with-rust-a-new-approach-to-ui-development/"
+date = 2023-08-02
+
+[[links]]
+title = "Slint 1.0 - Rustacean Station Podcast"
+author = "Tobias Hunger"
+link = "https://rustacean-station.org/episode/tobias-hunger-slint-1.0/"
+date = 2023-06-09
+
+[[links]]
+title = "Bay Area Rust May 2023: Raph Levien on Xilem Vector Graphics"
+author = "Raph Levien"
+link = "https://www.youtube.com/watch?v=XjbVnwBtVEk"
+date = 2023-06-06
+
+[[links]]
+title = "A Proposal for an asynchronous Rust GUI framework"
+author = "John Nunley"
+link = "https://notgull.github.io/async-gui/"
+date = 2023-05-31
+
+[[links]]
+title = "Slint - Rustacean Station Podcast"
+author = "Tobias Hunger"
+link = "https://rustacean-station.org/episode/068-tobias-hunger/"
+date = 2023-05-13
+
+[[links]]
+title = "Write once, run everywhere: building apps with Dioxus - RustNL 2023"
+author = "Jonathan Kelley"
+link = "https://www.youtube.com/watch?v=aSxdmXjZutI"
+date = 2023-05-10
+
+[[links]]
+title = "Makepad: Designing modern UIs with Rust - RustNL 2023"
+author = "Rik Arends"
+link = "https://www.youtube.com/watch?v=rC4FCS-oMpg"
+date = 2023-05-10
+
+[[links]]
+title = "50 Shades of Rust, or emerging Rust GUIs in a WASM world"
+author = "Igor Loskutov"
+link = "https://monadical.com/posts/shades-of-rust-gui-library-list.html"
+date = 2023-04-26
+
+[[links]]
+title = "Simple GUI application with Slint and Rust"
+author = "Olivier Goffart"
+link = "https://www.youtube.com/watch?v=WBcv4V-whHk"
+date = 2023-04-11
+
+[[links]]
+title = "Why is building a UI in Rust so hard?"
+author = "Aloke Desai"
+link = "https://www.warp.dev/blog/why-is-building-a-ui-in-rust-so-hard"
+date = 2023-02-14
+
+[[links]]
+title = "Statefulness in GUIs"
+author = "Sam Sartor"
+# Explicitly don't link the next parts, it risks cluttering our newsfeed,
+# at least the way it currently works.
+link = "https://samsartor.dev/guis-1/"
+date = 2023-02-06
+
+[[links]]
+title = "Tauri vs Iced vs egui: Rust GUI framework performance comparison"
+author = "Lukas Kalbertodt"
+link = "https://lukaskalbertodt.github.io/2023/02/03/tauri-iced-egui-performance-comparison.html"
+date = 2023-02-03
+
+[[links]]
+title = "Announcing Masonry 0.1, and my vision for Rust UI"
+author = "Oliver Faure"
+link = "https://poignardazur.github.io/2023/02/02/masonry-01-and-my-vision-for-rust-ui/"
+date = 2023-02-02
+
+[[links]]
+title = "Rust: state of GUI, December 2022"
+author = "Diggory Hardy"
+link = "https://kas-gui.github.io/blog/state-of-GUI-2022.html"
+date = 2022-12-13
+
+[[links]]
+title = "A call for blogs about Rust GUI in 2023"
+author = "Oliver Faure"
+link = "https://poignardazur.github.io/2022/12/11/rust-gui-blog-posts-2023/"
+date = 2022-12-11
+
+[[links]]
+title = "Status of the Druid ecosystem in December 2022"
+author = "Oliver Faure"
+link = "https://poignardazur.github.io/2022/12/09/druid-ecosystem/"
+date = 2022-12-09
+
+[[links]]
+title = "High Performance Rust UI"
+author = "Raph Levien"
+link = "https://www.youtube.com/watch?v=zVUTZlNCb8U"
+date = 2022-12-02
+
+[[links]]
+title = "Advice for the next dozen Rust GUIs"
+author = "Raph Levien"
+link = "https://raphlinus.github.io/rust/gui/2022/07/15/next-dozen-guis.html"
+date = 2022-07-15
+
+[[links]]
+title = "egui - Rustacean Station Podcast"
+author = "Emil Ernerfeldt"
+link = "https://rustacean-station.org/episode/emil-ernerfeldt/"
+date = 2022-06-03
+
+[[links]]
+title = "Xilem: an architecture for UI in Rust"
+author = "Raph Levien"
+link = "https://raphlinus.github.io/rust/gui/2022/05/07/ui-architecture.html"
+date = 2022-05-07
+
+[[links]]
+title = "A 2021 Survey of Rust GUI Libraries"
+author = "boringcactus"
+link = "https://www.boringcactus.com/2021/10/24/2021-survey-of-rust-gui-libraries.html"
+date = 2021-10-24
+
+[[links]]
+title = "Rust GUI Infrastructure"
+author = "Colin Rofls"
+link = "https://www.cmyr.net/blog/rust-gui-infra.html"
+date = 2021-08-11
+
+[[links]]
+title = "So you want to write a GUI framework"
+author = "Colin Rofls"
+link = "https://www.cmyr.net/blog/gui-framework-ingredients.html"
+date = 2021-08-09
+
+[[links]]
+title = "Rust 2021: GUI"
+author = "Raph Levien"
+link = "https://raphlinus.github.io/rust/druid/2020/09/28/rust-2021.html"
+date = 2020-09-28
+
+[[links]]
+title = "Towards principled reactive UI"
+author = "Raph Levien"
+link = "https://raphlinus.github.io/rust/druid/2020/09/25/principled-reactive-ui.html"
+date = 2020-09-25
+
+[[links]]
+title = "A Survey of Rust GUI Libraries"
+author = "boringcactus"
+link = "https://www.boringcactus.com/2020/08/21/survey-of-rust-gui-libraries.html"
+date = 2020-08-21
+
+[[links]]
+title = "Towards a unified theory of reactive UI"
+author = "Raph Levien"
+link = "https://raphlinus.github.io/ui/druid/2019/11/22/reactive-ui.html"
+date = 2019-11-22
+
+[[links]]
+title = "#Rust2019 Are We GUI Yet?"
+author = "Dustin Bensing"
+link = "https://gist.github.com/madsmtm/4717185ad7789ba2cf695c8fa01027d8"
+date = 2019-01-13
+
+[[links]]
+title = "Entity-Component-System architecture for UI in Rust"
+author = "Raph Levien"
+link = "https://raphlinus.github.io/personal/2018/05/08/ecs-ui.html"
+date = 2018-05-08
