@@ -59,11 +59,10 @@ tags = [
 
 [crate.freya]
 name = "Freya"
-description = "Cross-platform native GUI library powered by Dioxus and Skia."
+description = "Cross-platform and declarative GUI library for Rust."
 tags = [
   "skia",
   "winit",
-  "dioxus",
 ]
 
 [crate.leptos]
