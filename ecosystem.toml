@@ -59,7 +59,6 @@ tags = [
 
 [crate.freya]
 name = "Freya"
-description = "Cross-platform and declarative GUI library for Rust."
 tags = [
   "skia",
   "winit",
