@@ -58,11 +58,9 @@ tags = [
 
 [crate.freya]
 name = "Freya"
-description = "Cross-platform native GUI library powered by Dioxus and Skia."
 tags = [
   "skia",
   "winit",
-  "dioxus",
 ]
 
 [crate.leptos]
