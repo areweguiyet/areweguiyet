@@ -1,0 +1,2028 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Are we GUI yet?</title>
+
+        <!-- styles -->
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,400i" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="https://areweguiyet.com/main.css">
+
+        <!-- favicon -->
+        <link rel="apple-touch-icon" sizes="180x180" href="https://areweguiyet.com/images/apple-touch-icon.png">
+        <link rel="icon" sizes="16x16" type="image/png" href="https://areweguiyet.com/images/favicon-16x16.png">
+        <link rel="icon" sizes="32x32" type="image/png" href="https://areweguiyet.com/images/favicon-32x32.png">
+        <link rel="icon" type="image/svg+xml" href="https://areweguiyet.com/images/favicon.svg">
+        <link rel="icon" href="https://areweguiyet.com/images/favicon.ico">
+
+        
+<script src="https://areweguiyet.com/tag_sorting.js" async></script>
+
+    </head>
+    <body class="column">
+        <a href="https://github.com/areweguiyet/areweguiyet" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#9f703d; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+        <div class="header-background">
+            <nav class="nav">
+                <a href="https://areweguiyet.com/" class="active">Home</a>
+                <a href="https://areweguiyet.com/#ecosystem">Ecosystem</a>
+                <a href="https://areweguiyet.com/newsfeed/" >News Feed</a>
+                <a href="https://areweguiyet.com/#about">About</a>
+            </nav>
+
+            <div class="header-content">
+                <img width="128" height="128" src="https://areweguiyet.com/images/rust-logo-128x128-blk-v2.png">
+                <header>
+                    <h1>Are we <span>GUI</span> Yet?</h1>
+                    <p>The state of building user interfaces in Rust.</p>
+                </header>
+            </div>
+        </div>
+
+        <main class="footer-pusher">
+            
+<section class="centered-content">
+    <h2>The roots aren't deep but the seeds are planted.</h2>
+    <p>As a low level language, Rust is perfectly suitable for making user
+        interfaces the old fashioned way, with native APIs. However, competing
+        in today's world typically means supporting many platforms, and
+        that makes using native APIs an unattractive option for many.</p>
+    <p>Rust's expressiveness and high level abstractions make it ideal for
+        building intricate and complex user interfaces. Unfortunately, there
+        is little consensus on what the best abstractions are.</p>
+    <p>There are a number of bindings available today to existing frameworks,
+        but those looking for a mature, easy to use, and completely Rust-based
+        solution will most likely find themselves out of luck.</p>
+    <p>Current approaches to building GUIs in Rust include interfacing with
+        Electron and building GUIs with HTML (or a framework on top of it), while
+        others have taken to using graphics APIs and various wrappers to emulate
+        classical widgets. The cross platform parallel rendering engine Webrender,
+        built for Servo and usable in Firefox Nightly, takes this latter approach
+        and is multi-platform, but is more of a base for a GUI framework than one
+        in itself.</p>
+</section>
+<section id="newsfeed" class="centered-content">
+    <h2><a href="https://areweguiyet.com/newsfeed/">Stay in the loop.</a></h2>
+    <p>Below are recent community links submitted to the site. If you're working on or writing about GUIs in Rust, please contribute! Each
+        news entry can be a link back to your blog, Reddit thread, etc. See the
+        <a href="https://github.com/areweguiyet/areweguiyet/blob/master/README.md">
+        README</a> for details.</p>
+    
+    
+    <div class="newsfeed-posts">
+        
+            <div>
+                <h3>A 2025 Survey of Rust GUI Libraries by boringcactus</h3>
+                <span><a href="https://www.boringcactus.com/2025/04/13/2025-survey-of-rust-gui-libraries.html">https:&#x2F;&#x2F;www.boringcactus.com&#x2F;2025&#x2F;04&#x2F;13&#x2F;2025-survey-of-rust-gui-libraries.html</a> (2025-04-13)</span>
+            </div>
+        
+            <div>
+                <h3>Linebender in November 2024: color! by Bruce Mitchener, Daniel McNab</h3>
+                <span><a href="https://linebender.org/blog/tmil-11/">https:&#x2F;&#x2F;linebender.org&#x2F;blog&#x2F;tmil-11&#x2F;</a> (2024-12-18)</span>
+            </div>
+        
+            <div>
+                <h3>Dioxus 0.6 by Jonathan Kelley</h3>
+                <span><a href="https://dioxuslabs.com/blog/release-060/">https:&#x2F;&#x2F;dioxuslabs.com&#x2F;blog&#x2F;release-060&#x2F;</a> (2024-12-09)</span>
+            </div>
+        
+            <div>
+                <h3>Tauri 2.0 Stable Release by Tillmann Weidinger</h3>
+                <span><a href="https://v2.tauri.app/blog/tauri-20/">https:&#x2F;&#x2F;v2.tauri.app&#x2F;blog&#x2F;tauri-20&#x2F;</a> (2024-10-02)</span>
+            </div>
+        
+            <div>
+                <h3>Pax enters Beta: Rust GUIs with an integrated design tool by Zack Brown</h3>
+                <span><a href="https://old.reddit.com/r/rust/comments/1fdmjzl/pax_enters_beta_rust_guis_with_an_integrated/">https:&#x2F;&#x2F;old.reddit.com&#x2F;r&#x2F;rust&#x2F;comments&#x2F;1fdmjzl&#x2F;pax_enters_beta_rust_guis_with_an_integrated&#x2F;</a> (2024-09-10)</span>
+            </div>
+        
+    </div>
+
+    <a href="https://areweguiyet.com/newsfeed/">See more posts</a>
+</section>
+<section id="ecosystem" class="ecosystem-navigator">
+    <div class="centered-content">
+        <h2><a href="#ecosystem">Ecosystem</a></h2>
+        <p>Select a tag (or tags) below to only show relevant crates. All crates will be shown when no tags are selected.</p>
+        <ul class="ecosystem-tags" id="ecosystem-tags">
+            
+            
+                <li
+                    
+                        title="Bindings to an existing framework"
+                    
+                    data-ecosystem-tag="bindings"
+                    onclick="toggleTagFilter('bindings')"
+                >Bindings</li>
+            
+                <li
+                    
+                        title="Allows styling via CSS"
+                    
+                    data-ecosystem-tag="css"
+                    onclick="toggleTagFilter('css')"
+                >CSS</li>
+            
+                <li
+                    
+                        title="Runs on embedded systems"
+                    
+                    data-ecosystem-tag="embedded"
+                    onclick="toggleTagFilter('embedded')"
+                >Embedded</li>
+            
+                <li
+                    
+                        title="Uses FLTK as a GUI library (cross-platform)"
+                    
+                    data-ecosystem-tag="fltk"
+                    onclick="toggleTagFilter('fltk')"
+                >FLTK</li>
+            
+                <li
+                    
+                        title="Uses GTK as a GUI library (cross-platform)"
+                    
+                    data-ecosystem-tag="gtk"
+                    onclick="toggleTagFilter('gtk')"
+                >GTK</li>
+            
+                <li
+                    
+                        title="Renders HTML pages"
+                    
+                    data-ecosystem-tag="html"
+                    onclick="toggleTagFilter('html')"
+                >HTML</li>
+            
+                <li
+                    
+                        title="Scene management is left to the user"
+                    
+                    data-ecosystem-tag="immediate"
+                    onclick="toggleTagFilter('immediate')"
+                >Immediate mode API</li>
+            
+                <li
+                    
+                        title="Runs on MacOS"
+                    
+                    data-ecosystem-tag="macos"
+                    onclick="toggleTagFilter('macos')"
+                >MacOS</li>
+            
+                <li
+                    
+                        title="Supports Qt Modeling Language"
+                    
+                    data-ecosystem-tag="qml"
+                    onclick="toggleTagFilter('qml')"
+                >QML</li>
+            
+                <li
+                    
+                        title="Uses Qt as a GUI library (cross-platform)"
+                    
+                    data-ecosystem-tag="qt"
+                    onclick="toggleTagFilter('qt')"
+                >Qt</li>
+            
+                <li
+                    
+                        title="Propages widget events to their children"
+                    
+                    data-ecosystem-tag="reactive"
+                    onclick="toggleTagFilter('reactive')"
+                >Reactive API</li>
+            
+                <li
+                    
+                        title="Runs on the browser via WebGPU (experimental)"
+                    
+                    data-ecosystem-tag="webgpu"
+                    onclick="toggleTagFilter('webgpu')"
+                >WebGPU</li>
+            
+                <li
+                    
+                        title="Runs on Firefox via WebRender (experimental)"
+                    
+                    data-ecosystem-tag="webrender"
+                    onclick="toggleTagFilter('webrender')"
+                >WebRender</li>
+            
+                <li
+                    
+                        title="Uses the native Windows API"
+                    
+                    data-ecosystem-tag="winapi"
+                    onclick="toggleTagFilter('winapi')"
+                >WinApi</li>
+            
+                <li
+                    
+                        title="Runs on iOS"
+                    
+                    data-ecosystem-tag="ios"
+                    onclick="toggleTagFilter('ios')"
+                >iOS</li>
+            
+                <li
+                    
+                    data-ecosystem-tag="piet"
+                    onclick="toggleTagFilter('piet')"
+                >piet</li>
+            
+                <li
+                    
+                        title="Exposes procedural macros"
+                    
+                    data-ecosystem-tag="proc-macro"
+                    onclick="toggleTagFilter('proc-macro')"
+                >proc-macro</li>
+            
+                <li
+                    
+                        title="Uses winit as a window management library (cross-platform)"
+                    
+                    data-ecosystem-tag="winit"
+                    onclick="toggleTagFilter('winit')"
+                >winit</li>
+            
+        </ul>
+    </div>
+</section>
+<section class="ecosystem-crates centered-content">
+    
+    
+    
+        
+            
+        
+        <div
+            class="ecosystem-card"
+            
+                data-tags="webrender"
+            
+        >
+            <header class="header">
+                <h3>
+                    
+                        Azul
+                    
+                </h3>
+                <span>[<a href="https://crates.io/crates/azul">crate</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;github.com&#x2F;fschutt&#x2F;azul">repo</a><span class="spacer"> · </span><a href="https://docs.rs/azul/latest/azul/">docs</a>]</span>
+            </header>
+            <div class="content">
+                <p>
+                    
+                        Azul GUI is a free, functional, reactive GUI framework
+    for rapid development of desktop applications written in Rust and C,
+    using the Mozilla WebRender rendering engine.
+                    
+                </p>
+            </div>
+            
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/azul?color=9f703d">
+            </div>
+            
+            
+                <ul class="ecosystem-tags">
+                    
+                        <li onclick="setTagFilter('webrender')">webrender</li>
+                    
+                </ul>
+            
+        </div>
+    
+        
+            
+        
+        <div
+            class="ecosystem-card"
+            
+                data-tags="macos,ios"
+            
+        >
+            <header class="header">
+                <h3>
+                    
+                        cacao
+                    
+                </h3>
+                <span>[<a href="https://crates.io/crates/cacao">crate</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;github.com&#x2F;ryanmcgrath&#x2F;cacao">repo</a><span class="spacer"> · </span><a href="https://docs.rs/cacao/latest/cacao/">docs</a>]</span>
+            </header>
+            <div class="content">
+                <p>
+                    
+                        Rust bindings for AppKit (macOS&#x2F;Airyx&#x2F;GNUStep, beta) and UIKit (iOS&#x2F;tvOS, alpha).
+                    
+                </p>
+            </div>
+            
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/cacao?color=9f703d">
+            </div>
+            
+            
+                <ul class="ecosystem-tags">
+                    
+                        <li onclick="setTagFilter('macos')">macos</li>
+                    
+                        <li onclick="setTagFilter('ios')">ios</li>
+                    
+                </ul>
+            
+        </div>
+    
+        
+            
+        
+        <div
+            class="ecosystem-card"
+            
+                data-tags="bindings,macos"
+            
+        >
+            <header class="header">
+                <h3>
+                    
+                        core-foundation
+                    
+                </h3>
+                <span>[<a href="https://crates.io/crates/core-foundation">crate</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;github.com&#x2F;servo&#x2F;core-foundation-rs">repo</a><span class="spacer"> · </span><a href="https://docs.rs/core-foundation/latest/core-foundation/">docs</a>]</span>
+            </header>
+            <div class="content">
+                <p>
+                    
+                        Bindings to Core Foundation for macOS.
+                    
+                </p>
+            </div>
+            
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/core-foundation?color=9f703d">
+            </div>
+            
+            
+                <ul class="ecosystem-tags">
+                    
+                        <li onclick="setTagFilter('bindings')">bindings</li>
+                    
+                        <li onclick="setTagFilter('macos')">macos</li>
+                    
+                </ul>
+            
+        </div>
+    
+        
+            
+        
+        <div
+            class="ecosystem-card"
+            
+                data-tags="bindings"
+            
+        >
+            <header class="header">
+                <h3>
+                    
+                        Crux
+                    
+                </h3>
+                <span>[<a href="https://crates.io/crates/crux_core">crate</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;github.com&#x2F;redbadger&#x2F;crux&#x2F;">repo</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;redbadger.github.io&#x2F;crux&#x2F;">docs</a>]</span>
+            </header>
+            <div class="content">
+                <p>
+                    
+                        Cross-platform app development in Rust.
+                    
+                </p>
+            </div>
+            
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/crux_core?color=9f703d">
+            </div>
+            
+            
+                <ul class="ecosystem-tags">
+                    
+                        <li onclick="setTagFilter('bindings')">bindings</li>
+                    
+                </ul>
+            
+        </div>
+    
+        
+            
+        
+        <div
+            class="ecosystem-card"
+            
+                data-tags="winit"
+            
+        >
+            <header class="header">
+                <h3>
+                    
+                        Cushy
+                    
+                </h3>
+                <span>[<a href="https://crates.io/crates/cushy">crate</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;github.com&#x2F;khonsulabs&#x2F;cushy">repo</a><span class="spacer"> · </span><a href="https://docs.rs/cushy/latest/cushy/">docs</a>]</span>
+            </header>
+            <div class="content">
+                <p>
+                    
+                        A wgpu-powered graphical user interface (GUI) library with a reactive data model.
+                    
+                </p>
+            </div>
+            
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/cushy?color=9f703d">
+            </div>
+            
+            
+                <ul class="ecosystem-tags">
+                    
+                        <li onclick="setTagFilter('winit')">winit</li>
+                    
+                </ul>
+            
+        </div>
+    
+        
+            
+        
+        <div
+            class="ecosystem-card"
+            
+                data-tags="bindings,qt,qml"
+            
+        >
+            <header class="header">
+                <h3>
+                    
+                        CXX-Qt
+                    
+                </h3>
+                <span>[<a href="https://crates.io/crates/cxx-qt">crate</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;github.com&#x2F;KDAB&#x2F;cxx-qt&#x2F;">repo</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;kdab.github.io&#x2F;cxx-qt&#x2F;book&#x2F;">docs</a>]</span>
+            </header>
+            <div class="content">
+                <p>
+                    
+                        CXX-Qt is a library that automatically generates code to transfer data between Rust and C++ through common interfaces such as QObjects that can be exposed directly into QML. It uses the cxx crate for safe interaction between Rust and C++.
+                    
+                </p>
+            </div>
+            
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/cxx-qt?color=9f703d">
+            </div>
+            
+            
+                <ul class="ecosystem-tags">
+                    
+                        <li onclick="setTagFilter('bindings')">bindings</li>
+                    
+                        <li onclick="setTagFilter('qt')">qt</li>
+                    
+                        <li onclick="setTagFilter('qml')">qml</li>
+                    
+                </ul>
+            
+        </div>
+    
+        
+            
+        
+        <div
+            class="ecosystem-card"
+            
+                data-tags=""
+            
+        >
+            <header class="header">
+                <h3>
+                    
+                        Dioxus
+                    
+                </h3>
+                <span>[<a href="https://crates.io/crates/dioxus">crate</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;github.com&#x2F;DioxusLabs&#x2F;dioxus&#x2F;">repo</a><span class="spacer"> · </span><a href="https://docs.rs/dioxus/latest/dioxus/">docs</a>]</span>
+            </header>
+            <div class="content">
+                <p>
+                    
+                        Elegant React-like library for building user interfaces for desktop, web, mobile, SSR, liveview, and more.
+                    
+                </p>
+            </div>
+            
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/dioxus?color=9f703d">
+            </div>
+            
+            
+        </div>
+    
+        
+            
+        
+        <div
+            class="ecosystem-card"
+            
+                data-tags=""
+            
+        >
+            <header class="header">
+                <h3>
+                    
+                        Dominator
+                    
+                </h3>
+                <span>[<a href="https://crates.io/crates/dominator">crate</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;github.com&#x2F;Pauan&#x2F;rust-dominator">repo</a><span class="spacer"> · </span><a href="https://docs.rs/dominator/latest/dominator/">docs</a>]</span>
+            </header>
+            <div class="content">
+                <p>
+                    
+                        Zero-cost ultra-high-performance declarative DOM library using FRP signals.
+                    
+                </p>
+            </div>
+            
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/dominator?color=9f703d">
+            </div>
+            
+            
+        </div>
+    
+        
+            
+        
+        <div
+            class="ecosystem-card"
+            
+                data-tags="immediate"
+            
+        >
+            <header class="header">
+                <h3>
+                    
+                        egui
+                    
+                </h3>
+                <span>[<a href="https://crates.io/crates/egui">crate</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;github.com&#x2F;emilk&#x2F;egui">repo</a><span class="spacer"> · </span><a href="https://docs.rs/egui/latest/egui/">docs</a>]</span>
+            </header>
+            <div class="content">
+                <p>
+                    
+                        An easy-to-use immediate mode GUI that runs on both web and native.
+                    
+                </p>
+            </div>
+            
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/egui?color=9f703d">
+            </div>
+            
+            
+                <ul class="ecosystem-tags">
+                    
+                        <li onclick="setTagFilter('immediate')">immediate</li>
+                    
+                </ul>
+            
+        </div>
+    
+        
+            
+        
+        <div
+            class="ecosystem-card"
+            
+                data-tags="reactive,winit"
+            
+        >
+            <header class="header">
+                <h3>
+                    
+                        Floem
+                    
+                </h3>
+                <span>[<a href="https://crates.io/crates/floem">crate</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;github.com&#x2F;lapce&#x2F;floem">repo</a><span class="spacer"> · </span><a href="https://docs.rs/floem/latest/floem/">docs</a>]</span>
+            </header>
+            <div class="content">
+                <p>
+                    
+                        UI library aiming to be extremely performant while providing world-class developer ergonomics. From the team that made the Lapce code editor.
+                    
+                </p>
+            </div>
+            
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/floem?color=9f703d">
+            </div>
+            
+            
+                <ul class="ecosystem-tags">
+                    
+                        <li onclick="setTagFilter('reactive')">reactive</li>
+                    
+                        <li onclick="setTagFilter('winit')">winit</li>
+                    
+                </ul>
+            
+        </div>
+    
+        
+            
+        
+        <div
+            class="ecosystem-card"
+            
+                data-tags="bindings,fltk"
+            
+        >
+            <header class="header">
+                <h3>
+                    
+                        fltk
+                    
+                </h3>
+                <span>[<a href="https://crates.io/crates/fltk">crate</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;github.com&#x2F;fltk-rs&#x2F;fltk-rs">repo</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;docs.rs&#x2F;fltk">docs</a>]</span>
+            </header>
+            <div class="content">
+                <p>
+                    
+                        The FLTK crate is a crossplatform lightweight gui library which can be linked to statically to produce small, self-contained and fast binaries.
+                    
+                </p>
+            </div>
+            
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/fltk?color=9f703d">
+            </div>
+            
+            
+                <ul class="ecosystem-tags">
+                    
+                        <li onclick="setTagFilter('bindings')">bindings</li>
+                    
+                        <li onclick="setTagFilter('fltk')">fltk</li>
+                    
+                </ul>
+            
+        </div>
+    
+        
+            
+        
+        <div
+            class="ecosystem-card"
+            
+                data-tags="bindings"
+            
+        >
+            <header class="header">
+                <h3>
+                    
+                        flutter_rust_bridge
+                    
+                </h3>
+                <span>[<a href="https://crates.io/crates/flutter_rust_bridge">crate</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;github.com&#x2F;fzyzcjy&#x2F;flutter_rust_bridge">repo</a><span class="spacer"> · </span><a href="https://docs.rs/flutter_rust_bridge/latest/flutter_rust_bridge/">docs</a>]</span>
+            </header>
+            <div class="content">
+                <p>
+                    
+                        Flutter&#x2F;Dart &lt;-&gt; Rust binding generator, feature-rich, but seamless and simple.
+                    
+                </p>
+            </div>
+            
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/flutter_rust_bridge?color=9f703d">
+            </div>
+            
+            
+                <ul class="ecosystem-tags">
+                    
+                        <li onclick="setTagFilter('bindings')">bindings</li>
+                    
+                </ul>
+            
+        </div>
+    
+        
+            
+        
+        <div
+            class="ecosystem-card"
+            
+                data-tags="skia,winit"
+            
+        >
+            <header class="header">
+                <h3>
+                    
+                        Freya
+                    
+                </h3>
+                <span>[<a href="https://crates.io/crates/freya">crate</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;github.com&#x2F;marc2332&#x2F;freya">repo</a><span class="spacer"> · </span><a href="https://docs.rs/freya/latest/freya/">docs</a>]</span>
+            </header>
+            <div class="content">
+                <p>
+                    
+                        Cross-platform and non-web GUI Library powered by Skia.
+                    
+                </p>
+            </div>
+            
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/freya?color=9f703d">
+            </div>
+            
+            
+                <ul class="ecosystem-tags">
+                    
+                        <li onclick="setTagFilter('skia')">skia</li>
+                    
+                        <li onclick="setTagFilter('winit')">winit</li>
+                    
+                </ul>
+            
+        </div>
+    
+        
+            
+        
+        <div
+            class="ecosystem-card"
+            
+                data-tags="winit,proc-macro"
+            
+        >
+            <header class="header">
+                <h3>
+                    
+                        fui
+                    
+                </h3>
+                <span>[<a href="https://crates.io/crates/fui_core">crate</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;github.com&#x2F;marek-g&#x2F;rust-fui">repo</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;github.com&#x2F;marek-g&#x2F;rust-fui&#x2F;blob&#x2F;master&#x2F;doc&#x2F;SUMMARY.md">docs</a>]</span>
+            </header>
+            <div class="content">
+                <p>
+                    
+                        MVVM-oriented (properties, observable collections, bindings), ui! macro, multiplatform, renderer-agnostic, with styles.
+                    
+                </p>
+            </div>
+            
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/fui_core?color=9f703d">
+            </div>
+            
+            
+                <ul class="ecosystem-tags">
+                    
+                        <li onclick="setTagFilter('winit')">winit</li>
+                    
+                        <li onclick="setTagFilter('proc-macro')">proc-macro</li>
+                    
+                </ul>
+            
+        </div>
+    
+        
+            
+        
+        <div
+            class="ecosystem-card"
+            
+                data-tags=""
+            
+        >
+            <header class="header">
+                <h3>
+                    
+                        GemGui
+                    
+                </h3>
+                <span>[<a href="https://crates.io/crates/gemgui">crate</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;github.com&#x2F;mmertama&#x2F;gemgui-rs">repo</a><span class="spacer"> · </span><a href="https://docs.rs/gemgui/latest/gemgui/">docs</a>]</span>
+            </header>
+            <div class="content">
+                <p>
+                    
+                        GUI application library.
+                    
+                </p>
+            </div>
+            
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/gemgui?color=9f703d">
+            </div>
+            
+            
+        </div>
+    
+        
+            
+        
+        <div
+            class="ecosystem-card"
+            
+                data-tags="winapi,macos,linux"
+            
+        >
+            <header class="header">
+                <h3>
+                    
+                        GPUI
+                    
+                </h3>
+                <span>[<a href="https://crates.io/crates/gpui">crate</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;github.com&#x2F;zed-industries&#x2F;zed">repo</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;www.gpui.rs&#x2F;">docs</a>]</span>
+            </header>
+            <div class="content">
+                <p>
+                    
+                        A hybrid immediate and retained mode, GPU accelerated, UI framework, designed to support a wide variety of applications.
+                    
+                </p>
+            </div>
+            
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/gpui?color=9f703d">
+            </div>
+            
+            
+                <ul class="ecosystem-tags">
+                    
+                        <li onclick="setTagFilter('winapi')">winapi</li>
+                    
+                        <li onclick="setTagFilter('macos')">macos</li>
+                    
+                        <li onclick="setTagFilter('linux')">linux</li>
+                    
+                </ul>
+            
+        </div>
+    
+        
+            
+        
+        <div
+            class="ecosystem-card"
+            
+                data-tags="bindings,gtk"
+            
+        >
+            <header class="header">
+                <h3>
+                    
+                        GTK 3
+                    
+                </h3>
+                <span>[<a href="https://crates.io/crates/gtk">crate</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;github.com&#x2F;gtk-rs&#x2F;gtk3-rs">repo</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;gtk-rs.org&#x2F;gtk3-rs&#x2F;stable&#x2F;latest&#x2F;docs&#x2F;gtk&#x2F;">docs</a>]</span>
+            </header>
+            <div class="content">
+                <p>
+                    
+                        UNMAINTAINED Rust bindings for the GTK+ 3 library (use gtk4 instead).
+                    
+                </p>
+            </div>
+            
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/gtk?color=9f703d">
+            </div>
+            
+            
+                <ul class="ecosystem-tags">
+                    
+                        <li onclick="setTagFilter('bindings')">bindings</li>
+                    
+                        <li onclick="setTagFilter('gtk')">gtk</li>
+                    
+                </ul>
+            
+        </div>
+    
+        
+            
+        
+        <div
+            class="ecosystem-card"
+            
+                data-tags="gtk,bindings"
+            
+        >
+            <header class="header">
+                <h3>
+                    
+                        GTK 4
+                    
+                </h3>
+                <span>[<a href="https://crates.io/crates/gtk4">crate</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;github.com&#x2F;gtk-rs&#x2F;gtk4-rs">repo</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;gtk-rs.org&#x2F;gtk4-rs&#x2F;stable&#x2F;latest&#x2F;docs&#x2F;gtk4">docs</a>]</span>
+            </header>
+            <div class="content">
+                <p>
+                    
+                        Rust bindings of the GTK 4 library.
+                    
+                </p>
+            </div>
+            
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/gtk4?color=9f703d">
+            </div>
+            
+            
+                <ul class="ecosystem-tags">
+                    
+                        <li onclick="setTagFilter('gtk')">gtk</li>
+                    
+                        <li onclick="setTagFilter('bindings')">bindings</li>
+                    
+                </ul>
+            
+        </div>
+    
+        
+            
+        
+        <div
+            class="ecosystem-card"
+            
+                data-tags="winapi,macos,linux"
+            
+        >
+            <header class="header">
+                <h3>
+                    
+                        Iced
+                    
+                </h3>
+                <span>[<a href="https://crates.io/crates/iced">crate</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;github.com&#x2F;iced-rs&#x2F;iced">repo</a><span class="spacer"> · </span><a href="https://docs.rs/iced/latest/iced/">docs</a>]</span>
+            </header>
+            <div class="content">
+                <p>
+                    
+                        A renderer-agnostic GUI library for Rust focused on simplicity and type-safety. Inspired by Elm.
+                    
+                </p>
+            </div>
+            
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/iced?color=9f703d">
+            </div>
+            
+            
+                <ul class="ecosystem-tags">
+                    
+                        <li onclick="setTagFilter('winapi')">winapi</li>
+                    
+                        <li onclick="setTagFilter('macos')">macos</li>
+                    
+                        <li onclick="setTagFilter('linux')">linux</li>
+                    
+                </ul>
+            
+        </div>
+    
+        
+            
+        
+        <div
+            class="ecosystem-card"
+            
+                data-tags="bindings,immediate"
+            
+        >
+            <header class="header">
+                <h3>
+                    
+                        imgui
+                    
+                </h3>
+                <span>[<a href="https://crates.io/crates/imgui">crate</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;github.com&#x2F;imgui-rs&#x2F;imgui-rs">repo</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;docs.rs&#x2F;imgui">docs</a>]</span>
+            </header>
+            <div class="content">
+                <p>
+                    
+                        High-level Rust bindings to dear imgui.
+                    
+                </p>
+            </div>
+            
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/imgui?color=9f703d">
+            </div>
+            
+            
+                <ul class="ecosystem-tags">
+                    
+                        <li onclick="setTagFilter('bindings')">bindings</li>
+                    
+                        <li onclick="setTagFilter('immediate')">immediate</li>
+                    
+                </ul>
+            
+        </div>
+    
+        
+            
+        
+        <div
+            class="ecosystem-card"
+            
+                data-tags="winapi,macos,linux,proc-macro,accessibility"
+            
+        >
+            <header class="header">
+                <h3>
+                    
+                        Kas
+                    
+                </h3>
+                <span>[<a href="https://crates.io/crates/kas">crate</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;github.com&#x2F;kas-gui&#x2F;kas">repo</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;docs.rs&#x2F;kas&#x2F;">docs</a>]</span>
+            </header>
+            <div class="content">
+                <p>
+                    
+                        A modern approach to stateful GUI: Rust-native, accessible, scalable.
+                    
+                </p>
+            </div>
+            
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/kas?color=9f703d">
+            </div>
+            
+            
+                <ul class="ecosystem-tags">
+                    
+                        <li onclick="setTagFilter('winapi')">winapi</li>
+                    
+                        <li onclick="setTagFilter('macos')">macos</li>
+                    
+                        <li onclick="setTagFilter('linux')">linux</li>
+                    
+                        <li onclick="setTagFilter('proc-macro')">proc-macro</li>
+                    
+                        <li onclick="setTagFilter('accessibility')">accessibility</li>
+                    
+                </ul>
+            
+        </div>
+    
+        
+            
+        
+        <div
+            class="ecosystem-card"
+            
+                data-tags=""
+            
+        >
+            <header class="header">
+                <h3>
+                    
+                        kittest
+                    
+                </h3>
+                <span>[<a href="https://crates.io/crates/kittest">crate</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;github.com&#x2F;rerun-io&#x2F;kittest">repo</a><span class="spacer"> · </span><a href="https://docs.rs/kittest/latest/kittest/">docs</a>]</span>
+            </header>
+            <div class="content">
+                <p>
+                    
+                        Automated GUI testing using AccessKit.
+                    
+                </p>
+            </div>
+            
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/kittest?color=9f703d">
+            </div>
+            
+            
+        </div>
+    
+        
+            
+        
+        <div
+            class="ecosystem-card"
+            
+                data-tags=""
+            
+        >
+            <header class="header">
+                <h3>
+                    
+                        Leptos
+                    
+                </h3>
+                <span>[<a href="https://crates.io/crates/leptos">crate</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;github.com&#x2F;leptos-rs&#x2F;leptos">repo</a><span class="spacer"> · </span><a href="https://docs.rs/leptos/latest/leptos/">docs</a>]</span>
+            </header>
+            <div class="content">
+                <p>
+                    
+                        Leptos is a full-stack, isomorphic Rust web framework leveraging fine-grained reactivity to build declarative user interfaces.
+                    
+                </p>
+            </div>
+            
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/leptos?color=9f703d">
+            </div>
+            
+            
+        </div>
+    
+        
+            
+        
+        <div
+            class="ecosystem-card"
+            
+                data-tags="bindings,embedded"
+            
+        >
+            <header class="header">
+                <h3>
+                    
+                        lvgl
+                    
+                </h3>
+                <span>[<a href="https://crates.io/crates/lvgl">crate</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;github.com&#x2F;rafaelcaricio&#x2F;lvgl-rs">repo</a><span class="spacer"> · </span><a href="https://docs.rs/lvgl/latest/lvgl/">docs</a>]</span>
+            </header>
+            <div class="content">
+                <p>
+                    
+                        LVGL bindings for Rust. A powerful and easy-to-use embedded GUI with many widgets, advanced visual effects (opacity, antialiasing, animations) and low memory requirements (16K RAM, 64K Flash).
+                    
+                </p>
+            </div>
+            
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/lvgl?color=9f703d">
+            </div>
+            
+            
+                <ul class="ecosystem-tags">
+                    
+                        <li onclick="setTagFilter('bindings')">bindings</li>
+                    
+                        <li onclick="setTagFilter('embedded')">embedded</li>
+                    
+                </ul>
+            
+        </div>
+    
+        
+            
+        
+        <div
+            class="ecosystem-card"
+            
+                data-tags="webgpu"
+            
+        >
+            <header class="header">
+                <h3>
+                    
+                        Makepad
+                    
+                </h3>
+                <span>[<a href="https://crates.io/crates/makepad">crate</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;github.com&#x2F;makepad&#x2F;makepad">repo</a><span class="spacer"> · </span><a href="https://docs.rs/makepad/latest/makepad/">docs</a>]</span>
+            </header>
+            <div class="content">
+                <p>
+                    
+                        Makepad is a new VR, web and native-rendering UI framework.
+                    
+                </p>
+            </div>
+            
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/makepad?color=9f703d">
+            </div>
+            
+            
+                <ul class="ecosystem-tags">
+                    
+                        <li onclick="setTagFilter('webgpu')">webgpu</li>
+                    
+                </ul>
+            
+        </div>
+    
+        
+            
+        
+        <div
+            class="ecosystem-card"
+            
+                data-tags=""
+            
+        >
+            <header class="header">
+                <h3>
+                    
+                        masonry
+                    
+                </h3>
+                <span>[<a href="https://crates.io/crates/masonry">crate</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;github.com&#x2F;linebender&#x2F;xilem">repo</a><span class="spacer"> · </span><a href="https://docs.rs/masonry/latest/masonry/">docs</a>]</span>
+            </header>
+            <div class="content">
+                <p>
+                    
+                        Traits and types of the Masonry toolkit.
+                    
+                </p>
+            </div>
+            
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/masonry?color=9f703d">
+            </div>
+            
+            
+        </div>
+    
+        
+            
+        
+        <div
+            class="ecosystem-card"
+            
+                data-tags=""
+            
+        >
+            <header class="header">
+                <h3>
+                    
+                        Maycoon
+                    
+                </h3>
+                <span>[<a href="https://crates.io/crates/maycoon">crate</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;github.com&#x2F;maycoon-ui&#x2F;maycoon">repo</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;maycoon-ui.github.io&#x2F;guide&#x2F;">docs</a>]</span>
+            </header>
+            <div class="content">
+                <p>
+                    
+                        Lightning fast and powerful UI Framework for Rust.
+                    
+                </p>
+            </div>
+            
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/maycoon?color=9f703d">
+            </div>
+            
+            
+        </div>
+    
+        
+            
+        
+        <div
+            class="ecosystem-card"
+            
+                data-tags=""
+            
+        >
+            <header class="header">
+                <h3>
+                    
+                        Pax
+                    
+                </h3>
+                <span>[<a href="https://crates.io/crates/pax-std">crate</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;www.github.com&#x2F;paxproject&#x2F;pax">repo</a><span class="spacer"> · </span><a href="https://docs.rs/pax-std/latest/pax-std/">docs</a>]</span>
+            </header>
+            <div class="content">
+                <p>
+                    
+                        User interface language and 2D layout engine for cross-platform apps.
+                    
+                </p>
+            </div>
+            
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/pax-std?color=9f703d">
+            </div>
+            
+            
+        </div>
+    
+        
+            
+        
+        <div
+            class="ecosystem-card"
+            
+                data-tags="proc-macro,bindings,qt,qml"
+            
+        >
+            <header class="header">
+                <h3>
+                    
+                        qmetaobject
+                    
+                </h3>
+                <span>[<a href="https://crates.io/crates/qmetaobject">crate</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;github.com&#x2F;woboq&#x2F;qmetaobject-rs">repo</a><span class="spacer"> · </span><a href="https://docs.rs/qmetaobject/latest/qmetaobject/">docs</a>]</span>
+            </header>
+            <div class="content">
+                <p>
+                    
+                        A framework empowering everyone to create Qt&#x2F;QML applications with Rust. It does so by building QMetaObjects at compile time, registering QML types (optionally via exposing QQmlExtensionPlugins) and providing idiomatic wrappers.
+                    
+                </p>
+            </div>
+            
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/qmetaobject?color=9f703d">
+            </div>
+            
+            
+                <ul class="ecosystem-tags">
+                    
+                        <li onclick="setTagFilter('proc-macro')">proc-macro</li>
+                    
+                        <li onclick="setTagFilter('bindings')">bindings</li>
+                    
+                        <li onclick="setTagFilter('qt')">qt</li>
+                    
+                        <li onclick="setTagFilter('qml')">qml</li>
+                    
+                </ul>
+            
+        </div>
+    
+        
+            
+        
+        <div
+            class="ecosystem-card"
+            
+                data-tags="bindings,gtk"
+            
+        >
+            <header class="header">
+                <h3>
+                    
+                        relm
+                    
+                </h3>
+                <span>[<a href="https://crates.io/crates/relm">crate</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;github.com&#x2F;antoyo&#x2F;relm">repo</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;docs.rs&#x2F;relm&#x2F;">docs</a>]</span>
+            </header>
+            <div class="content">
+                <p>
+                    
+                        Asynchronous, GTK+-based, GUI library, inspired by Elm, written in Rust.
+                    
+                </p>
+            </div>
+            
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/relm?color=9f703d">
+            </div>
+            
+            
+                <ul class="ecosystem-tags">
+                    
+                        <li onclick="setTagFilter('bindings')">bindings</li>
+                    
+                        <li onclick="setTagFilter('gtk')">gtk</li>
+                    
+                </ul>
+            
+        </div>
+    
+        
+            
+        
+        <div
+            class="ecosystem-card"
+            
+                data-tags="gtk,bindings,macos,css"
+            
+        >
+            <header class="header">
+                <h3>
+                    
+                        Relm4
+                    
+                </h3>
+                <span>[<a href="https://crates.io/crates/relm4">crate</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;github.com&#x2F;Relm4&#x2F;Relm4">repo</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;docs.rs&#x2F;relm4&#x2F;">docs</a>]</span>
+            </header>
+            <div class="content">
+                <p>
+                    
+                        An idiomatic GUI library inspired by Elm and based on gtk4-rs.
+                    
+                </p>
+            </div>
+            
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/relm4?color=9f703d">
+            </div>
+            
+            
+                <ul class="ecosystem-tags">
+                    
+                        <li onclick="setTagFilter('gtk')">gtk</li>
+                    
+                        <li onclick="setTagFilter('bindings')">bindings</li>
+                    
+                        <li onclick="setTagFilter('macos')">macos</li>
+                    
+                        <li onclick="setTagFilter('css')">css</li>
+                    
+                </ul>
+            
+        </div>
+    
+        
+            
+        
+        <div
+            class="ecosystem-card"
+            
+                data-tags="non-intrusive,declarative,reactive,cross-platform,native"
+            
+        >
+            <header class="header">
+                <h3>
+                    
+                        Ribir
+                    
+                </h3>
+                <span>[<a href="https://crates.io/crates/ribir">crate</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;github.com&#x2F;RibirX&#x2F;Ribir">repo</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;ribir.org&#x2F;docs&#x2F;introduction">docs</a>]</span>
+            </header>
+            <div class="content">
+                <p>
+                    
+                        Ribir is a Rust GUI framework that helps you build beautiful and native multi-platform applications from a single codebase.
+                    
+                </p>
+            </div>
+            
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/ribir?color=9f703d">
+            </div>
+            
+            
+                <ul class="ecosystem-tags">
+                    
+                        <li onclick="setTagFilter('non-intrusive')">non-intrusive</li>
+                    
+                        <li onclick="setTagFilter('declarative')">declarative</li>
+                    
+                        <li onclick="setTagFilter('reactive')">reactive</li>
+                    
+                        <li onclick="setTagFilter('cross-platform')">cross-platform</li>
+                    
+                        <li onclick="setTagFilter('native')">native</li>
+                    
+                </ul>
+            
+        </div>
+    
+        
+            
+        
+        <div
+            class="ecosystem-card"
+            
+                data-tags="bindings,flutter,cross-platform"
+            
+        >
+            <header class="header">
+                <h3>
+                    
+                        Rinf
+                    
+                </h3>
+                <span>[<a href="https://crates.io/crates/rinf">crate</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;github.com&#x2F;cunarist&#x2F;rinf">repo</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;rinf.cunarist.org">docs</a>]</span>
+            </header>
+            <div class="content">
+                <p>
+                    
+                        Rust for native business logic, Flutter for flexible and beautiful GUI.
+                    
+                </p>
+            </div>
+            
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/rinf?color=9f703d">
+            </div>
+            
+            
+                <ul class="ecosystem-tags">
+                    
+                        <li onclick="setTagFilter('bindings')">bindings</li>
+                    
+                        <li onclick="setTagFilter('flutter')">flutter</li>
+                    
+                        <li onclick="setTagFilter('cross-platform')">cross-platform</li>
+                    
+                </ul>
+            
+        </div>
+    
+        
+            
+        
+        <div
+            class="ecosystem-card"
+            
+                data-tags="winit,ios,macos,webgpu"
+            
+        >
+            <header class="header">
+                <h3>
+                    
+                        rui
+                    
+                </h3>
+                <span>[<a href="https://crates.io/crates/rui">crate</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;github.com&#x2F;audulus&#x2F;rui">repo</a><span class="spacer"> · </span><a href="https://docs.rs/rui/latest/rui/">docs</a>]</span>
+            </header>
+            <div class="content">
+                <p>
+                    
+                        Experimental Declarative UI library.
+                    
+                </p>
+            </div>
+            
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/rui?color=9f703d">
+            </div>
+            
+            
+                <ul class="ecosystem-tags">
+                    
+                        <li onclick="setTagFilter('winit')">winit</li>
+                    
+                        <li onclick="setTagFilter('ios')">ios</li>
+                    
+                        <li onclick="setTagFilter('macos')">macos</li>
+                    
+                        <li onclick="setTagFilter('webgpu')">webgpu</li>
+                    
+                </ul>
+            
+        </div>
+    
+        
+            
+        
+        <div
+            class="ecosystem-card"
+            
+                data-tags="proc-macro,winit,embedded,macos"
+            
+        >
+            <header class="header">
+                <h3>
+                    
+                        Slint
+                    
+                </h3>
+                <span>[<a href="https://crates.io/crates/slint">crate</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;github.com&#x2F;slint-ui&#x2F;slint">repo</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;slint.dev&#x2F;docs">docs</a>]</span>
+            </header>
+            <div class="content">
+                <p>
+                    
+                        Slint is a toolkit to efficiently develop fluid graphical user interfaces for any display: embedded devices and desktop applications. It comes with a fast OpenGL renderer, a designer-friendly markup language and is written in Rust. Triple-licensed: GPLv3, Royalty-free, and Commercial.
+                    
+                </p>
+            </div>
+            
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/slint?color=9f703d">
+            </div>
+            
+            
+                <ul class="ecosystem-tags">
+                    
+                        <li onclick="setTagFilter('proc-macro')">proc-macro</li>
+                    
+                        <li onclick="setTagFilter('winit')">winit</li>
+                    
+                        <li onclick="setTagFilter('embedded')">embedded</li>
+                    
+                        <li onclick="setTagFilter('macos')">macos</li>
+                    
+                </ul>
+            
+        </div>
+    
+        
+            
+        
+        <div
+            class="ecosystem-card"
+            
+                data-tags="html,macos,gtk"
+            
+        >
+            <header class="header">
+                <h3>
+                    
+                        Tauri
+                    
+                </h3>
+                <span>[<a href="https://crates.io/crates/tauri">crate</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;github.com&#x2F;tauri-apps&#x2F;tauri">repo</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;tauri.app&#x2F;">docs</a>]</span>
+            </header>
+            <div class="content">
+                <p>
+                    
+                        Tauri is a framework for building tiny, blazing fast binaries for all major desktop platforms.
+                    
+                </p>
+            </div>
+            
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/tauri?color=9f703d">
+            </div>
+            
+            
+                <ul class="ecosystem-tags">
+                    
+                        <li onclick="setTagFilter('html')">html</li>
+                    
+                        <li onclick="setTagFilter('macos')">macos</li>
+                    
+                        <li onclick="setTagFilter('gtk')">gtk</li>
+                    
+                </ul>
+            
+        </div>
+    
+        
+            
+        
+        <div
+            class="ecosystem-card"
+            
+                data-tags="proc-macro,webgpu,winit"
+            
+        >
+            <header class="header">
+                <h3>
+                    
+                        Tessera
+                    
+                </h3>
+                <span>[<a href="https://crates.io/crates/tessera-ui">crate</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;github.com&#x2F;tessera-ui&#x2F;tessera">repo</a><span class="spacer"> · </span><a href="https://docs.rs/tessera-ui/latest/tessera-ui/">docs</a>]</span>
+            </header>
+            <div class="content">
+                <p>
+                    
+                        A cross-platform declarative &amp; functional UI library for rust, focused on performance and extensibility.
+                    
+                </p>
+            </div>
+            
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/tessera-ui?color=9f703d">
+            </div>
+            
+            
+                <ul class="ecosystem-tags">
+                    
+                        <li onclick="setTagFilter('proc-macro')">proc-macro</li>
+                    
+                        <li onclick="setTagFilter('webgpu')">webgpu</li>
+                    
+                        <li onclick="setTagFilter('winit')">winit</li>
+                    
+                </ul>
+            
+        </div>
+    
+        
+            
+        
+        <div
+            class="ecosystem-card"
+            
+                data-tags="bindings,tooling"
+            
+        >
+            <header class="header">
+                <h3>
+                    
+                        tinyfiledialogs
+                    
+                </h3>
+                <span>[<a href="https://crates.io/crates/tinyfiledialogs">crate</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;github.com&#x2F;jdm&#x2F;tinyfiledialogs-rs">repo</a><span class="spacer"> · </span><a href="https://docs.rs/tinyfiledialogs/latest/tinyfiledialogs/">docs</a>]</span>
+            </header>
+            <div class="content">
+                <p>
+                    
+                        High-level Rust binding for the tinyfiledialogs C library.
+                    
+                </p>
+            </div>
+            
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/tinyfiledialogs?color=9f703d">
+            </div>
+            
+            
+                <ul class="ecosystem-tags">
+                    
+                        <li onclick="setTagFilter('bindings')">bindings</li>
+                    
+                        <li onclick="setTagFilter('tooling')">tooling</li>
+                    
+                </ul>
+            
+        </div>
+    
+        
+            
+        
+        <div
+            class="ecosystem-card"
+            
+                data-tags="bindings,tk"
+            
+        >
+            <header class="header">
+                <h3>
+                    
+                        Tk
+                    
+                </h3>
+                <span>[<a href="https://crates.io/crates/tk">crate</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;github.com&#x2F;oooutlk&#x2F;tcltk">repo</a><span class="spacer"> · </span><a href="https://docs.rs/tk/latest/tk/">docs</a>]</span>
+            </header>
+            <div class="content">
+                <p>
+                    
+                        Rust bindings for Tk GUI library.
+                    
+                </p>
+            </div>
+            
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/tk?color=9f703d">
+            </div>
+            
+            
+                <ul class="ecosystem-tags">
+                    
+                        <li onclick="setTagFilter('bindings')">bindings</li>
+                    
+                        <li onclick="setTagFilter('tk')">tk</li>
+                    
+                </ul>
+            
+        </div>
+    
+        
+            
+        
+        <div
+            class="ecosystem-card"
+            
+                data-tags="winit"
+            
+        >
+            <header class="header">
+                <h3>
+                    
+                        Vizia
+                    
+                </h3>
+                <span>[<a href="https://crates.io/crates/vizia">crate</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;github.com&#x2F;vizia&#x2F;vizia">repo</a><span class="spacer"> · </span><a href="https://docs.rs/vizia/latest/vizia/">docs</a>]</span>
+            </header>
+            <div class="content">
+                <p>
+                    
+                        A declarative desktop GUI framework.
+                    
+                </p>
+            </div>
+            
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/vizia?color=9f703d">
+            </div>
+            
+            
+                <ul class="ecosystem-tags">
+                    
+                        <li onclick="setTagFilter('winit')">winit</li>
+                    
+                </ul>
+            
+        </div>
+    
+        
+            
+        
+        <div
+            class="ecosystem-card"
+            
+                data-tags="webrender"
+            
+        >
+            <header class="header">
+                <h3>
+                    
+                        WebRender
+                    
+                </h3>
+                <span>[<a href="https://crates.io/crates/webrender">crate</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;github.com&#x2F;servo&#x2F;webrender">repo</a><span class="spacer"> · </span><a href="https://docs.rs/webrender/latest/webrender/">docs</a>]</span>
+            </header>
+            <div class="content">
+                <p>
+                    
+                        A GPU accelerated 2D renderer for web content.
+                    
+                </p>
+            </div>
+            
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/webrender?color=9f703d">
+            </div>
+            
+            
+                <ul class="ecosystem-tags">
+                    
+                        <li onclick="setTagFilter('webrender')">webrender</li>
+                    
+                </ul>
+            
+        </div>
+    
+        
+            
+        
+        <div
+            class="ecosystem-card"
+            
+                data-tags="bindings,winapi"
+            
+        >
+            <header class="header">
+                <h3>
+                    
+                        windows
+                    
+                </h3>
+                <span>[<a href="https://crates.io/crates/windows">crate</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;github.com&#x2F;microsoft&#x2F;windows-rs">repo</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;microsoft.github.io&#x2F;windows-docs-rs&#x2F;">docs</a>]</span>
+            </header>
+            <div class="content">
+                <p>
+                    
+                        Rust for Windows.
+                    
+                </p>
+            </div>
+            
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/windows?color=9f703d">
+            </div>
+            
+            
+                <ul class="ecosystem-tags">
+                    
+                        <li onclick="setTagFilter('bindings')">bindings</li>
+                    
+                        <li onclick="setTagFilter('winapi')">winapi</li>
+                    
+                </ul>
+            
+        </div>
+    
+        
+            
+        
+        <div
+            class="ecosystem-card"
+            
+                data-tags="bindings,winapi"
+            
+        >
+            <header class="header">
+                <h3>
+                    
+                        WinSafe
+                    
+                </h3>
+                <span>[<a href="https://crates.io/crates/winsafe">crate</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;github.com&#x2F;rodrigocfd&#x2F;winsafe">repo</a><span class="spacer"> · </span><a href="https://docs.rs/winsafe/latest/winsafe/">docs</a>]</span>
+            </header>
+            <div class="content">
+                <p>
+                    
+                        Windows API and GUI in safe, idiomatic Rust.
+                    
+                </p>
+            </div>
+            
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/winsafe?color=9f703d">
+            </div>
+            
+            
+                <ul class="ecosystem-tags">
+                    
+                        <li onclick="setTagFilter('bindings')">bindings</li>
+                    
+                        <li onclick="setTagFilter('winapi')">winapi</li>
+                    
+                </ul>
+            
+        </div>
+    
+        
+            
+        
+        <div
+            class="ecosystem-card"
+            
+                data-tags=""
+            
+        >
+            <header class="header">
+                <h3>
+                    
+                        Xilem
+                    
+                </h3>
+                <span>[<a href="https://crates.io/crates/xilem">crate</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;github.com&#x2F;linebender&#x2F;xilem&#x2F;">repo</a><span class="spacer"> · </span><a href="https://docs.rs/xilem/latest/xilem/">docs</a>]</span>
+            </header>
+            <div class="content">
+                <p>
+                    
+                        An experimental Rust architecture for reactive UI.
+                    
+                </p>
+            </div>
+            
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/xilem?color=9f703d">
+            </div>
+            
+            
+        </div>
+    
+        
+            
+        
+        <div
+            class="ecosystem-card"
+            
+                data-tags="html,css,reactive"
+            
+        >
+            <header class="header">
+                <h3>
+                    
+                        Yew
+                    
+                </h3>
+                <span>[<a href="https://crates.io/crates/yew">crate</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;github.com&#x2F;yewstack&#x2F;yew">repo</a><span class="spacer"> · </span><a href="https:&#x2F;&#x2F;docs.rs&#x2F;yew&#x2F;">docs</a>]</span>
+            </header>
+            <div class="content">
+                <p>
+                    
+                        A framework for creating reliable and efficient web applications.
+                    
+                </p>
+            </div>
+            
+            <div class="badge">
+                <img alt="crates.io" src="https://img.shields.io/crates/d/yew?color=9f703d">
+            </div>
+            
+            
+                <ul class="ecosystem-tags">
+                    
+                        <li onclick="setTagFilter('html')">html</li>
+                    
+                        <li onclick="setTagFilter('css')">css</li>
+                    
+                        <li onclick="setTagFilter('reactive')">reactive</li>
+                    
+                </ul>
+            
+        </div>
+    
+</section>
+
+        </main>
+
+        <footer id="about" class="about-container">
+            <div class="centered-content">
+                <h2><a href="#about">About</a></h2>
+                <p>Inspired by <a href="http://arewegameyet.com">arewegameyet</a> and similar
+                    Rust community websites.</p>
+            </div>
+        </footer>
+    </body>
+</html>
