@@ -21,6 +21,15 @@
 # # Defaults to what is specified on crates.io, or otherwise to docs.rs.
 # docs = "https://domain.invalid/mycrate/docs"
 
+[crate.blinc_app]
+name = "blinc"
+docs = "https://project-blinc.github.io/Blinc"
+tags = [
+  "native",
+	"android",
+	"ios",
+]
+
 [crate.yew]
 name = "Yew"
 tags = [
