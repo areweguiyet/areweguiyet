@@ -307,3 +307,6 @@ docs = "https://maycoon-ui.github.io/guide/"
 [crate.tessera-ui]
 name = "Tessera"
 tags = ["proc-macro", "webgpu", "winit"]
+
+[crate.ply-engine]
+name = "Ply"
