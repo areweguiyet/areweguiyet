@@ -233,6 +233,15 @@ tags = [
   "webrender",
 ]
 
+[crate.wxDragon]
+name = "wxDragon"
+tags = [
+  "windows",
+  "macos",
+  "gtk",
+  "wxWidgets"
+]
+
 [crate.masonry]
 tags = []
 
