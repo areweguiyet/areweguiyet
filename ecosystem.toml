@@ -233,6 +233,18 @@ tags = [
   "webrender",
 ]
 
+[crate.wxDragon]
+name = "wxDragon"
+description = "Cross-platform GUI development with wxWidgets and Rust."
+docs = "https://docs.rs/wxdragon"
+repo = "https://github.com/AllenDang/wxDragon"
+tags = [
+  "windows",
+  "macos",
+  "gtk",
+  "wxWidgets"
+]
+
 [crate.masonry]
 tags = []
 
