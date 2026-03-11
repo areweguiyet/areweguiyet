@@ -19,6 +19,12 @@
 # All keys are required. Please keep this file in order with newest first.
 
 [[links]]
+title = "Building apps in Rust shouldn't be this hard, so I made Ply"
+author = "TheRedDeveloper"
+link = "https://plyx.iz.rs/blog/introducing-ply/"
+date = 2026-03-01
+
+[[links]]
 title = "A 2025 Survey of Rust GUI Libraries"
 author = "boringcactus"
 link = "https://www.boringcactus.com/2025/04/13/2025-survey-of-rust-gui-libraries.html"
