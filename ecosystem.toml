@@ -328,3 +328,7 @@ tags = ["proc-macro", "webgpu", "winit"]
 
 [crate.ply-engine]
 name = "Ply"
+
+[crate.sdl3]
+name = "SDL3"
+tags = ["emscripten", "wasm", "android", "ios"]
