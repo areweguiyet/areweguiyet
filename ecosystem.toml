@@ -328,6 +328,18 @@ tags = ["proc-macro", "webgpu", "winit"]
 
 [crate.ply-engine]
 name = "Ply"
+description = "An app engine built on macroquad with immediate-mode API and simple commands for cross-platform support. It has accessibility, shaders, storage, flexbox-like layout, a debug view and more."
+tags = [
+  "immediate",
+  "cross-platform",
+  "accessibility",
+  "wasm",
+  "ios",
+  "android",
+  "macos",
+  "linux",
+  "winapi",
+]
 
 [crate.sdl3]
 name = "SDL3"
