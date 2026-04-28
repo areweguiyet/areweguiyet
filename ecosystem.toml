@@ -344,3 +344,12 @@ tags = [
 [crate.sdl3]
 name = "SDL3"
 tags = ["emscripten", "wasm", "android", "ios"]
+
+[crate.pane_ui]
+name = "Pane UI"
+description = "A user friendly data defined imediate mode Ui system. Define your menus in ron."
+tags = [
+  "winit",      
+  "wgpu",       
+  "immediate", 
+]
