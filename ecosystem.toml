@@ -227,6 +227,9 @@ tags = [
   "webrender",
 ]
 
+[crate.undoredo]
+tags = ["proc-macro"]
+
 [crate.webrender]
 name = "WebRender"
 tags = [
