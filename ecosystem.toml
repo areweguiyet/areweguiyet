@@ -356,3 +356,11 @@ tags = [
   "wgpu",       
   "immediate", 
 ]
+
+[crate.pane_ui]
+name = "Rosin"
+tags = [
+  "immediate",      
+  "css",       
+  "macos", 
+]
