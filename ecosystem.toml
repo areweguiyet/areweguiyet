@@ -357,7 +357,7 @@ tags = [
   "immediate", 
 ]
 
-[crate.pane_ui]
+[crate.rosin]
 name = "Rosin"
 tags = [
   "immediate",      
