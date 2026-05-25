@@ -356,3 +356,11 @@ tags = [
   "wgpu",       
   "immediate", 
 ]
+
+[crate.rosin]
+name = "Rosin"
+tags = [
+  "immediate",      
+  "css",       
+  "macos", 
+]
