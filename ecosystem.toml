@@ -364,3 +364,18 @@ tags = [
   "css",       
   "macos", 
 ]
+
+[crate.llimphi]
+name = "llimphi"
+tags = [
+  "native",
+  "declarative",
+  "reactive",
+  "winit",
+  "linux",
+  "windows",
+  "macos",
+  "android",
+  "wasm",
+  "accessibility",
+]
