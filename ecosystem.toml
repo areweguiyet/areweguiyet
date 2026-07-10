@@ -364,3 +364,12 @@ tags = [
   "css",       
   "macos", 
 ]
+
+[crate.fenestra]
+name = "fenestra"
+tags = [
+  "native",
+  "winit",
+  "webgpu",
+  "accessibility",
+]
