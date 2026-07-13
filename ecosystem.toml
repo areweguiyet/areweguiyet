@@ -364,3 +364,11 @@ tags = [
   "css",       
   "macos", 
 ]
+
+[crate.guise-ui]
+name = "guise"
+tags = [
+  "gpui",
+  "macos",
+  "linux",
+]
