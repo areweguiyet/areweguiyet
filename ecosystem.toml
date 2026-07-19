@@ -38,6 +38,22 @@ tags = [
   "reactive",
 ]
 
+[crate.fission]
+name = "Fission"
+tags = [
+  "cross-platform",
+  "native",
+  "accessibility",
+  "winit",
+  "macos",
+  "ios",
+  "android",
+  "linux",
+  "windows",
+  "wasm",
+  "webgpu",
+]
+
 [crate.ribir]
 name = "Ribir"
 description = "Ribir is a Rust GUI framework that helps you build beautiful and native multi-platform applications from a single codebase."
