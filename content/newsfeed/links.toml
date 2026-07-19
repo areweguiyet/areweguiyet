@@ -19,6 +19,12 @@
 # All keys are required. Please keep this file in order with newest first.
 
 [[links]]
+title = "Native cross-platform Rust GUIs need more than widgets"
+author = "Courtney Robinson"
+link = "https://fission.rs/blog/2026-07-19-native-cross-platform-rust-guis-need-more-than-widgets/"
+date = 2026-07-19
+
+[[links]]
 title = "Building apps in Rust shouldn't be this hard, so I made Ply"
 author = "TheRedDeveloper"
 link = "https://plyx.iz.rs/blog/introducing-ply/"
