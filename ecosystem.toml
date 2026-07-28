@@ -357,6 +357,17 @@ tags = [
   "immediate", 
 ]
 
+[crate.webui-rs]
+name = "WebUI"
+description = "Use any web browser or WebView as GUI, with Rust in the backend and modern web technologies in the frontend"
+docs = "https://webui.me/docs.html#/rust"
+tags = [
+  "bindings",
+  "html",
+  "css",
+  "cross-platform",
+]
+
 [crate.rosin]
 name = "Rosin"
 tags = [
