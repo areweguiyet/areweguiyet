@@ -38,6 +38,19 @@ tags = [
   "reactive",
 ]
 
+[crate.fui-rs]
+name = "FUI-RS"
+tags = [
+  "cross-platform",
+  "native",
+  "wasm",
+  "macos",
+  "linux",
+  "winapi",
+  "accessibility",
+  "proc-macro",
+]
+
 [crate.ribir]
 name = "Ribir"
 description = "Ribir is a Rust GUI framework that helps you build beautiful and native multi-platform applications from a single codebase."
