@@ -19,6 +19,12 @@
 # All keys are required. Please keep this file in order with newest first.
 
 [[links]]
+title = "A Cross-Platform Rust UI Framework via Qt’s Bridging Technology"
+author = "Matthias Rauter"
+link = "https://www.qt.io/blog/rust-ui-framework-via-bridging-technology"
+date = 2026-07-01
+
+[[links]]
 title = "Building apps in Rust shouldn't be this hard, so I made Ply"
 author = "TheRedDeveloper"
 link = "https://plyx.iz.rs/blog/introducing-ply/"
