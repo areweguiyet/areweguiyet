@@ -364,3 +364,19 @@ tags = [
   "css",       
   "macos", 
 ]
+
+[crate.winio]
+name = "Winio"
+description = "A native GUI framework with single-threaded asynchronous runtime."
+tags = [
+  "cross-platform",
+  "native",
+  "winapi",
+  "windows",
+  "macos",
+  "gtk",
+  "qt",
+  "linux",
+  "ios",
+  "android",
+]
