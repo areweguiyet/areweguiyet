@@ -19,6 +19,12 @@
 # All keys are required. Please keep this file in order with newest first.
 
 [[links]]
+title = "A 2026 Survey of Rust GUI Libraries"
+author = "Wybxc"
+link = "https://blog.wybxc.cc/blog/rust-gui-survey-2026/"
+date = 2026-08-22
+
+[[links]]
 title = "Building apps in Rust shouldn't be this hard, so I made Ply"
 author = "TheRedDeveloper"
 link = "https://plyx.iz.rs/blog/introducing-ply/"
