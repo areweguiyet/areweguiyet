@@ -364,3 +364,19 @@ tags = [
   "css",       
   "macos", 
 ]
+
+[crate.cranpose]
+name = "Cranpose"
+description = "Cranpose is a declarative UI framework for Rust modelled on Jetpack Compose. It is pre-alpha: the API changes without a deprecation cycle between releases."
+tags = [
+  "declarative",
+  "proc-macro",
+  "cross-platform",
+  "winit",
+  "wasm",
+  "android",
+  "ios",
+  "macos",
+  "linux",
+  "winapi",
+]
