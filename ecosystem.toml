@@ -65,6 +65,13 @@ tags = [
   "winit",
 ]
 
+[crate.mtk-rs]
+name = "MTK"
+tags = [
+   "winit",
+   "webgpu",
+]
+
 [crate.freya]
 name = "Freya"
 tags = [
