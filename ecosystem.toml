@@ -200,6 +200,20 @@ tags = [
   "accessibility",
 ]
 
+[crate.teksilo]
+name = "Teksilo"
+description = "A pure-Rust, batteries-included GUI framework for modern desktop apps: accessibility, i18n, rich text and themes as first-class citizens. Choose from 100+ widgets, layouts and animations"
+docs = "https://teksilo.rs"
+tags = [
+  "widgets",
+  "cross-platform",
+  "winit",
+  "wgpu",
+  "reactive",
+  "i18n",
+  "accessibility",
+]
+
 [crate.iced]
 name = "Iced"
 description = "A renderer-agnostic GUI library for Rust focused on simplicity and type-safety. Inspired by Elm."
