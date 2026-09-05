@@ -364,3 +364,14 @@ tags = [
   "css",       
   "macos", 
 ]
+
+[crate.libui]
+tags = [
+  "native",
+  "cross-platform",
+  "winapi",
+  "macos",
+  "linux",
+  "bindings",
+  "proc-macro",
+]
