@@ -364,3 +364,7 @@ tags = [
   "css",       
   "macos", 
 ]
+
+[crate.drevo]
+name = "Drevo"
+tags = ["reactive", "winit"]
