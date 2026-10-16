@@ -364,3 +364,16 @@ tags = [
   "css",       
   "macos", 
 ]
+
+[crate.glacex]
+name = "Glacex"
+description = "GPU-rendered, immediate-mode UI library with SDF rendering and persistent widget state."
+tags = [
+  "immediate",
+  "wgpu",
+  "winit",
+  "linux",
+  "windows",
+  "macos",
+  "accessibility",
+]
