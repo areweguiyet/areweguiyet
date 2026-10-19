@@ -59,6 +59,10 @@ tags = [
   "linux",
 ]
 
+[crate.gpui-kit]
+name = "GPUI Kit"
+tags = ["native", "widgets"]
+
 [crate.vizia]
 name = "Vizia"
 tags = [
