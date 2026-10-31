@@ -357,6 +357,13 @@ tags = [
   "immediate", 
 ]
 
+[crates.repose-core]
+name = "Repose"
+repo = "https://github.com/mlm-games/repose"
+docs = "https://docs.rs/repose-core"
+description = "Jetpack Compose-style declarative UI for desktop, Android and web, rendered with wgpu"
+tags = ["declarative", "reactive", "cross-platform", "mobile", "web"]
+
 [crate.rosin]
 name = "Rosin"
 tags = [
