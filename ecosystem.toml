@@ -61,7 +61,7 @@ tags = [
 
 [crate.nsh-core]
 name = "Native Shell"
-description = "Native Shell (NSH) is a native UI framework built in Rust for iOS, Android, macOS, Windows, Linux and the web: UI written in TSX or Rust, rendered natively on each platform, and embeddable in existing native apps."
+description = "Native Shell (NSH) is a native UI framework built in Rust for iOS, Android, macOS, Windows, Linux and Web: UI written in TSX or Rust, rendered natively on each platform, and embeddable in existing native apps."
 docs = "https://nsh.dev"
 tags = [
   "native",
