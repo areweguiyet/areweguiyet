@@ -59,6 +59,23 @@ tags = [
   "linux",
 ]
 
+[crate.nsh-core]
+name = "Native Shell"
+description = "Native Shell (NSH) is a native UI framework built in Rust for iOS, Android, macOS, Windows, Linux and Web: UI written in TSX or Rust, rendered natively on each platform, and embeddable in existing native apps."
+docs = "https://nsh.dev"
+tags = [
+  "native",
+  "cross-platform",
+  "declarative",
+  "reactive",
+  "ios",
+  "android",
+  "macos",
+  "windows",
+  "linux",
+  "wasm",
+]
+
 [crate.vizia]
 name = "Vizia"
 tags = [
