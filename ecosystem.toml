@@ -63,7 +63,6 @@ tags = [
 name = "GPUI Kit"
 docs = "https://gpui-kit.com"
 tags = [
-  "widgets",
   "cross-platform",
   "macos",
   "windows",
