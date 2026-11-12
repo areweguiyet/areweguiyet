@@ -221,6 +221,14 @@ tags = [
   "ios",
 ]
 
+[crate.ferrokit]
+name = "Ferrokit"
+tags = [
+  "macos",
+  "native",
+  "reactive",
+]
+
 [crate.azul]
 name = "Azul"
 tags = [
