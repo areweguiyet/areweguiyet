@@ -272,6 +272,15 @@ tags = [
   "qml",
 ]
 
+[crate.qtbridge]
+name = "Qt Bridge"
+description = "A feature-rich, GPU-accelerated, cross-platform GUI option using the easy-to-learn QML and modern Qt Quick. Adds cleanly to the backend in a way that feels native to Rust, using annotations that connect to properties, signals, methods and interfaces. Dual licensed: LGPLv3 and Commercial."
+tags = [
+  "bindings",
+  "qt",
+  "qml",
+]
+
 [crate.relm]
 tags = [
   "bindings",
